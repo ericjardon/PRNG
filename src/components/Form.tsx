@@ -28,19 +28,28 @@ const Form: React.FC<Props> = () => {
         setMethod(name);
     }
 
+    const getRandom = () : void => {
+        // call current method's .generate() method
+        // send the value up to the parent component
+        // the parent should display it in the right column.
+        // update Seed to be this value,
+        return;
+    }
+
     return (
         <div className="formContainer">
-            <Stack>
+            <Stack spacing={2}>
             <h3>Método: Métodos Cuadrados</h3>
             <div className="inputsContainer">
 
             <TextField label="Semilla" variant="filled">Hello</TextField>
             </div>
             <FormInputsSwitch method={method} updateHandler={handleInputs}/>
-            <div className="buttonContainer">
-                <Button>Click ME</Button>
-            </div>
+
             </Stack>                
+            <div className="buttonContainer">
+                <Button variant="contained" size="large" onClick={getRandom}>Generar Aleatorio</Button>
+            </div>
         </div>
     )
 }
