@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select';
 import FormInputsSwitch from './FormInputsSwitch'
-// import SUPPORTED_METHODS from '../methods';
+import {METHODS} from '../stats/methods'
 
 interface Props {
     onSubmit: () => void,
@@ -36,6 +36,9 @@ const Form: React.FC<Props> = () => {
         // send the value up to the parent component
         // the parent should display it in the right column.
         // update Seed to be this value,
+        const nextRandom = METHODS[method](params);
+        console.log("Random");
+        setSeed(nextRandom);
         return;
     }
 
@@ -45,7 +48,7 @@ const Form: React.FC<Props> = () => {
                 <h4>Parámetros</h4>
                 <div className="inputsContainer">
 
-                    <TextField label="Semilla" variant="filled">Hello</TextField>
+                    <TextField label="Semilla" variant="filled" value={seed}>Hello</TextField>
                     <Select
                         labelId="method-selector-label"
                         id="method-selector"

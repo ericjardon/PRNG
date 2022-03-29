@@ -7,7 +7,9 @@ const randomNotImplemented = (params:any) => {
     return 0
 } 
 
-export const METHODS = {
+type RandomGeneratorFunc = (params: any) => number;
+
+export const METHODS : Record<string,RandomGeneratorFunc> = {
     'dummy': randomDummy,
     'midSquares': randomNotImplemented,
     'MC': randomNotImplemented,
