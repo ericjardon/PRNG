@@ -7,7 +7,7 @@ const randomNotImplemented = (params:any) => {
     return 0
 } 
 
-type RandomGeneratorFunc = (params: any) => number;
+type RandomGeneratorFunc = (seed:number, params: any) => number;
 
 export const METHODS : Record<string,RandomGeneratorFunc> = {
     'dummy': randomDummy,

@@ -7,9 +7,9 @@ interface DummyParams {
 }
 
 
-const randomDummy = (params: DummyParams) => {
+const randomDummy = (seed:number, params: DummyParams) => {
     const {alpha, beta, chi, someParam} = params;
-
+    console.log("Seed", seed);
     return Math.random();
 }
 
