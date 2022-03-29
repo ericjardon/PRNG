@@ -39,7 +39,7 @@ const Form: React.FC<Props> = () => {
     return (
         <div className="formContainer">
             <Stack spacing={2}>
-            <h3>Método: Métodos Cuadrados</h3>
+            <h4>Parámetros</h4>
             <div className="inputsContainer">
 
             <TextField label="Semilla" variant="filled">Hello</TextField>

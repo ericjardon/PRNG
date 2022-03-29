@@ -17,7 +17,7 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   /* align-items: center;
   justify-content: space-evenly; */
   font-size: calc(10px + 2vmin);
@@ -37,8 +37,33 @@
   }
 }
 
+.Nav {
+  width: 100%;
+  display: block;
+  background-color: #20232a;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+}
+
+.Nav > h1,h2,h3 {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  min-height: calc(100vh - 100px);
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .column {
   width: 50%;
+  text-align: center;
 }
 
 .formContainer {
