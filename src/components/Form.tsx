@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEventHandler, useState } from 'react';
 import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select';
 import FormInputsSwitch from './FormInputsSwitch'
@@ -8,12 +8,11 @@ interface Props {
     onSubmit: (random:number) => void,
 }
 
-
 const Form: React.FC<Props> = (props: Props) => {
 
     const seedLabel = katex.renderToString("X_0");
     const [method, setMethod] = useState<string>('midSquares');
-    const [seed, setSeed] = useState<number>(0);
+    const [seed, setSeed] = useState<string>("");
 
     const [params, setParams] = useState<any>({});
 
@@ -27,7 +26,7 @@ const Form: React.FC<Props> = (props: Props) => {
     const handleMethodChange = (event: SelectChangeEvent) => {
         setParams({})
         setMethod(event.target.value);
-        return;
+        console.log("Method selected:", event.target.value);
     }
 
     const getRandom = (): void => {
@@ -35,12 +34,21 @@ const Form: React.FC<Props> = (props: Props) => {
         // send the value up to the parent component
         // the parent should display it in the right column.
         // update Seed to be this value,
-        if (method==="") return;
-        const nextRandom = METHODS[method](seed, params);
+        if (method==="" || seed==="") return;
+        let seedValue = Number.parseFloat(seed);
+        if (seedValue === NaN) return;
+
+        const nextRandom = METHODS[method](seedValue, params);
         console.log("Random");
-        setSeed(nextRandom);
+        setSeed(nextRandom.toString());
         props.onSubmit(nextRandom);
         return;
+    }
+
+    const handleSeedChange = (event: React.ChangeEvent<any>) => {
+        console.log("New seed", event.target.value)
+
+        setSeed(event.target.value);
     }
 
     return (
@@ -61,7 +69,7 @@ const Form: React.FC<Props> = (props: Props) => {
                     <MenuItem value={'MC'}>Congruencial Lineal</MenuItem>
                     <MenuItem value={'MCM'}>Congruencial Lineal Mixto</MenuItem>
                 </Select>
-                <TextField label="Semilla" variant="filled" value={seed}></TextField>
+                <TextField label="Semilla" variant="filled" value={seed} onChange={handleSeedChange}></TextField>
 
                 <FormInputsSwitch method={method} updateHandler={handleInputs} />
             </Stack>
