@@ -21,5 +21,5 @@ const randomMidSquares = (seed: number, params: MidSquaresParams) => {
     return seed
 }
 
-console.log(randomMidSquares(123, {iterations: 5}))
+console.log("MS ",randomMidSquares(123, {iterations: 5}))
 export default randomMidSquares
