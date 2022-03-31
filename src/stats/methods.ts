@@ -2,7 +2,7 @@ import randomDummy from "./dummy"
 // import all the methods to be used.
 import randomMidSquares from './midSquares'
 import randomLinearCongruential from './linearCongruential'
-import randomMixedCongruential from "./mixedContruential"
+import randomMixedCongruential from "./mixedCongruential"
 
 const randomNotImplemented = (params:any) => {
     // midSquares and all others should be imported from their respective module.

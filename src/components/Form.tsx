@@ -9,6 +9,14 @@ interface Props {
 	setError: (error:string) => void,
 }
 
+const toNumbers = (params:any):any => {
+	const result : any = {}
+	for (const key in params){
+		result[key] = Number.parseFloat(params[key]);
+	}
+	return result;
+}
+
 const Form: React.FC<Props> = ({
 	onSubmit,
 	setError,
@@ -44,7 +52,9 @@ const Form: React.FC<Props> = ({
         let seedValue = Number.parseFloat(seed);
         if (seedValue === NaN) return;
 		console.log("Method selected:", method);
-        const nextRandom = METHODS[method](seedValue, params);
+		let numParams = toNumbers(params);
+
+        const nextRandom = METHODS[method](seedValue, numParams);
 		if(nextRandom === -1){
 			setError('Parámetros incorrectos para ' + method);
 			return;
