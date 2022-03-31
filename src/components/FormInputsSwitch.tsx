@@ -5,12 +5,14 @@ import MCM from './MCM';
 
 export interface IFormInputsSwitchProps {
     method: string,
-    updateHandler: (event: React.ChangeEvent<any>) => void //(event:React.FormEvent<HTMLInputElement>) => void
+    updateHandler: (event: React.ChangeEvent<any>) => void, //(event:React.FormEvent<HTMLInputElement>) => void
+	params: any
 }
 
 const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
   method,
   updateHandler,
+  params 
 }) => {
 
 
@@ -22,7 +24,7 @@ const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
 
   if (method==='MCM' || method==='MC') {
     return (
-      <MCM updateHandler={updateHandler}/>
+      <MCM updateHandler={updateHandler} a={params.a} c ={params.c} m={params.m}/>
     )
   }
 

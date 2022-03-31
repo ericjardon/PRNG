@@ -6,9 +6,13 @@ import { METHODS } from '../stats/methods'
 import katex from 'katex'
 interface Props {
     onSubmit: (random:number) => void,
+	setError: (error:string) => void,
 }
 
-const Form: React.FC<Props> = (props: Props) => {
+const Form: React.FC<Props> = ({
+	onSubmit,
+	setError,
+}) => {
 
     const seedLabel = katex.renderToString("X_0");
     const [method, setMethod] = useState<string>('midSquares');
@@ -16,11 +20,13 @@ const Form: React.FC<Props> = (props: Props) => {
 
     const [params, setParams] = useState<any>({});
 
-    const handleInputs = (event: React.FormEvent<HTMLInputElement>): void => {
+    const updateHandler = (event: React.FormEvent<HTMLInputElement>): void => {
         setParams({
             ...params,
             [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value,
+			
         });
+		console.log((event.target as HTMLInputElement).value)
     }
 
     const handleMethodChange = (event: SelectChangeEvent) => {
@@ -37,11 +43,16 @@ const Form: React.FC<Props> = (props: Props) => {
         if (method==="" || seed==="") return;
         let seedValue = Number.parseFloat(seed);
         if (seedValue === NaN) return;
-
+		console.log("Method selected:", method);
         const nextRandom = METHODS[method](seedValue, params);
+		if(nextRandom === -1){
+			setError('Parámetros incorrectos para ' + method);
+			return;
+		}
         console.log("Random");
+		console.log("");
         setSeed(nextRandom.toString());
-        props.onSubmit(nextRandom);
+        onSubmit(nextRandom);
         return;
     }
 
@@ -71,7 +82,7 @@ const Form: React.FC<Props> = (props: Props) => {
                 </Select>
                 <TextField label="Semilla" variant="filled" value={seed} onChange={handleSeedChange}></TextField>
 
-                <FormInputsSwitch method={method} updateHandler={handleInputs} />
+                <FormInputsSwitch method={method} updateHandler={updateHandler} params={params} />
             </Stack>
             <div className="buttonContainer">
                 <Button variant="contained" size="large" onClick={getRandom}>Generar Aleatorio</Button>

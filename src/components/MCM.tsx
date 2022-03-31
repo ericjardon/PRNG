@@ -6,6 +6,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 c: number, // increment
 m: number, // module
  */
+
 interface Props {
     a?:number,
     c?:number,
