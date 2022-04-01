@@ -8,7 +8,8 @@ const randomMixedCongruential = (seed: number, params: MixedCongruentialParams) 
 	console.log("seed", seed);
 	console.log("params", params);
     if(GCD(params.c, params.m) === 1 && (params.m % 2 === 0) && ((params.a-1) % 2 === 0) &&  (params.m % 4 === 0) && ((params.a-1) % 4 === 0)){
-        return ((((params.a * seed) + params.c) % params.m)/params.m)
+        let x = (((params.a * seed) + params.c) % params.m)
+        return {X: x,Ri: (x/params.m)}
     }
     return -1
 }
