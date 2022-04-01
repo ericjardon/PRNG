@@ -1,18 +1,24 @@
 import randomDummy from "./dummy"
-
-
+// import all the methods to be used.
+import randomMidSquares from './midSquares'
+import randomLinearCongruential from './linearCongruential'
+import randomMixedCongruential from "./mixedCongruential"
 
 const randomNotImplemented = (params:any) => {
     // midSquares and all others should be imported from their respective module.
-    return 0
+    return {X:0, Ri:0}
 } 
 
-type RandomGeneratorFunc = (seed:number, params: any) => number;
+type MethodResult = {X?:number, Ri: number};
+
+type RandomGeneratorFunc = (seed:number, params: any) => MethodResult;
 
 export const METHODS : Record<string,RandomGeneratorFunc> = {
     'dummy': randomDummy,
-    'midSquares': randomNotImplemented,
-    'MC': randomNotImplemented,
-    'MCM': randomNotImplemented,
+    'midSquares': randomMidSquares,
+    'MC': randomLinearCongruential,
+    'MCM': randomMixedCongruential,
+    'GM': randomNotImplemented,  // TODO: Generador Multiplicativo
+    'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
 }
 // will be called in front as: METHODS[name](params)
