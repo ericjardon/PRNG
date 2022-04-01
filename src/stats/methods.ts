@@ -18,5 +18,7 @@ export const METHODS : Record<string,RandomGeneratorFunc> = {
     'midSquares': randomMidSquares,
     'MC': randomLinearCongruential,
     'MCM': randomMixedCongruential,
+    'GM': randomNotImplemented,  // TODO: Generador Multiplicativo
+    'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
 }
 // will be called in front as: METHODS[name](params)
