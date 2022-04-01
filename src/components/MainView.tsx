@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Form from './Form'
+import Result from './Result'
 import {Alert} from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
@@ -10,13 +11,13 @@ export default function MainView() {
 
   const updateRandom = (random:number) => {
     console.log('Set Random!', random)
-	setAlert(null);
+	  setAlert(null);
     setRandom(random);
   }
 
   const setError = (error:string) : void => {
-	console.log(error);
-	setAlert(<Alert severity="error">{error}</Alert>)
+
+  setAlert(<Alert severity="error">{error}</Alert>)
   }
 
   return (
@@ -26,14 +27,10 @@ export default function MainView() {
 		<div className="column">
 			<Form onSubmit={updateRandom} setError={setError}></Form>
 		</div>
-		<div className="column">
-			{random!==null ? `Tu aleatorio: ${random}`
-			: 'Llena los parámetros y haz click en "Generar"'
-			}
-			{alert}
-		</div>
+      <div className="column">
+        <Result random={random} alert={alert}/>
       </div>
-
+    </div>
     </div>
   )
 }

@@ -1,9 +1,10 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { ChangeEventHandler, useState } from 'react'
 import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select'
 import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
 import katex from 'katex'
+
 interface Props {
     onSubmit: (random:number) => void,
 	setError: (error:string) => void,
@@ -13,6 +14,11 @@ const toNumbers = (params:any):any => {
 	const result : any = {}
 	for (const key in params){
 		result[key] = Number.parseFloat(params[key]);
+        console.log("Param", key, result[key]);
+        if (Number.isNaN(result[key])){
+            console.log("unparsed parameter", key)
+            return null;
+        }
 	}
 	return result;
 }
@@ -22,7 +28,6 @@ const Form: React.FC<Props> = ({
 	setError,
 }) => {
 
-    const seedLabel = katex.renderToString("X_0");
     const [method, setMethod] = useState<string>('midSquares');
     const [seed, setSeed] = useState<string>("");
 
@@ -44,25 +49,34 @@ const Form: React.FC<Props> = ({
     }
 
     const getRandom = (): void => {
-        // call current method's .generate() method
-        // send the value up to the parent component
-        // the parent should display it in the right column.
-        // update Seed to be this value,
-        if (method==="" || seed==="") return;
-        let seedValue = Number.parseFloat(seed);
-        if (seedValue === NaN) return;
-		console.log("Method selected:", method);
-		let numParams = toNumbers(params);
 
-        const nextRandom = METHODS[method](seedValue, numParams);
-		if(nextRandom === -1){
+        if (!method || !seed) return;
+        let seedValue = Number.parseFloat(seed);
+        if (Number.isNaN(seedValue)) return;
+
+		let numParams = toNumbers(params);
+        if (numParams === null) {
+            console.log("Some param is wrong")
+            setError('Parámetros incorrectos para ' + method);
+			return;
+        }
+
+        console.log("Method to run:", method);
+        const {X, Ri} = METHODS[method](seedValue, numParams);
+
+		if(Ri === -1 || Number.isNaN(Ri)){
+            console.log("Ri is -1 or Ri is NaN")
 			setError('Parámetros incorrectos para ' + method);
 			return;
 		}
-        console.log("Random");
-		console.log("");
-        setSeed(nextRandom.toString());
-        onSubmit(nextRandom);
+        else if (Ri==-2) {
+            console.log("Module is 1")
+            setError('El módulo no puede ser 1');
+			return;
+        }
+
+        setSeed(Ri.toString());
+        onSubmit(Ri);
         return;
     }
 
