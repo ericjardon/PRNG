@@ -14,7 +14,7 @@ type RandomGeneratorFunc = (seed:number, params: any) => number;
 export const METHODS : Record<string,RandomGeneratorFunc> = {
     'dummy': randomDummy,
     'midSquares': randomMidSquares,
-    'MC': randomMixedCongruential,
-    'MCM': randomNotImplemented,
+    'MC': randomLinearCongruential,
+    'MCM': randomMixedCongruential,
 }
 // will be called in front as: METHODS[name](params)

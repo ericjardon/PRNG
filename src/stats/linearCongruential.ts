@@ -5,10 +5,12 @@ interface LinearCongruentialParams{
 }
 
 const randomLinearCongruential = (seed: number, params: LinearCongruentialParams) => {
-    return ((((params.a * seed) + params.c) % params.m)/params.m)
+    // RETURN THE RANDOM NUMBER AND THE Ri
+    let x = (((params.a * seed) + params.c) % params.m)
+    return {X: x, Ri:(x/params.m)}
 }
 
-console.log("LC", randomLinearCongruential(6, {a:5, c:7, m:8}))
+console.log("LC", randomLinearCongruential(3, {a:5, c:7, m:8}))
 
 
 export default randomLinearCongruential
