@@ -75,7 +75,7 @@ const Form: React.FC<Props> = ({
 			return;
         }
 
-        setSeed(Ri.toString());
+        setSeed(X? X.toString() : Ri.toString());
         onSubmit(Ri);
         return;
     }
