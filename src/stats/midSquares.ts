@@ -15,10 +15,10 @@ const randomMidSquares = (seed: number, params: MidSquaresParams) => {
             seed = parseInt(x2)
         }
     }else{
-        return 99
+        return {Ri: 99}
         // "The seed must be at least 3 digits"
     }
-    return seed
+    return {Ri:seed}
 }
 
 console.log("MS ",randomMidSquares(123, {iterations: 5}))

@@ -11,7 +11,7 @@ const randomDummy = (seed:number, params: DummyParams) => {
     console.log("Called random dummy");
     const {alpha, beta, chi, someParam} = params;
     console.log("Seed", seed);
-    return Math.random();
+    return {Ri: Math.random()};
 }
 
 export default randomDummy;

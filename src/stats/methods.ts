@@ -6,10 +6,12 @@ import randomMixedCongruential from "./mixedCongruential"
 
 const randomNotImplemented = (params:any) => {
     // midSquares and all others should be imported from their respective module.
-    return 0
+    return {X:0, Ri:0}
 } 
 
-type RandomGeneratorFunc = (seed:number, params: any) => number;
+type MethodResult = {X?:number, Ri: number};
+
+type RandomGeneratorFunc = (seed:number, params: any) => MethodResult;
 
 export const METHODS : Record<string,RandomGeneratorFunc> = {
     'dummy': randomDummy,
