@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './styles/App.css';
 import MainView from './components/MainView'
 import {ThemeProvider, createTheme} from '@mui/material/styles'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 const theme = createTheme({
   palette: {
@@ -17,9 +18,11 @@ const theme = createTheme({
 
 function App() {
   return (
+    <Router>
     <ThemeProvider theme={theme}>
       <MainView />
     </ThemeProvider>
+    </Router>
     )
 }
 

@@ -1,36 +1,41 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Form from './Form'
 import Result from './Result'
-import {Alert} from '@mui/material'
+import { Alert } from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import { Routes, Route, Link } from 'react-router-dom'
 
 export default function MainView() {
 
-  const [random, setRandom] = useState<number|null>(null);
-  const [alert, setAlert] = useState<ReactJSXElement|null>(null);
+  const [random, setRandom] = useState<number | null>(null);
+  const [alert, setAlert] = useState<ReactJSXElement | null>(null);
 
-  const updateRandom = (random:number) => {
+  const updateRandom = (random: number) => {
     console.log('Set Random!', random)
-	  setAlert(null);
+    setAlert(null);
     setRandom(random);
   }
 
-  const setError = (error:string) : void => {
+  const setError = (error: string): void => {
 
-  setAlert(<Alert severity="error">{error}</Alert>)
+    setAlert(<Alert severity="error">{error}</Alert>)
   }
 
   return (
     <div className="App-main">
       <nav className="Nav"><h3>Métodos Cuantitativos y Simulación</h3></nav>
-      <div className="row">
-		<div className="column">
-			<Form onSubmit={updateRandom} setError={setError}></Form>
-		</div>
-      <div className="column">
-        <Result random={random} alert={alert}/>
-      </div>
-    </div>
-    </div>
+        <Routes>
+          <Route path="/">
+          <div className="row">
+            <div className="column">
+              <Form onSubmit={updateRandom} setError={setError}></Form>
+            </div>
+            <div className="column">
+              <Result random={random} alert={alert} />
+            </div>
+          </div>
+        </Route>
+      </Routes>
+    </div >
   )
 }

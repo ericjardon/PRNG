@@ -12,6 +12,7 @@ const Result: React.FC<Props> = ({
 }) => {
     return (
         <div className="resultContainer">
+            <a className="linkToValidation">Validación</a>
             <Stack spacing={3}>
                 {alert}
                 <div>

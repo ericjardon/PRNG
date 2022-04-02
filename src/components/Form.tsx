@@ -64,14 +64,20 @@ const Form: React.FC<Props> = ({
         console.log("Method to run:", method);
         const {X, Ri} = METHODS[method](seedValue, numParams);
 
-		if(Ri === -1 || Number.isNaN(Ri)){
-            console.log("Ri is -1 or Ri is NaN")
-			setError('Parámetros incorrectos para ' + method);
+		if(Ri === -1){
+            if (method==='MCM') {
+                setError('Los parámetros no cumplen con el teorema de Hull-Dobell');
+            } else {
+                setError('Parámetros incorrectos para ' + method);
+            }
 			return;
 		}
         else if (Ri==-2) {
             console.log("Module is 1")
             setError('El módulo no puede ser 1');
+			return;
+        } else if (Number.isNaN(Ri)) {
+            setError('Parámetros incorrectos para ' + method);
 			return;
         }
 
