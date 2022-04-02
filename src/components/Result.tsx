@@ -1,5 +1,6 @@
 import React from 'react'
 import { Stack } from '@mui/material'
+import {Link} from 'react-router-dom'
 
 type Props = {
     random: number | null,
@@ -12,7 +13,7 @@ const Result: React.FC<Props> = ({
 }) => {
     return (
         <div className="resultContainer">
-            <a className="linkToValidation">Validación</a>
+            <Link to={"/validation"} className="linkToValidation">Validación</Link>
             <Stack spacing={3}>
                 {alert}
                 <div>

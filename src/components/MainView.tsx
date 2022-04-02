@@ -23,9 +23,6 @@ export default function MainView() {
 
   return (
     <div className="App-main">
-      <nav className="Nav"><h3>Métodos Cuantitativos y Simulación</h3></nav>
-        <Routes>
-          <Route path="/">
           <div className="row">
             <div className="column">
               <Form onSubmit={updateRandom} setError={setError}></Form>
@@ -34,8 +31,6 @@ export default function MainView() {
               <Result random={random} alert={alert} />
             </div>
           </div>
-        </Route>
-      </Routes>
     </div >
   )
 }

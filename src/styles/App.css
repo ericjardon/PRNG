@@ -44,6 +44,9 @@
   height: 60px;
   text-align: center;
   line-height: 60px;
+  color: white;
+  font-size: calc(10px + 2vmin);
+
 }
 
 .Nav > h1,h2,h3 {
@@ -93,7 +96,7 @@
   top: 0;
   right: 0;
   color:#61dafb;
-  text-decoration: none;
+  text-decoration: underline;
   padding: 15px;
   font-size: 20px;
   font-weight: bold;
