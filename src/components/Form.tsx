@@ -8,6 +8,7 @@ import katex from 'katex'
 interface Props {
     onSubmit: (random:number) => void,
 	setError: (error:string) => void,
+    clearCache: ()=>void,
 }
 
 const toNumbers = (params:any):any => {
@@ -26,6 +27,7 @@ const toNumbers = (params:any):any => {
 const Form: React.FC<Props> = ({
 	onSubmit,
 	setError,
+    clearCache,
 }) => {
 
     const [method, setMethod] = useState<string>('midSquares');
@@ -46,6 +48,7 @@ const Form: React.FC<Props> = ({
         setParams({})
         setMethod(event.target.value);
         console.log("Method selected:", event.target.value);
+        clearCache();
     }
 
     const getRandom = (): void => {
