@@ -10,6 +10,7 @@ import {
     combinedCongurentialParamValidation,
     multiplicativeParamValidation,
 } from './paramValidation';
+import { RNG } from "../RNGs";
 
 const randomNotImplemented = (params:any) => {
     // midSquares and all others should be imported from their respective module.
@@ -18,21 +19,21 @@ const randomNotImplemented = (params:any) => {
 
 
 export const METHODS : Record<string, RandomGeneratorFunc> = {
-    'dummy': (bulkRandomDummy as RandomGeneratorFunc),
-    // 'midSquares': randomMidSquares,
-    // 'MC': randomLinearCongruential,
-    // 'MCM': randomMixedCongruential,
-    // 'GM': randomNotImplemented,  // TODO: Generador Multiplicativo
+    [RNG.MathRandom]: (bulkRandomDummy as RandomGeneratorFunc),
+    // RNG.MidSquares: randomMidSquares,
+    // RNG.LinearCongruential: randomLinearCongruential,
+    // RNG.MixedCongruential: randomMixedCongruential,
+    // RNG.MultiplicativeCongruential: randomNotImplemented,  // TODO: Generador Multiplicativo
     // 'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
 }
 
 export const METHOD_PARAMS_VALIDATORS : Record<string, ParamsValidator> = {
-    'dummy': (params:Params) => true,
-    'midSquares': midSquaresParamValidation,
-    'MC': linearCongurentialParamValidation,
-    'MCM': mixedCongurentialParamValidation,
-    'GM': multiplicativeParamValidation,  // TODO: Generador Multiplicativo
-    'MCLM': combinedCongurentialParamValidation, // TODO: Método Congruencial Lineal Combinado  
+    [RNG.MathRandom]: (params:Params) => true,
+    [RNG.MidSquares]: midSquaresParamValidation,
+    [RNG.LinearCongruential]: linearCongurentialParamValidation,
+    [RNG.MixedCongruential]: mixedCongurentialParamValidation,
+    [RNG.MultiplicativeCongruential]: multiplicativeParamValidation,  // TODO: Generador Multiplicativo
+    [RNG.CombinedCongruential]: combinedCongurentialParamValidation, // TODO: Método Congruencial Lineal Combinado  
 }
 
 // will be called in front as: METHODS[name](params)

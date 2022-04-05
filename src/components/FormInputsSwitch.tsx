@@ -2,6 +2,7 @@ import React from 'react'
 import MidSquares from './MidSquares';
 import SimpleCongruential from './SimpleCongruential';
 import CombinedCongruential from './CombinedCongruential';
+import {RNG} from '../RNGs'
 // importar todos los inputs específicos a métodos
 
 export interface IFormInputsSwitchProps {
@@ -17,15 +18,15 @@ const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
 }) => {
 
 
-  if (method==='midSquares') {
+  if (method===RNG.MidSquares) {
     return (
       <MidSquares/>
     )
   }
 
-  if (method==='MCM' || method==='MC' || method === 'GM') {
+  if (method===RNG.MixedCongruential || method===RNG.LinearCongruential || method === RNG.MultiplicativeCongruential) {
     return (
-      <SimpleCongruential updateHandler={updateHandler} {...params} isMultiplicative={method==='GM'}/>
+      <SimpleCongruential updateHandler={updateHandler} {...params} isMultiplicative={method===RNG.MultiplicativeCongruential}/>
     )
   }
 
