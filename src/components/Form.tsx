@@ -1,77 +1,91 @@
-import React, { ChangeEventHandler, useState } from 'react'
+import React, { ChangeEventHandler, useState, useEffect } from 'react'
 import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
 import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
-import katex from 'katex'
-
+import {validateNumeric, toNumbers, completeParams} from '../utils'
 interface Props {
     onSubmit: (random:number) => void,
 	setError: (error:string) => void,
-}
-
-const toNumbers = (params:any):any => {
-	const result : any = {}
-	for (const key in params){
-		result[key] = Number.parseFloat(params[key]);
-        console.log("Param", key, result[key]);
-        if (Number.isNaN(result[key])){
-            console.log("unparsed parameter", key)
-            return null;
-        }
-	}
-	return result;
+    clearCache: ()=>void,
 }
 
 const Form: React.FC<Props> = ({
 	onSubmit,
 	setError,
+    clearCache,
 }) => {
 
-    const [method, setMethod] = useState<string>('midSquares');
+    const [method, setMethod] = useState<string>('MC');
     const [seed, setSeed] = useState<string>("");
-
+    const [numberRandoms, setNumberRandoms] = useState<string>("");
     const [params, setParams] = useState<any>({});
+    const [completeForm, setCompleteForm] = useState<boolean>(false);
+    const [seedLabel, setSeedLabel] = useState<string>("Semilla");
+
+    useEffect(() => {          // completeForm updater
+        if (method !== "" && validateNumeric(seed) && validateNumeric(numberRandoms) && completeParams(params, method)) {
+            setCompleteForm(true);
+        } else {
+            setCompleteForm(false);
+        }
+    }, [seed, method, params])
+
+    useEffect(() => {
+        if (method === 'midSquares') {
+            setSeedLabel("Semilla (4 dígitos)");
+        } else {
+            setSeedLabel("Semilla");
+        }
+    }, [method])
 
     const updateHandler = (event: React.FormEvent<HTMLInputElement>): void => {
         setParams({
             ...params,
             [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value,
-			
         });
-		console.log((event.target as HTMLInputElement).value)
     }
 
     const handleMethodChange = (event: SelectChangeEvent) => {
         setParams({})
         setMethod(event.target.value);
         console.log("Method selected:", event.target.value);
+        clearCache();
     }
 
     const getRandom = (): void => {
 
         if (!method || !seed) return;
-        let seedValue = Number.parseFloat(seed);
+        let seedValue : number = Number.parseFloat(seed);
         if (Number.isNaN(seedValue)) return;
+        if (seedValue <= 0) {
+            setError('La semilla debe ser mayor a 0');
+            return;
+        }
 
-		let numParams = toNumbers(params);
+		let numParams : any = toNumbers(params);
         if (numParams === null) {
-            console.log("Some param is wrong")
-            setError('Parámetros incorrectos para ' + method);
+            setError('Parámetros incorrectos');
 			return;
         }
 
         console.log("Method to run:", method);
         const {X, Ri} = METHODS[method](seedValue, numParams);
 
-		if(Ri === -1 || Number.isNaN(Ri)){
-            console.log("Ri is -1 or Ri is NaN")
-			setError('Parámetros incorrectos para ' + method);
+		if(Ri === -1){
+            if (method==='MCM') {
+                setError('Los parámetros no cumplen con el teorema de Hull-Dobell');
+            } else {
+                setError('Parámetros incorrectos para ' + method);
+            }
 			return;
 		}
         else if (Ri==-2) {
             console.log("Module is 1")
             setError('El módulo no puede ser 1');
+			return;
+        } else if (Number.isNaN(Ri)) {
+            setError('Parámetros incorrectos para ' + method);
 			return;
         }
 
@@ -86,9 +100,13 @@ const Form: React.FC<Props> = ({
         setSeed(event.target.value);
     }
 
+    const handleNumberRandomsChange = (event: React.ChangeEvent<any>) => {
+        setNumberRandoms(event.target.value);
+    }
+
     return (
         <div className="formContainer">
-            <Stack spacing={2} maxWidth={'25vw'}>
+            <Stack spacing={2} className="formStack">
                 <h4>Parámetros</h4>
                 <Select
                     labelId="method-selector-label"
@@ -99,17 +117,19 @@ const Form: React.FC<Props> = ({
                     <MenuItem value="">
                         <em>Sin selección</em>
                     </MenuItem>
-                    <MenuItem value={'midSquares'}>Medios Cuadrados</MenuItem>
-                    <MenuItem value={'dummy'}>Prueba</MenuItem>
-                    <MenuItem value={'MC'}>Congruencial Lineal</MenuItem>
-                    <MenuItem value={'MCM'}>Congruencial Lineal Mixto</MenuItem>
+                    <MenuItem value={'midSquares'}>Mid Squares</MenuItem>
+                    <MenuItem value={'MC'}>Linear Congruential</MenuItem>
+                    <MenuItem value={'MCM'}>Mixed Congruential</MenuItem>
+                    <MenuItem value={'MCLM'}>Combined Congruential</MenuItem>
+                    <MenuItem value={'GM'}>Multiplicative Congruential</MenuItem>
+                    <MenuItem value={'dummy'}>Math.Random</MenuItem>
                 </Select>
-                <TextField label="Semilla" variant="filled" value={seed} onChange={handleSeedChange}></TextField>
-
+                <TextField label="Número de Aleatorios" variant="filled" value={numberRandoms} onChange={handleNumberRandomsChange}></TextField>
+                <TextField label={seedLabel} variant="filled" value={seed} onChange={handleSeedChange}></TextField>
                 <FormInputsSwitch method={method} updateHandler={updateHandler} params={params} />
             </Stack>
             <div className="buttonContainer">
-                <Button variant="contained" size="large" onClick={getRandom}>Generar Aleatorio</Button>
+                <Button disabled={!completeForm} variant="contained" size="large" onClick={getRandom}>Generar {numberRandoms} Randoms</Button>
             </div>
         </div>
     )

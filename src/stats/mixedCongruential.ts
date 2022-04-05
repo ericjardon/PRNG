@@ -12,7 +12,7 @@ const randomMixedCongruential = (seed: number, params: MixedCongruentialParams) 
         let x = (((params.a * seed) + params.c) % params.m)
         return {X: x, Ri: (x/params.m)}
     }
-    return {Ri:-1}
+    return {Ri: -1}
 }
 
 const GCD = (a: number,b: number): any => {
