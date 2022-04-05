@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 type Props = {
     random: number | null,
     alert: any,
-    cache: number[],
+    randoms: number[],
 }
 
 const Result: React.FC<Props> = ({
     random,
     alert,
-    cache
+    randoms
 }) => {
 
     return (
@@ -24,9 +24,9 @@ const Result: React.FC<Props> = ({
                         : 'Llena los parámetros y haz click en "Generar"'
                     }
                 </div>
-                {cache.length > 0 ?
+                {randoms.length > 0 ?
                     <>
-                        <h3>Aleatorios Generados</h3>
+                        <h3>{randoms.length} Aleatorios Generados</h3>
                         <List dense={true}
                             sx={{
                                 width: '100%',
@@ -37,10 +37,10 @@ const Result: React.FC<Props> = ({
                                 maxHeight: 300,
                                 '& ul': { padding: 0 },
                             }}>
-                            {cache.map((n, i) => (
+                            {randoms.map((n, i) => (
                                 <ListItem>
                                     <ListItemText
-                                        primary={`${i + 1} --- ${n}`}
+                                        primary={`${n}`}
                                     />
                                 </ListItem>
                             ))}

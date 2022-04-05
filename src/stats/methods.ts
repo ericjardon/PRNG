@@ -17,13 +17,13 @@ const randomNotImplemented = (params:any) => {
 } 
 
 
-export const METHODS : Record<string,RandomGeneratorFunc> = {
-    'dummy': randomDummy,
-    'midSquares': randomMidSquares,
-    'MC': randomLinearCongruential,
-    'MCM': randomMixedCongruential,
-    'GM': randomNotImplemented,  // TODO: Generador Multiplicativo
-    'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
+export const METHODS : Record<string, RandomGeneratorFunc> = {
+    'dummy': (bulkRandomDummy as RandomGeneratorFunc),
+    // 'midSquares': randomMidSquares,
+    // 'MC': randomLinearCongruential,
+    // 'MCM': randomMixedCongruential,
+    // 'GM': randomNotImplemented,  // TODO: Generador Multiplicativo
+    // 'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
 }
 
 export const METHOD_PARAMS_VALIDATORS : Record<string, ParamsValidator> = {

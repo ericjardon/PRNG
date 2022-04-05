@@ -9,19 +9,23 @@ export default function MainView() {
 
   const [random, setRandom] = useState<number | null>(null);
   const [alert, setAlert] = useState<ReactJSXElement | null>(null);
-  const [cache, setCache] = useState<number[]>([]);
+  const [randoms, setRandoms] = useState<number[]>([]);
 
-  const clearCache = () => {
-    setCache([]);
+  const clearRandoms = () => {
+    setRandoms([]);
   }
 
   const updateRandom = (random: number) => {
     console.log('Set Random!', random)
     setAlert(null);
     setRandom(random);
-    setCache(cache => [...cache, random]);
-    console.log(cache);
   }
+
+  const updateRandoms = (randoms: number[]) => {
+    setAlert(null);
+    console.log("randoms", randoms);
+    setRandoms(randoms);
+    }
 
   const setError = (error: string): void => {
 
@@ -32,10 +36,10 @@ export default function MainView() {
     <div className="App-main">
           <div className="row">
             <div className="column">
-              <Form onSubmit={updateRandom} setError={setError} clearCache={clearCache}></Form>
+              <Form onSubmit={updateRandoms} setError={setError} clearRandoms={clearRandoms}></Form>
             </div>
             <div className="column">
-              <Result random={random} alert={alert} cache={cache}/>
+              <Result random={random} alert={alert} randoms={randoms}/>
             </div>
           </div>
     </div >

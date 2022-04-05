@@ -5,15 +5,15 @@ import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
 import {validateNumeric, toNumbers, completeParams} from '../utils'
 interface Props {
-    onSubmit: (random:number) => void,
+    onSubmit: (randoms:number[]) => void,
 	setError: (error:string) => void,
-    clearCache: ()=>void,
+    clearRandoms: ()=>void,
 }
 
 const Form: React.FC<Props> = ({
 	onSubmit,
 	setError,
-    clearCache,
+    clearRandoms,
 }) => {
 
     const [method, setMethod] = useState<string>('MC');
@@ -50,7 +50,7 @@ const Form: React.FC<Props> = ({
         setParams({})
         setMethod(event.target.value);
         console.log("Method selected:", event.target.value);
-        clearCache();
+        clearRandoms();
     }
 
     const getRandom = (): void => {
@@ -70,28 +70,37 @@ const Form: React.FC<Props> = ({
         }
 
         console.log("Method to run:", method);
-        const {X, Ri} = METHODS[method](seedValue, numParams);
-
-		if(Ri === -1){
-            if (method==='MCM') {
-                setError('Los parámetros no cumplen con el teorema de Hull-Dobell');
-            } else {
-                setError('Parámetros incorrectos para ' + method);
-            }
-			return;
-		}
-        else if (Ri==-2) {
-            console.log("Module is 1")
-            setError('El módulo no puede ser 1');
-			return;
-        } else if (Number.isNaN(Ri)) {
-            setError('Parámetros incorrectos para ' + method);
-			return;
+        
+        if (method !== 'dummy') {
+            console.log("Unsupported for now");
+            return;
+            // const {X, Ri} = METHODS[method](seedValue, numParams);
+            // if(Ri === -1){
+            //     if (method==='MCM') {
+            //         setError('Los parámetros no cumplen con el teorema de Hull-Dobell');
+            //     } else {
+            //         setError('Parámetros incorrectos para ' + method);
+            //     }
+            //     return;
+            // }
+            // else if (Ri==-2) {
+            //     console.log("Module is 1")
+            //     setError('El módulo no puede ser 1');
+            //     return;
+            // } else if (Number.isNaN(Ri)) {
+            //     setError('Parámetros incorrectos para ' + method);
+            //     return;
+            // }
+    
+            // setSeed(X? X.toString() : Ri.toString());
+            // onSubmit(Ri);
+            // return;
+        } else {
+            const n = Number.parseInt(numberRandoms);
+            const randoms: number[] = (METHODS[method](seedValue, numParams, n) as number[]);
+            onSubmit(randoms);
         }
-
-        setSeed(X? X.toString() : Ri.toString());
-        onSubmit(Ri);
-        return;
+		
     }
 
     const handleSeedChange = (event: React.ChangeEvent<any>) => {
