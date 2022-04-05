@@ -14,8 +14,6 @@ const Result: React.FC<Props> = ({
     cache
 }) => {
 
-
-
     return (
         <div className="resultContainer">
             <Link to={"/validation"} className="linkToValidation">Validación</Link>
@@ -28,22 +26,22 @@ const Result: React.FC<Props> = ({
                 </div>
                 {cache.length > 0 ?
                     <>
-                        <h3>Últimos 30 números</h3>
+                        <h3>Aleatorios Generados</h3>
                         <List dense={true}
-                        sx={{
-                            width: '100%',
-                            maxWidth: 360,
-                            bgcolor: 'background.paper',
-                            position: 'relative',
-                            overflow: 'auto',
-                            maxHeight: 300,
-                            '& ul': { padding: 0 },
-                          }}>
+                            sx={{
+                                width: '100%',
+                                maxWidth: 360,
+                                bgcolor: 'background.paper',
+                                position: 'relative',
+                                overflow: 'auto',
+                                maxHeight: 300,
+                                '& ul': { padding: 0 },
+                            }}>
                             {cache.map((n, i) => (
                                 <ListItem>
-                                <ListItemText
-                                    primary={`${i+1} --- ${n}`}
-                                />
+                                    <ListItemText
+                                        primary={`${i + 1} --- ${n}`}
+                                    />
                                 </ListItem>
                             ))}
 

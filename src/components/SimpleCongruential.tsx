@@ -1,36 +1,33 @@
 
 import React, { ChangeEventHandler, useState } from 'react';
-import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select';
-/* a: number, // multiplicador
-c: number, // increment
-m: number, // module
- */
+import { Button, TextField } from '@mui/material'
+import {Handler} from '../types'
 
 interface Props {
     a?:number,
     c?:number,
     m?:number,
+    isMultiplicative: boolean,
     updateHandler: Handler,
 }
 
-type Handler = (event: React.ChangeEvent<any>) => void;
 
-const MCM : React.FC<Props> = ({
+const Congruential : React.FC<Props> = ({
     a,
     c,
     m,
+    isMultiplicative,
     updateHandler
 }) => {
-
-
+    
+    
     return (
         <>
         <TextField name="m" label="Módulo" variant="filled" value={m || ''} onChange={updateHandler}/>
         <TextField name="a" label="Multiplicador" variant="filled" value={a || ''} onChange={updateHandler}/>
-        <TextField name="c" label="Incremento" variant="filled" value={c || ''} onChange={updateHandler}/>
+        {(!isMultiplicative && <TextField name="c" label="Incremento" variant="filled" value={c || ''} onChange={updateHandler}/>)}
         </>
     )
 }
 
-export default MCM;
+export default Congruential;

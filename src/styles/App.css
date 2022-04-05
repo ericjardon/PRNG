@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.formStack {
+  max-width: 25vw;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -46,7 +50,6 @@
   line-height: 60px;
   color: white;
   font-size: calc(10px + 2vmin);
-
 }
 
 .Nav > h1,h2,h3 {
@@ -107,4 +110,27 @@
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
+}
+
+
+@media (max-width: 426px) {
+  .row {
+    flex-direction: column;
+  }
+  .column {
+    width: 100%;
+  }
+  .Nav {
+    height: 80px;
+    line-height: 40px;
+  }
+  .formContainer {
+    width: 100%;
+  }
+  .formStack {
+    max-width: none;
+  }
+  .resultContainer {
+    min-height: 400px;
+  }
 }
