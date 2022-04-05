@@ -1,15 +1,37 @@
 import React from 'react'
-
+import MidSquares from './MidSquares';
+import MCM from './MCM';
+// importar todos los inputs específicos a métodos
 
 export interface IFormInputsSwitchProps {
     method: string,
-    updateHandler: (event:React.FormEvent<HTMLInputElement>) => void
+    updateHandler: (event: React.ChangeEvent<any>) => void, //(event:React.FormEvent<HTMLInputElement>) => void
+	params: any
 }
 
-export default function FormInputsSwitch (props: IFormInputsSwitchProps) {
+const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
+  method,
+  updateHandler,
+  params 
+}) => {
+
+
+  if (method==='midSquares') {
+    return (
+      <MidSquares/>
+    )
+  }
+
+  if (method==='MCM' || method==='MC') {
+    return (
+      <MCM updateHandler={updateHandler} a={params.a} c ={params.c} m={params.m}/>
+    )
+  }
+
   return (
-    <div>
-      
-    </div>
+    <>
+    </>
   );
 }
+
+export default FormInputsSwitch
