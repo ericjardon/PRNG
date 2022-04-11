@@ -16,6 +16,6 @@ export type ParamsValidatorResponse = {
 
 export type ParamsValidator = (params: any) => boolean;
 
-export type RandomGeneratorFunc = (seed:number, params: any) => MethodResult;
+export type RandomGeneratorFunc = (seed:number, params: any, n:number) => MethodResult | number[];
 
 export type Handler = (event: React.ChangeEvent<any>) => void;
