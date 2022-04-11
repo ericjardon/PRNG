@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.formStack {
+  max-width: 25vw;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -44,6 +48,8 @@
   height: 60px;
   text-align: center;
   line-height: 60px;
+  color: white;
+  font-size: calc(10px + 2vmin);
 }
 
 .Nav > h1,h2,h3 {
@@ -85,4 +91,62 @@
   align-items: center;
   text-align: center;
   justify-content: center;
+  position: relative;
+}
+
+.linkToValidation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color:#61dafb;
+  text-decoration: underline;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.numberHistory {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.numberListDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.numberListBox {
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: #818181;
+  color: white;
+}
+.numberListBox:hover {
+  border: 1px solid white;
+}
+
+
+@media (max-width: 426px) {
+  .row {
+    flex-direction: column;
+  }
+  .column {
+    width: 100%;
+  }
+  .Nav {
+    height: 80px;
+    line-height: 40px;
+  }
+  .formContainer {
+    width: 100%;
+  }
+  .formStack {
+    max-width: none;
+  }
+  .resultContainer {
+    min-height: 400px;
+  }
 }

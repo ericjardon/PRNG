@@ -1,12 +1,14 @@
 import React from 'react'
 import MidSquares from './MidSquares';
-import MCM from './MCM';
+import SimpleCongruential from './SimpleCongruential';
+import CombinedCongruential from './CombinedCongruential';
+import {RNG} from '../RNGs'
 // importar todos los inputs específicos a métodos
 
 export interface IFormInputsSwitchProps {
     method: string,
-    updateHandler: (event: React.ChangeEvent<any>) => void, //(event:React.FormEvent<HTMLInputElement>) => void
-	params: any
+    updateHandler: (event: React.ChangeEvent<any>) => void, 
+	  params: any
 }
 
 const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
@@ -16,15 +18,21 @@ const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
 }) => {
 
 
-  if (method==='midSquares') {
+  if (method===RNG.MidSquares) {
     return (
       <MidSquares/>
     )
   }
 
-  if (method==='MCM' || method==='MC') {
+  if (method===RNG.MixedCongruential || method===RNG.LinearCongruential || method === RNG.MultiplicativeCongruential) {
     return (
-      <MCM updateHandler={updateHandler} a={params.a} c ={params.c} m={params.m}/>
+      <SimpleCongruential updateHandler={updateHandler} {...params} isMultiplicative={method===RNG.MultiplicativeCongruential}/>
+    )
+  }
+
+  if (method==='MCLM') {
+    return (
+      <CombinedCongruential updateHandler={updateHandler} {...params}/>
     )
   }
 

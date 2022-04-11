@@ -1,17 +1,25 @@
 import React from 'react'
-import { Stack } from '@mui/material'
+import { Stack, List, ListItem, ListItemText } from '@mui/material'
+import { Link } from 'react-router-dom'
+import NumberList from './NumberList'
 
 type Props = {
     random: number | null,
     alert: any,
+    randoms: number[],
+    method: string,
 }
 
 const Result: React.FC<Props> = ({
     random,
-    alert
+    alert,
+    randoms,
+    method
 }) => {
+
     return (
         <div className="resultContainer">
+            <Link to={"/validation"} className="linkToValidation">Validación</Link>
             <Stack spacing={3}>
                 {alert}
                 <div>
@@ -19,6 +27,14 @@ const Result: React.FC<Props> = ({
                         : 'Llena los parámetros y haz click en "Generar"'
                     }
                 </div>
+                {randoms.length > 0 ?
+                    <>
+                        <h3>{randoms.length} Aleatorios Generados</h3>
+                        <NumberList numsList={randoms} method={method}/>
+                    </>
+                    : <></>
+                }
+
             </Stack>
         </div>
     )
