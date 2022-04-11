@@ -5,6 +5,7 @@ interface MixedCongruentialParams{
 }
 
 const randomMixedCongruential = (seed: number, params: MixedCongruentialParams) => {
+    // recibir n ciclos y regresar un arreglo con los n resultados de Ri Basarse en dummy.
     // if (params.m == 1) {
     //     return {Ri:-2};
     // }   
