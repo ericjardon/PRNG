@@ -1,17 +1,20 @@
 import React from 'react'
 import { Stack, List, ListItem, ListItemText } from '@mui/material'
 import { Link } from 'react-router-dom'
+import NumberList from './NumberList'
 
 type Props = {
     random: number | null,
     alert: any,
-    cache: number[],
+    randoms: number[],
+    method: string,
 }
 
 const Result: React.FC<Props> = ({
     random,
     alert,
-    cache
+    randoms,
+    method
 }) => {
 
     return (
@@ -24,28 +27,10 @@ const Result: React.FC<Props> = ({
                         : 'Llena los parámetros y haz click en "Generar"'
                     }
                 </div>
-                {cache.length > 0 ?
+                {randoms.length > 0 ?
                     <>
-                        <h3>Aleatorios Generados</h3>
-                        <List dense={true}
-                            sx={{
-                                width: '100%',
-                                maxWidth: 360,
-                                bgcolor: 'background.paper',
-                                position: 'relative',
-                                overflow: 'auto',
-                                maxHeight: 300,
-                                '& ul': { padding: 0 },
-                            }}>
-                            {cache.map((n, i) => (
-                                <ListItem>
-                                    <ListItemText
-                                        primary={`${i + 1} --- ${n}`}
-                                    />
-                                </ListItem>
-                            ))}
-
-                        </List>
+                        <h3>{randoms.length} Aleatorios Generados</h3>
+                        <NumberList numsList={randoms} method={method}/>
                     </>
                     : <></>
                 }
