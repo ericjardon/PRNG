@@ -2,6 +2,8 @@ import {randomDummy, bulkRandomDummy} from "./dummy"
 import randomMidSquares from './midSquares'
 import randomLinearCongruential from './linearCongruential'
 import randomMixedCongruential from "./mixedCongruential"
+import randomMCLM  from "./mclm"
+import randomGM from "./gm"
 import { Params, ParamsValidator, RandomGeneratorFunc } from '../types';
 import {
     midSquaresParamValidation,
@@ -22,8 +24,8 @@ export const METHODS : Record<string,RandomGeneratorFunc> = {
     'midSquares': randomMidSquares,
     'MC': randomLinearCongruential,
     'MCM': randomMixedCongruential,
-    'GM': randomNotImplemented,  // TODO: Generador Multiplicativo
-    'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
+    'GM': randomGM,  
+    'MCLM': randomMCLM, 
 }
 
 export const METHOD_PARAMS_VALIDATORS : Record<string, ParamsValidator> = {

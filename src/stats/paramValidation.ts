@@ -1,3 +1,4 @@
+import { PanoramaSharp } from '@mui/icons-material'
 import {ParamsValidator, Params} from '../types'
 
 export const midSquaresParamValidation = (params:Params) : boolean => {
@@ -37,6 +38,7 @@ export const multiplicativeParamValidation = (params:Params) : boolean => {
     return Boolean(
         params.a && params.a > 0 &&
         params.m && params.m > 0 &&
+        params.m > params.a &&
         !params.c
     )
 }
