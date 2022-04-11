@@ -137,7 +137,7 @@ const Form: React.FC<Props> = ({
                     <MenuItem value={RNG.MidSquares}>Mid Squares</MenuItem>
                     <MenuItem value={RNG.LinearCongruential}>Linear Congruential</MenuItem>
                     <MenuItem value={RNG.MixedCongruential}>Mixed Congruential</MenuItem>
-                    <MenuItem value={'MCLM'}>Combined Congruential</MenuItem>
+                    <MenuItem value={RNG.CombinedCongruential}>Combined Congruential</MenuItem>
                     <MenuItem value={RNG.MultiplicativeCongruential}>Multiplicative Congruential</MenuItem>
                     <MenuItem value={RNG.MathRandom}>Math.Random</MenuItem>
                 </Select>

@@ -7,7 +7,7 @@ import {
     midSquaresParamValidation,
     linearCongurentialParamValidation,
     mixedCongurentialParamValidation,
-    combinedCongurentialParamValidation,
+    combinedCongruentialParamValidation,
     multiplicativeParamValidation,
 } from './paramValidation';
 import { RNG } from "../RNGs";
@@ -33,7 +33,5 @@ export const METHOD_PARAMS_VALIDATORS : Record<string, ParamsValidator> = {
     [RNG.LinearCongruential]: linearCongurentialParamValidation,
     [RNG.MixedCongruential]: mixedCongurentialParamValidation,
     [RNG.MultiplicativeCongruential]: multiplicativeParamValidation,  // TODO: Generador Multiplicativo
-    [RNG.CombinedCongruential]: combinedCongurentialParamValidation, // TODO: Método Congruencial Lineal Combinado  
+    [RNG.CombinedCongruential]: combinedCongruentialParamValidation, // TODO: Método Congruencial Lineal Combinado  
 }
-
-// will be called in front as: METHODS[name](params)
