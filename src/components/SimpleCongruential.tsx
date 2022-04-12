@@ -1,12 +1,10 @@
 
 import React, { ChangeEventHandler, useState } from 'react';
 import { Button, TextField } from '@mui/material'
-import {Handler} from '../types'
+import {Handler, CongruentialParams} from '../types'
 
-interface Props {
-    a?:number,
-    c?:number,
-    m?:number,
+/* REUSED FOR LINEAR AND MULTIPLICATIVE GENERATORS */
+interface Props extends CongruentialParams {
     isMultiplicative: boolean,
     updateHandler: Handler,
 }

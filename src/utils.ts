@@ -1,13 +1,14 @@
 
-import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
+import { METHOD_PARAMS_VALIDATORS, METHODS } from './stats/methods'
 import { ParamsValidator, ParamsValidatorResponse } from './types';
+import {RNG} from './RNGs';
 
-export const toNumbers = (params:any):any => {
+export const paramsToIntegers = (params:any):any => {
 	const result : any = {}
 	for (const key in params){
-		result[key] = Number.parseFloat(params[key]);
+		result[key] = Number.parseInt(params[key]);   // for all of our methods we use only integer parameters
         if (Number.isNaN(result[key])){
-            console.log("incorrect parameter", key, params[key]);
+            console.error("Incorrect parameter:", key, params[key]);
             return null;
         }
 	}
@@ -17,8 +18,8 @@ export const toNumbers = (params:any):any => {
 export const validateNumeric = (val: string) : boolean => !Number.isNaN(Number.parseFloat(val.trim()));
 
 export const completeParams = (paramsObj:any, method:string) : boolean => {
-    const validator : ParamsValidator = METHOD_PARAMS_VALIDATORS[method];
-    const result = validator(paramsObj)
+    console.log("params", paramsObj);
+    const result = METHOD_PARAMS_VALIDATORS[method](paramsObj)
     if (result) console.log("Params complete")
     else console.log("Params incomplete!", paramsObj);
     return result;
