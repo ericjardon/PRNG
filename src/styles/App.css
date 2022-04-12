@@ -121,7 +121,7 @@
 .numberListBox {
   border: 1px solid black;
   border-radius: 4px;
-  background-color: #818181;
+  background-color: #212121;
   color: white;
 }
 .numberListBox:hover {

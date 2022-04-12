@@ -1,17 +1,15 @@
+import { RandomGeneratorFunc } from "../types";
+
 interface LinearCongruentialParams{
-    iterations: number // iterations
     a: number, // multiplicador
     c: number, // increment
     m: number, // module
 }
 
-
-const randomLinearCongruential = (seed: number, params: LinearCongruentialParams) => {
+const randomLinearCongruential : RandomGeneratorFunc = (seed: number, params: LinearCongruentialParams, n: number) => {
     let results: number[] = [] 
     let setR = new Set<number>()
-    for(let i=0; i <= params.iterations; i++){
-        console.log("MC params", params);
-        console.log("Seed", seed);
+    for(let i=0; i < n; i++){
         let x = (((params.a * seed) + params.c) % params.m)
         let Ri = x/params.m
         if(setR.has(Ri)){
@@ -24,10 +22,9 @@ const randomLinearCongruential = (seed: number, params: LinearCongruentialParams
         seed = x
     }
     return results
-    // recibir n ciclos y regresar un arreglo con los n resultados de Ri Basarse en dummy.
 }
 
-console.log("LC", randomLinearCongruential(3, {iterations: 18, a:5, c:7, m:8}))
+//console.log("LC", randomLinearCongruential(3, {a:5, c:7, m:8}, 18))
 
 
-// export default randomLinearCongruential
+export default randomLinearCongruential

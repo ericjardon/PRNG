@@ -31,7 +31,7 @@ export default function MainView() {
 
   const updateRandoms = (randoms: number[]) => {
     setAlert(null);
-    console.log("randoms", randoms);
+    console.log("randoms at updateRandoms", randoms);
     setRandoms(randoms);
   }
 
@@ -43,7 +43,7 @@ export default function MainView() {
     <div className="App-main">
       <div className="row">
         <div className="column">
-          <Form onSubmit={updateRandoms} setError={setError} clearRandoms={clearRandoms} updateGlobalState={updateGlobalState}></Form>
+          <Form updateRandoms={updateRandoms} setError={setError} clearRandoms={clearRandoms} updateGlobalState={updateGlobalState}></Form>
         </div>
         <div className="column">
           <Result random={random} alert={alert} randoms={randoms} method={globalState.method}/>
