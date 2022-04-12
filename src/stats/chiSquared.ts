@@ -10,23 +10,19 @@ interface ChiSquareadParams{
 }
 
 const testChiSquared = (seed:number,params: ChiSquareadParams) => {
-    // RETURN THE RANDOM NUMBER AND THE Ri
-    // if (params.m == 1) {
-    //     return {Ri:-2};
-    // }
     params.sample.sort()
-    params.range = parseFloat((params.sample[params.sample.length-1] - params.sample[0]).toFixed(3))
-    params.k = Math.floor(1 + 3.322 * Math.log10(params.sample.length))
-    params.class = parseFloat((params.range / params.k).toFixed(2 ))
+    params.range = params.sample[params.sample.length-1] - params.sample[0]
+    params.k = Math.floor(1 + Math.log2(params.sample.length)) 
+    params.class = params.range / params.k
 
     // Increment the class until if it gets multiplied by 'k' it gives as result an interger number
-    while(parseFloat((params.class * params.k % 1).toFixed(2))){
-        params.class = parseFloat((params.class + 0.01).toFixed(2))
-    }
+    // while(parseFloat((params.class * params.k % 1).toFixed(2))){
+    //     params.class = parseFloat((params.class + 0.01).toFixed(2))
+    // }
 
     // Create the classes and store the total count of every class.
     let counter
-    for(let i = params.class ; i <= parseFloat((params.class * params.k).toFixed(2)); i = i + params.class){
+    for(let i = params.class ; i <= params.class * params.k; i = i + params.class){
         counter = 0 
         // Count the number of elements per class and store the total count in dict classes 
         for(let e of params.sample){
@@ -41,6 +37,7 @@ const testChiSquared = (seed:number,params: ChiSquareadParams) => {
         console.log("Classes: ", params.classes)
     }
 
+    // For each class we need to check if its total count is less than 5 if it's the case we need to 
     console.log("Chi squared", params)
     return {X: params.sample[0], Ri: params.sample[params.sample.length-1]}
 }

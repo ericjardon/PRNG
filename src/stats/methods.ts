@@ -22,7 +22,7 @@ const randomNotImplemented = (params:any) => {
 export const METHODS : Record<string, RandomGeneratorFunc> = {
     [RNG.MathRandom]: (bulkRandomDummy as RandomGeneratorFunc),
     // RNG.MidSquares: randomMidSquares,
-    // RNG.LinearCongruential: randomLinearCongruential,
+    // RNG.LinearCongruential: randomLinearCongruential, 
     // RNG.MixedCongruential: randomMixedCongruential,
     // RNG.MultiplicativeCongruential: randomNotImplemented,  // TODO: Generador Multiplicativo
     // 'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
