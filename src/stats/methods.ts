@@ -2,6 +2,7 @@ import {randomDummy, bulkRandomDummy} from "./dummy"
 import randomMidSquares from './midSquares'
 import randomLinearCongruential from './linearCongruential'
 import randomMixedCongruential from "./mixedCongruential"
+import testChiSquared from "./chiSquared"
 import { Params, ParamsValidator, RandomGeneratorFunc } from '../types';
 import {
     midSquaresParamValidation,
@@ -21,7 +22,7 @@ const randomNotImplemented = (params:any) => {
 export const METHODS : Record<string, RandomGeneratorFunc> = {
     [RNG.MathRandom]: (bulkRandomDummy as RandomGeneratorFunc),
     // RNG.MidSquares: randomMidSquares,
-    // RNG.LinearCongruential: randomLinearCongruential,
+    // RNG.LinearCongruential: randomLinearCongruential, 
     // RNG.MixedCongruential: randomMixedCongruential,
     // RNG.MultiplicativeCongruential: randomNotImplemented,  // TODO: Generador Multiplicativo
     // 'MCLM': randomNotImplemented, // TODO: Método Congruencial Lineal Combinado
