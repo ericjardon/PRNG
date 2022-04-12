@@ -46,11 +46,12 @@ const Form: React.FC<Props> = ({
         }
     }, [method])
 
-    const updateHandler = (event: React.ChangeEvent<any>): void => {
-        console.log("Event target name", event.target.name);
+    const updateHandler = (event: React.FormEvent<HTMLInputElement>): void => {
+        const target = event.target as HTMLInputElement;
+        console.log(params);
         setParams({
             ...params,
-            [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value,
+            [target.name]: target.value,
         });
     }
 
@@ -63,6 +64,8 @@ const Form: React.FC<Props> = ({
     }
 
     const getRandom = (): void => {
+        const n = Number.parseInt(numberRandoms);
+        console.log(params);
 
         if (!method || !seed) return;
         let seedValue : number = Number.parseFloat(seed);
@@ -72,14 +75,19 @@ const Form: React.FC<Props> = ({
             return;
         }
 
+        console.log("Method to run:", method);
+        
+        // Dispatch method
+        if (method === RNG.CombinedCongruential) {
+            dispatchMethod(method, seedValue, params, n);
+        }
+
 		let numParams : any = toNumbers(params);
         if (numParams === null) {
             setError('Parámetros incorrectos');
 			return;
         }
 
-        console.log("Method to run:", method);
-        
         if (method !== RNG.MathRandom) {
             console.log("Unsupported for now");
             return;
@@ -100,12 +108,11 @@ const Form: React.FC<Props> = ({
             //     setError('Parámetros incorrectos para ' + method);
             //     return;
             // }
-    
+
             // setSeed(X? X.toString() : Ri.toString());
             // onSubmit(Ri);
             // return;
         } else {
-            const n = Number.parseInt(numberRandoms);
             const randoms: number[] = (METHODS[method](seedValue, numParams, n) as number[]);
             onSubmit(randoms);
         }
@@ -151,6 +158,31 @@ const Form: React.FC<Props> = ({
             </div>
         </div>
     )
+}
+
+// used for preprocessing of certain methods
+export const dispatchMethod = (method:string, seedValue:number, params:any, n:number) => {
+    if (method == RNG.CombinedCongruential) {
+
+        let a = [];
+        let m = [];
+        let n = Number(params.numGenerators);
+
+        for (let i=1; i<=n; i++) {
+            a.push(params[`a${i}`])
+            m.push(params[`m${i}`])
+        }
+
+        console.log("a", a);
+        console.log("m", m);
+
+        params = {
+            a, 
+            m
+        }
+        
+        //return METHODS[method](seedValue, params, n);
+    }
 }
 
 export default Form;

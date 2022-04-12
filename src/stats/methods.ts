@@ -35,3 +35,6 @@ export const METHOD_PARAMS_VALIDATORS : Record<string, ParamsValidator> = {
     [RNG.MultiplicativeCongruential]: multiplicativeParamValidation,  // TODO: Generador Multiplicativo
     [RNG.CombinedCongruential]: combinedCongruentialParamValidation, // TODO: Método Congruencial Lineal Combinado  
 }
+
+
+

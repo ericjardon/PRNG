@@ -1,6 +1,7 @@
 
-import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
+import { METHOD_PARAMS_VALIDATORS, METHODS } from './stats/methods'
 import { ParamsValidator, ParamsValidatorResponse } from './types';
+import {RNG} from './RNGs';
 
 export const toNumbers = (params:any):any => {
 	const result : any = {}

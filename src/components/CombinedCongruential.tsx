@@ -26,13 +26,14 @@ const CombinedCongruential : React.FC<Props> = ({
     const updateNum = (e: React.ChangeEvent<any>) : void => {
         setAlert(null);
         setNumGenerators(e.target.value);
-
+        updateHandler(e);
         let N:number = Number(e.target.value);
         
         if (N) {
             if (N > MAX_COMBINED_GENERATORS) {
                 // set alert
-                setAlert(<Alert severity="warning">Máximo 10 generadores</Alert>)
+                setAlert(<Alert severity="warning">Máximo 10 generadores</Alert>);
+                setInputs([]);
                 return;
             }
             let newArr:number[] = []; 
@@ -41,7 +42,7 @@ const CombinedCongruential : React.FC<Props> = ({
             }
             setInputs(newArr);
         } else {
-            console.log("could not parse numeric")
+            console.log("could not parse numeric");
         }
     }
 
@@ -52,8 +53,16 @@ const CombinedCongruential : React.FC<Props> = ({
 
         return (
             <>
-                <TextField name={`m${index}`} label={`Mod ${index}`} variant="filled" value={m || ''} onChange={updateHandler}/>
-                <TextField name={`a${index}`} label={`Mult ${index}`} variant="filled" value={a || ''} onChange={updateHandler}/>
+                <Grid item xs={4}>
+                    <div style={{marginBottom: '8px'}}>
+                        <TextField name={`m${index}`} label={`Mod ${index}`} variant="filled" 
+                        value={m || ''} 
+                        onChange={updateHandler}/>
+                    </div>
+                    <TextField name={`a${index}`} label={`Mult ${index}`} variant="filled" 
+                    value={a || ''} 
+                    onChange={updateHandler}/>
+                </Grid>
             </>
         )
     }
@@ -67,9 +76,7 @@ const CombinedCongruential : React.FC<Props> = ({
             {alert}
             <Grid container spacing={1}>
                 {inputs.map(index => (
-                    <Grid item xs={4}>
-                        <SingleCongruentialInputs index={index}/>                        
-                    </Grid>
+                        <SingleCongruentialInputs key={index} index={index}/>                        
                 ))}
             </Grid>
         </>

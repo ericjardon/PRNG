@@ -1,4 +1,5 @@
 import {ParamsValidator, Params, CongruentialParams} from '../types'
+import { MAX_COMBINED_GENERATORS } from '../constants'
 
 export const midSquaresParamValidation = (params:Params) : boolean => {
     return (
@@ -22,19 +23,20 @@ export const mixedCongurentialParamValidation = (params:CongruentialParams) : bo
 }
 
 export const combinedCongruentialParamValidation = (params:any) : boolean => {
-    // TODO
-    const {n} = params; // number of generators
-    if (!n || n>15) return false;
+
+    const {numGenerators} = params; // number of generators
+    if (!numGenerators || numGenerators>MAX_COMBINED_GENERATORS) return false;
 
     // receive params for N generators. For every key i+1, check that a and m exist.
-    for(let i=0; i<n; i++) {
-        let a = `a${i+1}`;
-        let m = `m${i+1}`;
+    for(let i=1; i<=numGenerators; i++) {
+        let a = `a${i}`;
+        let m = `m${i}`;
 
         if (!(
             params[a] && params[a] > 0 &&
             params[m] && params[m] > 0
             )) {
+                console.log("incomplete combined params", i);
                 return false;
             }
     }
