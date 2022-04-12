@@ -32,7 +32,7 @@ const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
 
   if (method===RNG.CombinedCongruential) {
     return (
-      <CombinedCongruential updateHandler={updateHandler} {...params}/> /* Key is params.combinedParams */
+      <CombinedCongruential updateHandler={updateHandler} params={params}/> /* Key is params.combinedParams */
     )
   }
 

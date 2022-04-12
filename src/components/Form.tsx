@@ -46,7 +46,8 @@ const Form: React.FC<Props> = ({
         }
     }, [method])
 
-    const updateHandler = (event: React.FormEvent<HTMLInputElement>): void => {
+    const updateHandler = (event: React.ChangeEvent<any>): void => {
+        console.log("Event target name", event.target.name);
         setParams({
             ...params,
             [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value,

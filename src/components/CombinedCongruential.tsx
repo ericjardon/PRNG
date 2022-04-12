@@ -1,8 +1,9 @@
 
 import React, { ChangeEventHandler, useState } from 'react';
-import { TextField } from '@mui/material'
+import { TextField, Grid, Alert } from '@mui/material'
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import {Handler, CongruentialParams} from '../types'
-
+import {MAX_COMBINED_GENERATORS} from '../constants'
 
 interface Props {
     params:any,
@@ -10,7 +11,7 @@ interface Props {
 }
 
 interface SingleInputProps {
-    key:number,  // used to update at array[key]
+    index:number,  // used to update at array[key]
 }
 
 const CombinedCongruential : React.FC<Props> = ({
@@ -19,50 +20,58 @@ const CombinedCongruential : React.FC<Props> = ({
 }) => {
     // fill combinedParams with as many objects 
     const [numGenerators, setNumGenerators] = useState<string>('1');
-    const [num, setNum] = useState<number>(1)  // update on Blur;
+    const [inputs, setInputs] = useState<number[]>([1])  // update on Blur;
+    const [alert, setAlert] = useState<ReactJSXElement | null>(null);
 
-    const updateNum = (e: React.FocusEvent) : void => {
-        console.log("updating numeric")
-        let N = Number(numGenerators);
+    const updateNum = (e: React.ChangeEvent<any>) : void => {
+        setAlert(null);
+        setNumGenerators(e.target.value);
+
+        let N:number = Number(e.target.value);
+        
         if (N) {
-            setNum(N);
+            if (N > MAX_COMBINED_GENERATORS) {
+                // set alert
+                setAlert(<Alert severity="warning">Máximo 10 generadores</Alert>)
+                return;
+            }
+            let newArr:number[] = []; 
+            for(let i=1; i<=N; i++) {
+               newArr.push(i);
+            }
+            setInputs(newArr);
         } else {
             console.log("could not parse numeric")
         }
     }
 
     // Composition
-    const SingleCongruentialInputs = (props: SingleInputProps) => {
-        const {key} = props;
-        const a = params[`m${key}`];
-        const m = params[`m${key}`]
+    const SingleCongruentialInputs = ({index}:SingleInputProps) => {
+        const m = params[`m${index}`];
+        const a = params[`a${index}`];
+
         return (
             <>
-                <TextField name="m" label={`Módulo ${key}`} variant="filled" value={m || ''} onChange={updateHandler}/>
-                <TextField name="a" label={`Multiplicador ${key}`} variant="filled" value={a || ''} onChange={updateHandler}/>
+                <TextField name={`m${index}`} label={`Mod ${index}`} variant="filled" value={m || ''} onChange={updateHandler}/>
+                <TextField name={`a${index}`} label={`Mult ${index}`} variant="filled" value={a || ''} onChange={updateHandler}/>
             </>
         )
     }
 
-    // Create an array for mapping num inputs
-    let inputs = [];
-    for (let i=0; i<num; i++) {
-        inputs.push(i+1);
-    }
-
     return (
         <>
-        <TextField name="numGenerators" label="Número de generadores" variant="filled" 
-        value={numGenerators} 
-        onChange={(e) => setNumGenerators(e.target.value)}
-        onBlur={updateNum}
-        >
-        </TextField>
-        <div>
-            {inputs.map(i => {
-                <SingleCongruentialInputs key={i}/>
-            })}
-        </div>
+            <TextField name="numGenerators" label="Número de generadores" variant="filled" 
+                value={numGenerators} 
+                onChange={updateNum}
+            />
+            {alert}
+            <Grid container spacing={1}>
+                {inputs.map(index => (
+                    <Grid item xs={4}>
+                        <SingleCongruentialInputs index={index}/>                        
+                    </Grid>
+                ))}
+            </Grid>
         </>
     )
 }
