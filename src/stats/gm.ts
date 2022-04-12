@@ -8,24 +8,22 @@ interface GMParams {
 
 
 const randomGM = (seed:number, params: GMParams) => {
-    const {a, m} = params;
+    const {a, m, iterations} = params;
     let xi;
-    let result = new Map<number, number>();
+    let result = new Set<number>();
     if(m < seed){
         return {Ri: 99}
     }
-    for(let i = 0; i<params.iterations; i++){
-        xi = (a*seed) % m
-        if(!result.has(xi)){
-            seed = xi/m;
-            result.set(xi, seed);
-        }
-        seed = result.get(xi) as number;
-        if(result.size  === m ){
+    for(let i = 0; i<iterations; i++){
+        xi = ((a*seed) % m)/m
+        //cambiar a cuando encuentras return 
+        if(result.has(xi)){
             break
         }
+        seed = xi/m;
+        result.add(xi)
     }
-    return {Ri: seed};
+    return Array.from( result );
 
 }
 
