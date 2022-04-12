@@ -19,7 +19,7 @@ const CombinedCongruential : React.FC<Props> = ({
     updateHandler
 }) => {
     // fill combinedParams with as many objects 
-    const [numGenerators, setNumGenerators] = useState<string>('1');
+    const [numGenerators, setNumGenerators] = useState<string>('');
     const [inputs, setInputs] = useState<number[]>([1])  // update on Blur;
     const [alert, setAlert] = useState<ReactJSXElement | null>(null);
 
@@ -55,11 +55,11 @@ const CombinedCongruential : React.FC<Props> = ({
             <>
                 <Grid item xs={4}>
                     <div style={{marginBottom: '8px'}}>
-                        <TextField name={`m${index}`} label={`Mod ${index}`} variant="filled" 
+                        <TextField name={`m${index}`} label={`M ${index}`} variant="filled" 
                         value={m || ''} 
                         onChange={updateHandler}/>
                     </div>
-                    <TextField name={`a${index}`} label={`Mult ${index}`} variant="filled" 
+                    <TextField name={`a${index}`} label={`A ${index}`} variant="filled" 
                     value={a || ''} 
                     onChange={updateHandler}/>
                 </Grid>

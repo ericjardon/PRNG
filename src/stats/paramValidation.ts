@@ -25,7 +25,10 @@ export const mixedCongurentialParamValidation = (params:CongruentialParams) : bo
 export const combinedCongruentialParamValidation = (params:any) : boolean => {
 
     const {numGenerators} = params; // number of generators
-    if (!numGenerators || numGenerators>MAX_COMBINED_GENERATORS) return false;
+    if (!numGenerators || numGenerators>MAX_COMBINED_GENERATORS){
+        console.log("missing num generators: ", numGenerators);
+        return false;
+    } 
 
     // receive params for N generators. For every key i+1, check that a and m exist.
     for(let i=1; i<=numGenerators; i++) {
