@@ -27,6 +27,23 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+#select-label{
+	margin-bottom: 10px;
+}
+#chi-square{
+	width: 400px;
+	
+}
+.validation-buttons{
+	width: 100%;
+	margin-top: 15px;
+	display: flex;
+	gap: 10%;
+	margin-left: 3vw;
+}
+#validationButton{
+ width: 25vw;
+}
 
 .App-link {
   color: #61dafb;
