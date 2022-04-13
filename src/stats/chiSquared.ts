@@ -1,12 +1,21 @@
 import {GoodnessTestParams} from '../types'
 import {TEST_SAMPLE_2} from '../utils'
-interface ChiSquareadParams{
-    sample: number[],
-    range: number,
-    k: number,
-    class: number,
-    X: number,
-    classes: {[c: string]: number},
+// interface ChiSquareadParams {
+//     sample: number[],
+//     range: number,
+//     k: number,
+//     class: number,
+//     X: number,
+//     classes: {[c: string]: number},
+// }
+
+interface ChiSquaredTable {
+    classStart?: number[],
+    classEnd?: number[],
+    classLength?: number[],
+    observedFrequencies?: number[],
+    expectedFrequencies?: number[],
+    differential?: number[],  // 1/E * (O-E)^2
 }
 
 /*
@@ -15,15 +24,46 @@ arrays of same size.
 */
 
 const getClassesColumns = (k:number, classSize: number) => {
-    let classStart = [] // indicate start and end
-    let classEnd = []
+    let classStart = []; // indicate start and end
+    let classEnd = [];
+    let classLength = [];
 
     for (let i=0; i<k; i++) {
         classStart.push(classSize*i);
         classEnd.push(classSize*(i+1));
+        classLength.push(1);  // multiplier of class size;
     }
 
-    return {classStart, classEnd}
+    return {classStart, classEnd, classLength };  // column headers
+}
+
+const getObservedFrequencies = (table: ChiSquaredTable, sample: number[]) : number[] => {
+    let numClasses = table.classEnd!.length;
+    let observedFrequencies : number[] = Array(numClasses).fill(0);
+    let ri;
+    let currentClass = 0;
+
+    for (let i=0; i<sample.length; i++) {
+        ri = sample[i];
+        console.log("ri", ri);
+        // sorted sample so we can move to next class when we exceed class limit
+        if (ri <= table.classEnd![currentClass]) {
+            observedFrequencies[currentClass] += 1;
+        } else {
+            currentClass += 1;
+            observedFrequencies[currentClass] += 1;
+        }
+    }
+
+    return observedFrequencies
+}
+
+const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
+    /* 
+        This function analyzes the classes and reduces them according to
+        the minimum-5 observations per class rule.
+    */
+   return table;
 }
 
 
@@ -41,7 +81,11 @@ const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
     const classSize = range/k;
     console.log("class size:", classSize);
 
-    let table = getClassesColumns(k, classSize);
+    let table : ChiSquaredTable = getClassesColumns(k, classSize);
+    table.observedFrequencies = getObservedFrequencies(table, sample);
+    // Reduce classes
+    
+    table = reduceClasses(table);
     
     console.log(JSON.stringify(table));
     
@@ -49,7 +93,7 @@ const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
 }
 
 
-const testChiSquared = (seed:number,params: ChiSquareadParams) => {
+const testChiSquared = (seed:number,params: any) => {
     params.sample.sort()
     params.range = params.sample[params.sample.length-1] - params.sample[0]
     params.k = Math.floor(1 + Math.log2(params.sample.length)) 

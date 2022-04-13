@@ -2,7 +2,7 @@ import React from 'react'
 import chiSquaredTest from '../stats/chiSquared'
 import testKolSmi from '../stats/kolmogrovSmirnov'
 import { GoodnessTestParams } from '../types'
-import { TEST_SAMPLE, SAMPLE_RANDOMS_2 } from '../utils'
+import { SAMPLE_RANDOMS, SAMPLE_RANDOMS_2 } from '../utils'
 
 type Props = {}
 
@@ -11,7 +11,7 @@ export default function TestView({ }: Props) {
     function testCS() {
         console.log("Test...")
         let params : GoodnessTestParams = {
-            sample: TEST_SAMPLE,
+            sample: SAMPLE_RANDOMS,
             alpha: 0.05
         }
 
