@@ -1,26 +1,48 @@
 import React from 'react'
-import ChiSquaredTest from '../stats/chiSquared'
+import chiSquaredTest from '../stats/chiSquared'
+import testKolSmi from '../stats/kolmogrovSmirnov'
 import { GoodnessTestParams } from '../types'
 import { TEST_SAMPLE } from '../utils'
-export {TEST_SAMPLE} from '../utils'
 
 type Props = {}
 
 export default function TestView({ }: Props) {
 
-    function test() {
+    function testCS() {
         console.log("Test...")
         let params : GoodnessTestParams = {
             sample: TEST_SAMPLE,
-            alpha: 0.5
+            alpha: 0.05
         }
 
-        ChiSquaredTest(params);
+        if (chiSquaredTest(params)) {
+            console.log("CHI SQUARED: TRUE");
+        } else {
+            console.log("CHI SQUARED: FALSE");
+
+        };
+    }
+
+    function testKS() {
+        console.log("K-S...")
+
+        let params: GoodnessTestParams = {
+            sample: TEST_SAMPLE,
+            alpha: 0.05
+        }
+
+        if (testKolSmi(params)) {
+            console.log("KOL SMI: TRUE");
+        } else {
+            console.log("KOL SMI: FALSE");
+
+        };
     }
 
     return (
-        <div>
-            <button onClick={test}>TestChiSquared</button>
+        <div style={{display:'flex', textAlign:'center', justifyContent:'center', padding:'40px'}}>
+            <button onClick={testCS}>TestChiSquared</button>
+            <button onClick={testKS}>Test Kolmogorov Smirnov</button>
         </div>
     )
 }

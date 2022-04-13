@@ -27,7 +27,7 @@ const getClassesColumns = (k:number, classSize: number) => {
 }
 
 
-const ChiSquaredTest = (params: GoodnessTestParams) : void => {
+const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
     const { sample, alpha } = params;
     const N = sample.length;
     console.log("N", N);
@@ -45,7 +45,7 @@ const ChiSquaredTest = (params: GoodnessTestParams) : void => {
     
     console.log(JSON.stringify(table));
     
-    return;
+    return true;
 }
 
 
@@ -130,4 +130,4 @@ const minClasses = (classes: any) => {
 
 console.log(testChiSquared(.05, {sample: TEST_SAMPLE_2, range: 0, k: 0, class: 0, X: 0, classes: {}}))
 
-export default ChiSquaredTest
+export default chiSquaredTest

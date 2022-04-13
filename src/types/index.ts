@@ -8,7 +8,7 @@ export type CongruentialParams = {
 
 export type GoodnessTestParams = {
     sample: number[],
-    alpha?: number,
+    alpha: number,
 }
 
 export type Params = CongruentialParams | CongruentialParams[];

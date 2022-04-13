@@ -1,11 +1,11 @@
 import { PanoramaSharp } from "@mui/icons-material"
-
+import {GoodnessTestParams} from '../types'
 interface KolSmiParams{
     sample: number[], 
     alpha: number
 }
 
-const testKolSmi = (params: KolSmiParams) => {
+const testKolSmi = (params: GoodnessTestParams) => {
     const {sample, alpha} = params;
     const ks: {
         [index: number]: { [index: number]: number };
@@ -63,6 +63,8 @@ const testKolSmi = (params: KolSmiParams) => {
     }else{
         d_alpha = ks[alpha][sample.length-1]
     }
+    console.log("Maximum D", max_d);
+    console.log("Test D:", d_alpha);
     if(max_d < d_alpha){
         return true
     }
