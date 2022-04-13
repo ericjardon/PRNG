@@ -1,3 +1,5 @@
+import {GoodnessTestParams} from '../types'
+import {TEST_SAMPLE_2} from '../utils'
 interface ChiSquareadParams{
     sample: number[],
     range: number,
@@ -6,6 +8,46 @@ interface ChiSquareadParams{
     X: number,
     classes: {[c: string]: number},
 }
+
+/*
+A table can be an object with keys as column names pointing to
+arrays of same size.
+*/
+
+const getClassesColumns = (k:number, classSize: number) => {
+    let classStart = [] // indicate start and end
+    let classEnd = []
+
+    for (let i=0; i<k; i++) {
+        classStart.push(classSize*i);
+        classEnd.push(classSize*(i+1));
+    }
+
+    return {classStart, classEnd}
+}
+
+
+const ChiSquaredTest = (params: GoodnessTestParams) : void => {
+    const { sample, alpha } = params;
+    const N = sample.length;
+    console.log("N", N);
+    sample.sort();
+    const range = sample[N-1] - sample[0];
+    console.log("range", range);
+
+    // Sturges Empirical Law
+    const k = 1 + Math.floor(Math.log2(N));
+    console.log("classes:", k);
+    const classSize = range/k;
+    console.log("class size:", classSize);
+
+    let table = getClassesColumns(k, classSize);
+    
+    console.log(JSON.stringify(table));
+    
+    return;
+}
+
 
 const testChiSquared = (seed:number,params: ChiSquareadParams) => {
     params.sample.sort()
@@ -86,6 +128,6 @@ const minClasses = (classes: any) => {
 }
 
 
-console.log(testChiSquared(.05, {sample: [0.023,0.186,0.225,0.234,0.294,0.333,0.334,0.406,0.511,0.517,0.538,0.685,0.761,0.774,0.836,0.968,1.064,1.064,1.267,1.401,1.458,1.507,1.514,1.624,1.702,1.725,1.849,2.23,2.325,2.33,2.343,2.563,2.634,2.782,2.92,2.921,3.214,3.246,3.323,3.334,3.491,3.81,4.025,4.49,4.778,5.088,5.587,6.426,7.514,8.223], range: 0, k: 0, class: 0, X: 0, classes: {}}))
+console.log(testChiSquared(.05, {sample: TEST_SAMPLE_2, range: 0, k: 0, class: 0, X: 0, classes: {}}))
 
-// export default testChiSquared
+export default ChiSquaredTest
