@@ -5,6 +5,7 @@ import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
 import { validateNumeric, paramsToIntegers, completeParams } from '../utils'
 import { RNG } from '../RNGs'
+import {Validation} from '../Validation'
 import CalculateIcon from '@mui/icons-material/Calculate';
 import FunctionsIcon from '@mui/icons-material/Functions';
 interface Props {
@@ -56,6 +57,17 @@ const Form: React.FC<Props> = ({
 			...params,
 			[target.name]: target.value,
 		});
+	}
+
+	const handleSeedChange = (event: React.ChangeEvent<any>) => {
+		console.log("New seed", event.target.value)
+
+		setSeed(event.target.value);
+	}
+
+	const handleNumberRandomsChange = (event: React.ChangeEvent<any>) => {
+		console.log("number randoms change", event.target.value);
+		setNumberRandoms(event.target.value);
 	}
 
 	const handleMethodChange = (event: SelectChangeEvent) => {
@@ -117,16 +129,9 @@ const Form: React.FC<Props> = ({
 		}
 	}
 
-	const handleSeedChange = (event: React.ChangeEvent<any>) => {
-		console.log("New seed", event.target.value)
-
-		setSeed(event.target.value);
-	}
-
-	const handleNumberRandomsChange = (event: React.ChangeEvent<any>) => {
-		console.log("number randoms change", event.target.value);
-		setNumberRandoms(event.target.value);
-	}
+    const runValidation = (name: Validation) : void => {
+        console.log("Validating with:", name);
+    }
 
 	return (
 		<div className="formContainer">
@@ -177,8 +182,8 @@ const Form: React.FC<Props> = ({
 				</Select>
 			</div>
 			<div className="validation-buttons">
-				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={getRandom}>Chi Square {numberRandoms}</Button>
-				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={getRandom}>Kolmogorov Smirnov {numberRandoms}</Button>
+				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square {numberRandoms}</Button>
+				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov {numberRandoms}</Button>
 			</div>
 		</div>
 	)
