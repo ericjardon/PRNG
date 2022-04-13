@@ -30,4 +30,4 @@ const randomLinearCongruential = (seed: number, params: LinearCongruentialParams
 console.log("LC", randomLinearCongruential(3, {iterations: 18, a:5, c:7, m:8}))
 
 
-// export default randomLinearCongruential
+export default randomLinearCongruential

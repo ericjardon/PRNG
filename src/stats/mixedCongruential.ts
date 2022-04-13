@@ -46,4 +46,4 @@ const HullDobell = (params: MixedCongruentialParams): any => {
 
 console.log("MC ", randomMixedCongruential(4, {iterations: 16, a: 5, c: 7, m: 8}))
 
-// export default randomMixedCongruential
+export default randomMixedCongruential
