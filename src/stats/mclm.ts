@@ -25,7 +25,7 @@ const randomMCLM = (seed:number, params: MCLMParams) => {
     for(let i = 0; i< iterations; i++){
         r = 0
         for(let j = 0; j < a.length ; j++ ){
-            r += generators[i][j]
+            r +=   ((-1)** i ) * generators[i][j]
         }
         result.push(r)
     }

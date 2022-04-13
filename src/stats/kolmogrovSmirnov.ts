@@ -30,7 +30,7 @@ const testKolSmi = (params: KolSmiParams) => {
         i_n = (i+1) /sample.length
         //push to array value of (i/n) - Ri and Ri - ((i-1)/N) that are the columns D+ and D- to get the maximum of both columns
         d.push(Math.abs(i_n - sample[i]) )
-        d.push( Math.abs(sample[i] - ((i-1) / sample.length) ))
+        d.push( Math.abs(sample[i] - (i / sample.length) ))
     }
     max_d = Math.max(...d)
     if (sample.length > 50) {
