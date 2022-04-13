@@ -1,40 +1,84 @@
 
 import React, { ChangeEventHandler, useState } from 'react';
-import { TextField } from '@mui/material'
-import {Handler} from '../types'
-
+import { TextField, Grid, Alert } from '@mui/material'
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import {Handler, CongruentialParams} from '../types'
+import {MAX_COMBINED_GENERATORS} from '../constants'
 
 interface Props {
-    a?:number,
-    c?:number,
-    m?:number,
-    a2?:number,
-    c2?:number,
-    m2?:number
+    params:any,
     updateHandler: Handler,
 }
 
+interface SingleInputProps {
+    index:number,  // used to update at array[key]
+}
+
 const CombinedCongruential : React.FC<Props> = ({
-    a,
-    c,
-    m,
-    a2,
-    c2,
-    m2,
+    params,
     updateHandler
 }) => {
+    // fill combinedParams with as many objects 
+    const [numGenerators, setNumGenerators] = useState<string>('');
+    const [inputs, setInputs] = useState<number[]>([1])  // update on Blur;
+    const [alert, setAlert] = useState<ReactJSXElement | null>(null);
 
+    const updateNum = (e: React.ChangeEvent<any>) : void => {
+        setAlert(null);
+        setNumGenerators(e.target.value);
+        updateHandler(e);
+        let N:number = Number(e.target.value);
+        
+        if (N) {
+            if (N > MAX_COMBINED_GENERATORS) {
+                // set alert
+                setAlert(<Alert severity="warning">Máximo 10 generadores</Alert>);
+                setInputs([]);
+                return;
+            }
+            let newArr:number[] = []; 
+            for(let i=1; i<=N; i++) {
+               newArr.push(i);
+            }
+            setInputs(newArr);
+        } else {
+            console.log("could not parse numeric");
+        }
+    }
+
+    // Composition
+    const SingleCongruentialInputs = ({index}:SingleInputProps) => {
+        const m = params[`m${index}`];
+        const a = params[`a${index}`];
+
+        return (
+            <>
+                <Grid item xs={4}>
+                    <div style={{marginBottom: '8px'}}>
+                        <TextField name={`m${index}`} label={`M ${index}`} variant="filled" 
+                        value={m || ''} 
+                        onChange={updateHandler}/>
+                    </div>
+                    <TextField name={`a${index}`} label={`A ${index}`} variant="filled" 
+                    value={a || ''} 
+                    onChange={updateHandler}/>
+                </Grid>
+            </>
+        )
+    }
 
     return (
         <>
-        
-        <TextField name="m" label="Módulo 1" variant="filled" value={m || ''} onChange={updateHandler}/>
-        <TextField name="a" label="Multiplicador 1" variant="filled" value={a || ''} onChange={updateHandler}/>
-        <TextField name="c" label="Incremento 1" variant="filled" value={c || ''} onChange={updateHandler}/>
-
-        <TextField name="m2" label="Módulo 2" variant="filled" value={m2 || ''} onChange={updateHandler}/>        
-        <TextField name="a2" label="Multiplicador 2" variant="filled" value={a2 || ''} onChange={updateHandler}/>
-        <TextField name="c2" label="Incremento 2" variant="filled" value={c2 || ''} onChange={updateHandler}/>
+            <TextField name="numGenerators" label="Número de generadores" variant="filled" 
+                value={numGenerators} 
+                onChange={updateNum}
+            />
+            {alert}
+            <Grid container spacing={1}>
+                {inputs.map(index => (
+                        <SingleCongruentialInputs key={index} index={index}/>                        
+                ))}
+            </Grid>
         </>
     )
 }

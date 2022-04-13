@@ -3,23 +3,23 @@ import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/mat
 import { SelectChangeEvent } from '@mui/material/Select'
 import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
-import {validateNumeric, toNumbers, completeParams} from '../utils'
+import {validateNumeric, paramsToIntegers, completeParams} from '../utils'
 import {RNG} from '../RNGs'
 interface Props {
-    onSubmit: (randoms:number[]) => void,
+    updateRandoms: (randoms:number[]) => void,
 	setError: (error:string) => void,
     clearRandoms: ()=>void,
     updateGlobalState: (name:string, value:any) => void,
 }
 
 const Form: React.FC<Props> = ({
-	onSubmit,
+	updateRandoms,
 	setError,
     clearRandoms,
     updateGlobalState,
 }) => {
 
-    const [method, setMethod] = useState<string>("dummy");
+    const [method, setMethod] = useState<string>(RNG.MathRandom);
     const [seed, setSeed] = useState<string>("");
     const [numberRandoms, setNumberRandoms] = useState<string>("");
     const [params, setParams] = useState<any>({});
@@ -47,9 +47,11 @@ const Form: React.FC<Props> = ({
     }, [method])
 
     const updateHandler = (event: React.FormEvent<HTMLInputElement>): void => {
+        const target = event.target as HTMLInputElement;
+        console.log(params);
         setParams({
             ...params,
-            [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value,
+            [target.name]: target.value,
         });
     }
 
@@ -61,54 +63,52 @@ const Form: React.FC<Props> = ({
         updateGlobalState('method', method);
     }
 
-    const getRandom = (): void => {
+    const getSeedAsNum = () : number | null => {
+        let seedNum : number = Number.parseFloat(seed);
 
-        if (!method || !seed) return;
-        let seedValue : number = Number.parseFloat(seed);
-        if (Number.isNaN(seedValue)) return;
-        if (seedValue <= 0) {
+        if (Number.isNaN(seedNum)) {
+            setError("Introduce una semilla válida");
+            return null;
+        };
+
+        if (seedNum <= 0) {
             setError('La semilla debe ser mayor a 0');
-            return;
+            return null;
         }
 
-		let numParams : any = toNumbers(params);
-        if (numParams === null) {
+        return seedNum;
+    }
+
+    const getRandom = (): void => {
+        const n = Number.parseInt(numberRandoms);
+        console.log("How many nums?", n);
+        console.log(params);
+
+        if (!method || !seed) return;
+
+        let seedNum = getSeedAsNum();
+        if (!seedNum) return;
+
+        console.log("Method selected:", method);
+        
+        // Prepare Params
+        const {seedVal, cleanParams} = prepareParams(method, seedNum, params, n);
+
+        if (cleanParams === null) {
             setError('Parámetros incorrectos');
 			return;
         }
 
-        console.log("Method to run:", method);
-        
-        if (method !== RNG.MathRandom) {
-            console.log("Unsupported for now");
+        if (!(method in METHODS)) {
+            setError("Método no implementado.");
             return;
-            // const {X, Ri} = METHODS[method](seedValue, numParams);
-            // if(Ri === -1){
-            //     if (method===RNG.MixedCongruential) {
-            //         setError('Los parámetros no cumplen con el teorema de Hull-Dobell');
-            //     } else {
-            //         setError('Parámetros incorrectos para ' + method);
-            //     }
-            //     return;
-            // }
-            // else if (Ri==-2) {
-            //     console.log("Module is 1")
-            //     setError('El módulo no puede ser 1');
-            //     return;
-            // } else if (Number.isNaN(Ri)) {
-            //     setError('Parámetros incorrectos para ' + method);
-            //     return;
-            // }
-    
-            // setSeed(X? X.toString() : Ri.toString());
-            // onSubmit(Ri);
-            // return;
-        } else {
-            const n = Number.parseInt(numberRandoms);
-            const randoms: number[] = (METHODS[method](seedValue, numParams, n) as number[]);
-            onSubmit(randoms);
+        } 
+        else {
+            console.log("Calling method", method, 'with how many?', n);
+            const randoms: number[] = METHODS[method](seedVal, cleanParams, n);
+            console.log("updating randoms");
+            updateRandoms(randoms);
         }
-		
     }
 
     const handleSeedChange = (event: React.ChangeEvent<any>) => {
@@ -118,6 +118,7 @@ const Form: React.FC<Props> = ({
     }
 
     const handleNumberRandomsChange = (event: React.ChangeEvent<any>) => {
+        console.log("number randoms change", event.target.value);
         setNumberRandoms(event.target.value);
     }
 
@@ -137,7 +138,7 @@ const Form: React.FC<Props> = ({
                     <MenuItem value={RNG.MidSquares}>Mid Squares</MenuItem>
                     <MenuItem value={RNG.LinearCongruential}>Linear Congruential</MenuItem>
                     <MenuItem value={RNG.MixedCongruential}>Mixed Congruential</MenuItem>
-                    <MenuItem value={'MCLM'}>Combined Congruential</MenuItem>
+                    <MenuItem value={RNG.CombinedCongruential}>Combined Congruential</MenuItem>
                     <MenuItem value={RNG.MultiplicativeCongruential}>Multiplicative Congruential</MenuItem>
                     <MenuItem value={RNG.MathRandom}>Math.Random</MenuItem>
                 </Select>
@@ -150,6 +151,34 @@ const Form: React.FC<Props> = ({
             </div>
         </div>
     )
+}
+
+// used for preprocessing of certain methods
+export const prepareParams = (method:string, seedVal:number, params:any, n:number) => {
+    if (method === RNG.CombinedCongruential) {
+
+        let a : number[] = [];
+        let m : number[] = [];
+        let k = Number(params.numGenerators);
+
+        for (let i=1; i<=k; i++) {
+            a.push(Number(params[`a${i}`]))
+            m.push(Number(params[`m${i}`]))
+        }
+
+        console.log("a", a);
+        console.log("m", m);
+
+        params = {
+            a, 
+            m,
+        }  // a and m are arrays of length k 
+
+    } else {
+        params = paramsToIntegers(params);
+    }
+
+    return {seedVal, cleanParams: params};
 }
 
 export default Form;
