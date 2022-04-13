@@ -1,4 +1,3 @@
-import { PanoramaSharp } from "@mui/icons-material"
 import {GoodnessTestParams} from '../types'
 interface KolSmiParams{
     sample: number[], 
@@ -30,9 +29,11 @@ const testKolSmi = (params: GoodnessTestParams) => {
         i_n = (i+1) /sample.length
         //push to array value of (i/n) - Ri and Ri - ((i-1)/N) that are the columns D+ and D- to get the maximum of both columns
         d.push(Math.abs(i_n - sample[i]) )
-        d.push( Math.abs(sample[i] - ((i-1) / sample.length) ))
+        d.push( Math.abs(sample[i] - ((i) / sample.length) ))
+
     }
-    max_d = Math.max(...d)
+
+    max_d = Math.max(...d);
     if (sample.length > 50) {
         switch (alpha) {
           case 0.2:
@@ -69,11 +70,11 @@ const testKolSmi = (params: GoodnessTestParams) => {
         return true
     }
     
-    console.log(d)
+    //console.log(d)
     return false
 }
 
 
-console.log(testKolSmi( {sample: [0.05,0.14,0.44,0.81,0.93], alpha: 0.05}))
+//console.log(testKolSmi( {sample: [0.05,0.14,0.44,0.81,0.93], alpha: 0.05}))
 
 export default testKolSmi
