@@ -3,18 +3,18 @@ import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/mat
 import { SelectChangeEvent } from '@mui/material/Select'
 import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
-import {validateNumeric, paramsToIntegers, completeParams} from '../utils'
-import {RNG} from '../RNGs'
+import { validateNumeric, paramsToIntegers, completeParams } from '../utils'
+import { RNG } from '../RNGs'
 interface Props {
-    updateRandoms: (randoms:number[]) => void,
-	setError: (error:string) => void,
-    clearRandoms: ()=>void,
-    updateGlobalState: (name:string, value:any) => void,
+    updateRandoms: (randoms: number[]) => void,
+    setError: (error: string) => void,
+    clearRandoms: () => void,
+    updateGlobalState: (name: string, value: any) => void,
 }
 
 const Form: React.FC<Props> = ({
-	updateRandoms,
-	setError,
+    updateRandoms,
+    setError,
     clearRandoms,
     updateGlobalState,
 }) => {
@@ -41,14 +41,16 @@ const Form: React.FC<Props> = ({
     useEffect(() => {
         if (method === RNG.MidSquares) {
             setSeedLabel("Semilla (4 dígitos)");
-        } else {
+        } else if (method === RNG.CombinedCongruential) {
+            setSeed('1');  // dummy value
+        }
+        else {
             setSeedLabel("Semilla");
         }
     }, [method])
 
     const updateHandler = (event: React.FormEvent<HTMLInputElement>): void => {
         const target = event.target as HTMLInputElement;
-        console.log(params);
         setParams({
             ...params,
             [target.name]: target.value,
@@ -58,13 +60,12 @@ const Form: React.FC<Props> = ({
     const handleMethodChange = (event: SelectChangeEvent) => {
         setParams({})
         setMethod(event.target.value);
-        console.log("Method selected:", event.target.value);
         clearRandoms();
         updateGlobalState('method', method);
     }
 
-    const getSeedAsNum = () : number | null => {
-        let seedNum : number = Number.parseFloat(seed);
+    const getSeedAsNum = (): number | null => {
+        let seedNum: number = Number.parseFloat(seed);
 
         if (Number.isNaN(seedNum)) {
             setError("Introduce una semilla válida");
@@ -86,23 +87,28 @@ const Form: React.FC<Props> = ({
 
         if (!method || !seed) return;
 
-        let seedNum = getSeedAsNum();
-        if (!seedNum) return;
+        let seedNum;
+        if (method === RNG.CombinedCongruential) {
+            seedNum = 1; // dummy value for combined congruential
+        } else {
+            seedNum = getSeedAsNum();
+            if (!seedNum) return;
+        }
 
         console.log("Method selected:", method);
-        
+
         // Prepare Params
-        const {seedVal, cleanParams} = prepareParams(method, seedNum, params, n);
+        const { seedVal, cleanParams } = prepareParams(method, seedNum, params, n);
 
         if (cleanParams === null) {
             setError('Parámetros incorrectos');
-			return;
+            return;
         }
 
         if (!(method in METHODS)) {
             setError("Método no implementado.");
             return;
-        } 
+        }
         else {
             console.log("Calling method", method, 'with how many?', n);
             const randoms: number[] = METHODS[method](seedVal, cleanParams, n);
@@ -143,7 +149,9 @@ const Form: React.FC<Props> = ({
                     <MenuItem value={RNG.MathRandom}>Math.Random</MenuItem>
                 </Select>
                 <TextField label="Número de Aleatorios" variant="filled" value={numberRandoms} onChange={handleNumberRandomsChange}></TextField>
-                <TextField label={seedLabel} variant="filled" value={seed} onChange={handleSeedChange}></TextField>
+                {(method !== RNG.CombinedCongruential &&
+                    <TextField label={seedLabel} variant="filled" value={seed} onChange={handleSeedChange}></TextField>
+                )}
                 <FormInputsSwitch method={method} updateHandler={updateHandler} params={params} />
             </Stack>
             <div className="buttonContainer">
@@ -154,31 +162,35 @@ const Form: React.FC<Props> = ({
 }
 
 // used for preprocessing of certain methods
-export const prepareParams = (method:string, seedVal:number, params:any, n:number) => {
+export const prepareParams = (method: string, seedVal: number, params: any, n: number) => {
     if (method === RNG.CombinedCongruential) {
 
-        let a : number[] = [];
-        let m : number[] = [];
+        let a: number[] = [];
+        let m: number[] = [];
+        let s: number[] = [];
         let k = Number(params.numGenerators);
 
-        for (let i=1; i<=k; i++) {
+        for (let i = 1; i <= k; i++) {
             a.push(Number(params[`a${i}`]))
             m.push(Number(params[`m${i}`]))
+            s.push(Number(params[`s${i}`]))
         }
 
         console.log("a", a);
         console.log("m", m);
+        console.log("s", s);
 
         params = {
-            a, 
+            a,
             m,
-        }  // a and m are arrays of length k 
+            xi: s, // seeds for mclm
+        }  // arrays of length k 
 
     } else {
         params = paramsToIntegers(params);
     }
 
-    return {seedVal, cleanParams: params};
+    return { seedVal, cleanParams: params };
 }
 
 export default Form;

@@ -12,7 +12,40 @@ interface Props {
 
 interface SingleInputProps {
     index:number,  // used to update at array[key]
+    s:number,
+    m:number,
+    a:number,
+    updateHandler: Handler,
 }
+
+    // Composition
+    const SingleCongruentialInputs = ({
+        index, 
+        a,
+        m,
+        s,
+        updateHandler
+    } : SingleInputProps) => {
+        return (
+            <>
+                <Grid item xs={4}>
+                    <div style={{marginBottom: '8px'}}>
+                        <TextField name={`s${index}`} label={`S ${index}`} variant="filled" 
+                        value={s} 
+                        onChange={updateHandler}/>
+                    </div>
+                    <div style={{marginBottom: '8px'}}>
+                        <TextField name={`m${index}`} label={`M ${index}`} variant="filled" 
+                        value={m} 
+                        onChange={updateHandler}/>
+                    </div>
+                    <TextField name={`a${index}`} label={`A ${index}`} variant="filled" 
+                    value={a} 
+                    onChange={updateHandler}/>
+                </Grid>
+            </>
+        )
+    }
 
 const CombinedCongruential : React.FC<Props> = ({
     params,
@@ -46,27 +79,6 @@ const CombinedCongruential : React.FC<Props> = ({
         }
     }
 
-    // Composition
-    const SingleCongruentialInputs = ({index}:SingleInputProps) => {
-        const m = params[`m${index}`];
-        const a = params[`a${index}`];
-
-        return (
-            <>
-                <Grid item xs={4}>
-                    <div style={{marginBottom: '8px'}}>
-                        <TextField name={`m${index}`} label={`M ${index}`} variant="filled" 
-                        value={m || ''} 
-                        onChange={updateHandler}/>
-                    </div>
-                    <TextField name={`a${index}`} label={`A ${index}`} variant="filled" 
-                    value={a || ''} 
-                    onChange={updateHandler}/>
-                </Grid>
-            </>
-        )
-    }
-
     return (
         <>
             <TextField name="numGenerators" label="Número de generadores" variant="filled" 
@@ -75,12 +87,16 @@ const CombinedCongruential : React.FC<Props> = ({
             />
             {alert}
             <Grid container spacing={1}>
-                {inputs.map(index => (
-                        <SingleCongruentialInputs key={index} index={index}/>                        
-                ))}
+                {inputs.map(index => {
+                    const s = params[`s${index}`];
+                    const m = params[`m${index}`];
+                    const a = params[`a${index}`];
+                    return <SingleCongruentialInputs index={index} a={a || ''} m={m ||''} s={s||''} updateHandler={updateHandler}/>
+                })}
             </Grid>
         </>
     )
 }
+
 
 export default CombinedCongruential;
