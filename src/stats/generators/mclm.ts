@@ -18,10 +18,14 @@ const computeMaxPeriod = (m:number[]) => {
 
 
 const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: number) : number[] => {
+    console.log("mclm params")
+    console.dir(params);
+    
     let {a,m, xi } = params;
-    let iterations = n;
     let max_period = computeMaxPeriod(m); 
-    console.log("Max period", max_period);
+    let iterations = Math.min(n, max_period);
+    console.log("Max period:", max_period);
+    console.log("Run for", iterations, 'iterations');
 
     let result : number[] = [];
     let generators = Array(iterations).fill(Array(a.length).fill(0));
@@ -30,7 +34,7 @@ const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: nu
         return (a_single*xi_single) % m_single;
     }
     
-    for(let j = 0; j < a.length && j < max_period; j++ ){
+    for(let j = 0; j < a.length; j++ ){
         for(let i = 0; i<iterations; i++){
             xi[j] = get_gm(a[j], m[j], xi[j])
             generators[i][j] = temseed
