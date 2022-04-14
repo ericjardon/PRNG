@@ -6,10 +6,23 @@ interface MCLMParams {
     xi: number[],
 }
 
+const computeMaxPeriod = (m:number[]) => {
+    let p = 1;
+    let k = m.length
+    m.forEach( (mi) => {
+        p *= (mi - 1);
+    })
+
+    return p / Math.pow(2, k-1);
+}
+
 
 const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: number) : number[] => {
     let {a,m, xi } = params;
     let iterations = n;
+    let max_period = computeMaxPeriod(m); 
+    console.log("Max period", max_period);
+
     let result : number[] = [];
     let generators = Array(iterations).fill(Array(a.length).fill(0));
     let temseed, r : number;
@@ -17,7 +30,7 @@ const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: nu
         return (a_single*xi_single) % m_single;
     }
     
-    for(let j = 0; j < a.length ; j++ ){
+    for(let j = 0; j < a.length && j < max_period; j++ ){
         for(let i = 0; i<iterations; i++){
             xi[j] = get_gm(a[j], m[j], xi[j])
             generators[i][j] = temseed

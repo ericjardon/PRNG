@@ -22,7 +22,7 @@ const Form: React.FC<Props> = ({
 	updateGlobalState,
 }) => {
 
-	const [method, setMethod] = useState<string>(RNG.MathRandom);
+	const [method, setMethod] = useState<string>(RNG.LinearCongruential);
 	const [seed, setSeed] = useState<string>("");
 	const [numberRandoms, setNumberRandoms] = useState<string>("");
 	const [params, setParams] = useState<any>({});
@@ -148,9 +148,9 @@ const Form: React.FC<Props> = ({
 					</MenuItem>
 					<MenuItem value={RNG.MidSquares}>Mid Squares</MenuItem>
 					<MenuItem value={RNG.LinearCongruential}>Linear Congruential</MenuItem>
+					<MenuItem value={RNG.MultiplicativeCongruential}>Multiplicative Congruential</MenuItem>
 					<MenuItem value={RNG.MixedCongruential}>Mixed Congruential</MenuItem>
 					<MenuItem value={RNG.CombinedCongruential}>Combined Congruential</MenuItem>
-					<MenuItem value={RNG.MultiplicativeCongruential}>Multiplicative Congruential</MenuItem>
 					<MenuItem value={RNG.MathRandom}>Math.Random</MenuItem>
 				</Select>
 				<TextField label="Número de Aleatorios" variant="filled" value={numberRandoms} onChange={handleNumberRandomsChange}></TextField>
