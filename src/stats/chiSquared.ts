@@ -14,7 +14,7 @@ interface ChiSquaredTable {
     classEnd?: number[],
     classLength?: number[],
     observedFrequencies?: number[],
-    expectedFrequencies?: number[],
+    expectedFrequencies?: number[], // N/k multiplicado por longitud de la clase
     differential?: number[],  // 1/E * (O-E)^2
 }
 
@@ -26,18 +26,19 @@ arrays of same size.
 const getClassesColumns = (k:number, classSize: number) => {
     let classStart = []; // indicate start and end
     let classEnd = [];
-    let classLength = [];
+    let classLength = []; 
 
     for (let i=0; i<k; i++) {
-        classStart.push(classSize*i);
-        classEnd.push(classSize*(i+1));
+        classStart.push(classSize*i); 
+        classEnd.push(classSize*(i+1)); 
         classLength.push(1);  // multiplier of class size;
     }
 
-    return {classStart, classEnd, classLength };  // column headers
+    return { classStart, classEnd, classLength };  // column headers
 }
 
 const getObservedFrequencies = (table: ChiSquaredTable, sample: number[]) : number[] => {
+
     let numClasses = table.classEnd!.length;
     let observedFrequencies : number[] = Array(numClasses).fill(0);
     let ri;
@@ -45,7 +46,7 @@ const getObservedFrequencies = (table: ChiSquaredTable, sample: number[]) : numb
 
     for (let i=0; i<sample.length; i++) {
         ri = sample[i];
-        console.log("ri", ri);
+
         // sorted sample so we can move to next class when we exceed class limit
         if (ri <= table.classEnd![currentClass]) {
             observedFrequencies[currentClass] += 1;
@@ -63,31 +64,96 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
         This function analyzes the classes and reduces them according to
         the minimum-5 observations per class rule.
     */
-   return table;
+    let currentCount = 0;
+    let currentClassLength = 1;
+    let newStart : number[] = [];
+    let newEnd : number[] = [];
+    let newFrequencies : number[] = [];
+    let newClassLength : number[] = [];
+    let k = table.observedFrequencies!.length;
+    let startIndex = 0;
+    let currentStart = table.classStart![0];
+
+    for (let i=0; i<k; i++) {
+        currentCount += table.observedFrequencies![i];
+        if (currentCount >= 5) {
+            // newStart.push(table.classStart![startIndex]);
+            newStart.push(currentStart);
+            newEnd.push(table.classEnd![i]);
+            newFrequencies.push(currentCount);
+            newClassLength.push(currentClassLength);
+
+            startIndex = i;
+            currentStart = table.classEnd![i];
+            currentCount = 0;
+            currentClassLength = 1;
+
+        } else {
+            currentClassLength += 1;
+        }
+    }
+
+    // if currentCount <5, aglutinar hacia atrás
+    // [5,1]
+
+    if (currentCount < 5) {
+        newEnd[newEnd.length-1] = table.observedFrequencies![k-1];
+        newFrequencies[newEnd.length-1] += currentCount;
+        newClassLength[newEnd.length - 1] += 1;
+    }
+    
+    let reducedTable : ChiSquaredTable = {
+        classStart: newStart,
+        classEnd: newEnd,
+        classLength: newClassLength,
+        observedFrequencies: newFrequencies,
+    }; 
+
+   return reducedTable;
+}
+
+const getExpectedFrequencies = (table: ChiSquaredTable, Ei: number) : number[] => {
+    return table.classLength!.map(length => length*Ei);
 }
 
 
 const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
     const { sample, alpha } = params;
     const N = sample.length;
+
+    if (N<5) {
+        console.log("insufficient N");
+        return false; // TODO: return type object
+    }
+
     console.log("N", N);
+
     sample.sort();
+
     const range = sample[N-1] - sample[0];
     console.log("range", range);
 
     // Sturges Empirical Law
     const k = 1 + Math.floor(Math.log2(N));
+
+    const Ei = N / k; // expected per class size
+
     console.log("classes:", k);
-    const classSize = range/k;
+    const classSize = range/k;  // class
     console.log("class size:", classSize);
 
-    let table : ChiSquaredTable = getClassesColumns(k, classSize);
+
+    let table : ChiSquaredTable = getClassesColumns(k, classSize); 
     table.observedFrequencies = getObservedFrequencies(table, sample);
-    // Reduce classes
-    
+
     table = reduceClasses(table);
     
-    console.log(JSON.stringify(table));
+    console.dir(table);
+
+    // Add Expected frequencies
+    table.expectedFrequencies = getExpectedFrequencies(table, Ei);
+
+    // Calculate differential
     
     return true;
 }
