@@ -44,3 +44,12 @@ export interface ChiSquaredTable {
     X02?: number,
     Xv2?: number,
 }
+
+export interface KolSmiTable {
+    Fx?: number[], // i/N for uniform, F(x) in general
+    Ri?: number[], // Ri for uniform, S(x) in general
+    Dplus?: number[],  // i/N - Ri, or S(x)-F(x)
+    Dminus?: number[], // Ri - (i-1)/N, or F(x)-S(x)
+    Dsample?: number, // empirical
+    Dalpha?: number,  // true
+}

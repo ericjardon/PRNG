@@ -33,7 +33,9 @@ export default function TestView({ }: Props) {
             alpha: 0.05
         }
 
-        if (testKolSmi(params)) {
+        const {result, table} = testKolSmi(params);
+
+        if (result) {
             console.log("KOL SMI: TRUE");
         } else {
             console.log("KOL SMI: FALSE");
