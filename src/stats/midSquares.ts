@@ -1,21 +1,31 @@
+import { RandomGeneratorFunc } from "../types";
+
 interface MidSquaresParams {
     iterations: number
 }
 
-const randomMidSquares = (seed: number, params: MidSquaresParams) => {
-    let result: number[] = []
-    let x2:any = 0 
-    
-    for(let i=0; i<params.iterations; i++){
+const randomMidSquares : RandomGeneratorFunc = (seed: number, params: MidSquaresParams, n:number) => {
+    let results: number[] = []
+    let x2:number = 0 
+    let val: number;
+    let values = new Set<number>();
+    let iterations = n;
+
+    for(let i=0; i<iterations; i++){
             x2 = seed * seed
             x2 = Math.trunc(x2/100)
             x2 = x2%10000
-            result.push(x2/10000)
-            seed = parseInt(x2)
+            val = x2/10000
+            if (values.has(val)) {
+                return results
+            }
+            values.add(val);
+            results.push(val);
+            seed = x2;
     }
 
-    return  result
+    return  results
 }
 
-console.log("MS ",randomMidSquares(123, {iterations: 5}))
+// console.log("MS ",randomMidSquares(123, {}, 5));
 export default randomMidSquares
