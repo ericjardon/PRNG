@@ -8,12 +8,40 @@ import { RNG } from '../RNGs'
 import { Validation } from '../Validation'
 import CalculateIcon from '@mui/icons-material/Calculate';
 import FunctionsIcon from '@mui/icons-material/Functions';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
 interface Props {
 	updateRandoms: (randoms: number[]) => void,
 	setError: (error: string) => void,
 	clearRandoms: () => void,
 	updateGlobalState: (name: string, value: any) => void,
 }
+
+function createData(
+	K: number,
+	start: number,
+	end: number,
+	frecuency: number,
+	f0: number,
+	fe: number,
+	final: number,
+  ) {
+	return { K, start, end, frecuency, f0, fe, final };
+  }
+  const rows = [
+	createData(0, 0, 0.0, 2, 0, 0,0),
+	createData(1, 0, 0.0, 2, 0, 0,0),
+	createData(2, 0, 0.0, 2, 0, 0,0),
+	createData(3, 0, 0.0, 2, 0, 0,0),
+	createData(4, 0, 0.0, 0, 0, 0,0)
+  ];
 
 const Form: React.FC<Props> = ({
 	updateRandoms,
@@ -168,7 +196,7 @@ const Form: React.FC<Props> = ({
 			<div className="buttonContainer">
 				<Button disabled={!completeForm} variant="contained" size="large" onClick={getRandom}>Generar {numberRandoms} Randoms</Button>
 			</div>
-			{/* <div className='Validacion'>
+			 <div className='Validacion'>
 				<h4>Validación de función con números random</h4>
 				<InputLabel id="select-label">Seleccione un valor de Alpha</InputLabel>
 				<Select
@@ -192,7 +220,40 @@ const Form: React.FC<Props> = ({
 			<div className="validation-buttons">
 				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square {numberRandoms}</Button>
 				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov {numberRandoms}</Button>
-			</div> */}
+			</div> 
+			<TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table" className='validationTable'>
+        <TableHead>
+          <TableRow>
+            <TableCell>K</TableCell>
+            <TableCell align="right">Start</TableCell>
+            <TableCell align="right">End</TableCell>
+            <TableCell align="right">F(x)</TableCell>
+            <TableCell align="right">F0</TableCell>
+			<TableCell align="right">FE</TableCell>
+			<TableCell align="right">(O-E)^2/FE</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.K}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.K}
+              </TableCell>
+              <TableCell align="right">{row.start}</TableCell>
+              <TableCell align="right">{row.end}</TableCell>
+              <TableCell align="right">{row.frecuency}</TableCell>
+              <TableCell align="right">{row.f0}</TableCell>
+			  <TableCell align="right">{row.fe}</TableCell>
+			  <TableCell align="right">{row.final}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
 		</div>
 	)
 }
