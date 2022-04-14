@@ -3,22 +3,18 @@ interface MidSquaresParams {
 }
 
 const randomMidSquares = (seed: number, params: MidSquaresParams) => {
-    let result = ""
+    let result: number[] = []
     let x2:any = 0 
-    if (seed >= 100 && seed <= 9999){
-        for(let i=0; i<params.iterations; i++){
+    
+    for(let i=0; i<params.iterations; i++){
             x2 = seed * seed
-            x2 = x2.toString()
-            x2 = "0".repeat(8-x2.length) + x2
-            x2 = x2.slice(2, -2)
-            result = i + ".- " + x2 + "; "
+            x2 = Math.trunc(x2/100)
+            x2 = x2%10000
+            result.push(x2/10000)
             seed = parseInt(x2)
-        }
-    }else{
-        return {Ri:-1}
-        // "The seed must be at least 3 digits"
     }
-    return {X: seed, Ri:seed}
+
+    return  result
 }
 
 console.log("MS ",randomMidSquares(123, {iterations: 5}))
