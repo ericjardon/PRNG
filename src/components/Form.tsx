@@ -160,7 +160,7 @@ const Form: React.FC<Props> = ({
 			<div className="buttonContainer">
 				<Button disabled={!completeForm} variant="contained" size="large" onClick={getRandom}>Generar {numberRandoms} Randoms</Button>
 			</div>
-			<div className='Validacion'>
+			{/* <div className='Validacion'>
 				<h4>Validación de función con números random</h4>
 				<InputLabel id="select-label">Seleccione un valor de Alpha</InputLabel>
 				<Select
@@ -184,31 +184,35 @@ const Form: React.FC<Props> = ({
 			<div className="validation-buttons">
 				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square {numberRandoms}</Button>
 				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov {numberRandoms}</Button>
-			</div>
+			</div> */}
 		</div>
 	)
 }
 
 // used for preprocessing of certain methods
 export const prepareParams = (method: string, seedVal: number, params: any, n: number) => {
-	if (method === RNG.CombinedCongruential) {
+    if (method === RNG.CombinedCongruential) {
 
-		let a: number[] = [];
-		let m: number[] = [];
-		let k = Number(params.numGenerators);
+        let a: number[] = [];
+        let m: number[] = [];
+        let s: number[] = [];
+        let k = Number(params.numGenerators);
 
-		for (let i = 1; i <= k; i++) {
-			a.push(Number(params[`a${i}`]))
-			m.push(Number(params[`m${i}`]))
-		}
+        for (let i = 1; i <= k; i++) {
+            a.push(Number(params[`a${i}`]))
+            m.push(Number(params[`m${i}`]))
+            s.push(Number(params[`s${i}`]))
+        }
 
-		console.log("a", a);
-		console.log("m", m);
+        console.log("a", a);
+        console.log("m", m);
+        console.log("s", s);
 
-		params = {
-			a,
-			m,
-		}  // a and m are arrays of length k 
+        params = {
+            a,
+            m,
+            xi: s, // seeds for mclm
+        }  // arrays of length k 
 
 	} else {
 		params = paramsToIntegers(params);

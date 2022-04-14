@@ -1,11 +1,10 @@
-import { PanoramaSharp } from "@mui/icons-material"
-
+import {GoodnessTestParams} from '../types'
 interface KolSmiParams{
     sample: number[], 
     alpha: number
 }
 
-const testKolSmi = (params: KolSmiParams) => {
+const testKolSmi = (params: GoodnessTestParams) => {
     const {sample, alpha} = params;
     const ks: {
         [index: number]: { [index: number]: number };
@@ -28,11 +27,14 @@ const testKolSmi = (params: KolSmiParams) => {
     for(let i = 0 ; i < sample.length; i ++){
         // this is i / N, but since we are starting at 0, we need to ad 1 
         i_n = (i+1) /sample.length
+      
         //push to array value of (i/n) - Ri and Ri - ((i-1)/N) that are the columns D+ and D- to get the maximum of both columns
         d.push(Math.abs(i_n - sample[i]) )
-        d.push( Math.abs(sample[i] - (i / sample.length) ))
+        d.push( Math.abs(sample[i] - ((i) / sample.length) ))
+
     }
-    max_d = Math.max(...d)
+
+    max_d = Math.max(...d);
     if (sample.length > 50) {
         switch (alpha) {
           case 0.2:
@@ -63,15 +65,17 @@ const testKolSmi = (params: KolSmiParams) => {
     }else{
         d_alpha = ks[alpha][sample.length-1]
     }
+    console.log("Maximum D", max_d);
+    console.log("Test D:", d_alpha);
     if(max_d < d_alpha){
         return true
     }
     
-    console.log(d)
+    //console.log(d)
     return false
 }
 
 
-console.log(testKolSmi( {sample: [0.05,0.14,0.44,0.81,0.93], alpha: 0.05}))
+//console.log(testKolSmi( {sample: [0.05,0.14,0.44,0.81,0.93], alpha: 0.05}))
 
 export default testKolSmi
