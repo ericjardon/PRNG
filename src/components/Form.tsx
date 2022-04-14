@@ -221,8 +221,8 @@ const Form: React.FC<Props> = ({
 				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square {numberRandoms}</Button>
 				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov {numberRandoms}</Button>
 			</div> 
-			<TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table" className='validationTable'>
+			<TableContainer component={Paper} className='validationTable'>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table" >
         <TableHead>
           <TableRow>
             <TableCell>K</TableCell>
