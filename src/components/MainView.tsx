@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Form from './Form'
-import Result from './Result'
+import Result from './output/Result'
 import { Alert } from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { Routes, Route, Link } from 'react-router-dom'
