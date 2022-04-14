@@ -1,7 +1,7 @@
 
 import React, { ChangeEventHandler, useState } from 'react';
 import { Button, TextField } from '@mui/material'
-import {Handler, CongruentialParams} from '../types'
+import {Handler, CongruentialParams} from '../../types'
 
 /* REUSED FOR LINEAR AND MULTIPLICATIVE GENERATORS */
 interface Props extends CongruentialParams {

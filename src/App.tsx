@@ -1,7 +1,7 @@
 import './styles/App.css';
 import MainView from './components/MainView'
 import ValidationView from './components/ValidationView'
-import NumberList from './components/NumberList'
+import NumberList from './components/output/NumberList'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import TestView from './components/TestView'
