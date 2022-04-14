@@ -1,14 +1,16 @@
+import { RandomGeneratorFunc } from "../../types";
+
 interface MCLMParams {
     a: number[],
     m:number[],
     xi: number[],
-    iterations: number
 }
 
 
-const randomMCLM = (seed:number, params: MCLMParams) => {
-    let {a,m, xi, iterations} = params;
-    let result = new Array<number>();
+const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: number) : number[] => {
+    let {a,m, xi } = params;
+    let iterations = n;
+    let result : number[] = [];
     let generators = Array(iterations).fill(Array(a.length).fill(0));
     let temseed, r : number;
     function get_gm(a_single: number, m_single: number, xi_single: number) {
@@ -31,9 +33,6 @@ const randomMCLM = (seed:number, params: MCLMParams) => {
     }
     console.log(result)
     return  result ;
-    
-
-
 
 }
 

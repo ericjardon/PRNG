@@ -1,30 +1,33 @@
-import { resourceLimits } from "worker_threads";
+import { RandomGeneratorFunc } from "../../types";
 
 interface GMParams {
     a: number,
     m: number,
-    iterations: number
 }
 
-
-const randomGM = (seed:number, params: GMParams) => {
-    const {a, m, iterations} = params;
+const randomGM : RandomGeneratorFunc = (seed:number, params: GMParams, n: number) => {
+    const {a, m} = params
+    let iterations = n;
     let xi;
-    let result = new Set<number>();
-    if(m < seed){
-        return {Ri: 99}
-    }
-    for(let i = 0; i<iterations; i++){
-        xi = ((a*seed) % m)/m
-        //cambiar a cuando encuentras return 
-        if(result.has(xi)){
-            break
-        }
-        seed = xi/m;
-        result.add(xi)
-    }
-    return Array.from( result );
+    let ri;
+    let values = new Set<number>();
+    let results : number[] = [];
 
+    for(let i = 0; i<iterations; i++){
+        xi = ((a*seed) % m)
+        ri = xi/m;
+
+        if(values.has(ri)){
+            console.log("Repeated ri", ri);
+            return results;
+        }
+        
+        values.add(ri);
+        results.push(ri);
+
+        seed = xi;
+    }
+    return results
 }
 
 
