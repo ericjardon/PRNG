@@ -37,14 +37,22 @@ const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: nu
     for(let j = 0; j < a.length; j++ ){
         for(let i = 0; i<iterations; i++){
             xi[j] = get_gm(a[j], m[j], xi[j])
-            generators[i][j] = temseed
+            generators[j][i] = xi[j]
         }
     }
-
+    //generate xi and ri
     for(let i = 0; i< iterations; i++){
         r = 0
+        //get xi
         for(let j = 0; j < a.length ; j++ ){
-            r +=   ((-1)** i ) * generators[i][j]
+            r +=   ((-1)** j ) * generators[j][i]
+        }
+        r = r % (m[0]-1)
+        //get ri
+        if(r>0){
+            r = r/m[0]
+        }else{
+            r = (m[0]-1)/m[0]
         }
         result.push(r)
     }
