@@ -145,6 +145,24 @@
   border: 1px solid white;
 }
 
+.flexDivY {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.flexDivY > * {
+  width: 100%;
+}
+
+.flexDivX {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+.flexDivX > * {
+  width: 100%;
+}
+
 
 @media (max-width: 426px) {
   .row {
@@ -165,5 +183,8 @@
   }
   .resultContainer {
     min-height: 400px;
+  }
+  .flexDivX {
+    flex-direction: column;
   }
 }
