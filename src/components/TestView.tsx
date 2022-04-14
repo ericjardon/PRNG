@@ -1,6 +1,6 @@
 import React from 'react'
-import chiSquaredTest from '../stats/chiSquared'
-import testKolSmi from '../stats/kolmogrovSmirnov'
+import chiSquaredTest from '../stats/tests/chiSquared'
+import testKolSmi from '../stats/tests/kolmogrovSmirnov'
 import { GoodnessTestParams } from '../types'
 import { SAMPLE_RANDOMS, SAMPLE_RANDOMS_2 } from '../utils'
 

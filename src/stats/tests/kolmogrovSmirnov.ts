@@ -1,4 +1,4 @@
-import {GoodnessTestParams} from '../types'
+import {GoodnessTestParams} from '../../types'
 interface KolSmiParams{
     sample: number[], 
     alpha: number

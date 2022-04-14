@@ -1,7 +1,5 @@
 
-import { METHOD_PARAMS_VALIDATORS, METHODS } from './stats/methods'
-import { ParamsValidator, ParamsValidatorResponse } from './types';
-import { RNG } from './RNGs';
+import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
 
 export const paramsToIntegers = (params: any): any => {
     const result: any = {}
@@ -15,10 +13,9 @@ export const paramsToIntegers = (params: any): any => {
     return result;
 }
 
-export const validateNumeric = (val: string): boolean => !Number.isNaN(Number.parseFloat(val.trim()));
+export const validateNumeric = (val: string): boolean => !Number.isNaN(Number(val.trim()));
 
 export const completeParams = (paramsObj: any, method: string): boolean => {
-    console.log("params", paramsObj);
     const result = METHOD_PARAMS_VALIDATORS[method](paramsObj)
     if (result) console.log("Params complete")
     else console.log("Params incomplete!", paramsObj);
@@ -30,6 +27,13 @@ export const safeInteger = (integer: number): boolean => {
         return false;
     }
     return true;
+}
+
+export const GCD = (a: number,b: number): any => {
+    if(!b){
+        return a
+    }
+    return GCD(b, a % b)
 }
 
 

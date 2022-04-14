@@ -1,16 +1,38 @@
 
-export type MethodResult = { X?: number, Ri: number };
-
-export type CongruentialParams = {
-    a?: number,
-    m?: number,
-    c?: number,
+export interface CongruentialParams {
+    a: number,
+    m: number,
+    c: number,
 }
 
-export type ValidatorResult = {
+export interface CombinedCongruentialParams {
+    a: number[],
+    m: number[],
+    xi: number[],
+}
+
+export interface ValidatorResult {
     result: boolean,
     table: ChiSquaredTable | any,
 }
+
+export interface GoodnessTestParams {
+    sample: number[],
+    alpha: number,
+}
+
+export type Params = CongruentialParams | CombinedCongruentialParams;
+
+export interface ParamsValidatorResponse {
+    ok?: boolean,
+    error?: string,
+}
+
+export type ParamsValidator = (params: any) => boolean;
+
+export type RandomGeneratorFunc = (seed: number, params: any, n: number) => number[];
+
+export type Handler = (event: React.ChangeEvent<any>) => void;
 
 export interface ChiSquaredTable {
     classStart?: number[],
@@ -22,21 +44,3 @@ export interface ChiSquaredTable {
     X02?: number,
     Xv2?: number,
 }
-
-export type GoodnessTestParams = {
-    sample: number[],
-    alpha: number,
-}
-
-export type Params = CongruentialParams | CongruentialParams[];
-
-export type ParamsValidatorResponse = {
-    ok?: boolean,
-    error?: string,
-}
-
-export type ParamsValidator = (params: any) => boolean;
-
-export type RandomGeneratorFunc = (seed: number, params: any, n: number) => number[];
-
-export type Handler = (event: React.ChangeEvent<any>) => void;

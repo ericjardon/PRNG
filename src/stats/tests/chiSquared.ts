@@ -1,6 +1,6 @@
-import {GoodnessTestParams, ChiSquaredTable, ValidatorResult} from '../types'
-import {TEST_SAMPLE_2} from '../utils'
-import {chiSquaredValues} from '../criticalValues'
+import {GoodnessTestParams, ChiSquaredTable, ValidatorResult} from '../../types'
+import {TEST_SAMPLE_2} from '../../utils'
+import {chiSquaredValues} from '../../criticalValues'
 
 
 /*
