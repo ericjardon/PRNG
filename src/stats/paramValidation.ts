@@ -34,8 +34,10 @@ export const combinedCongruentialParamValidation = (params:any) : boolean => {
     for(let i=1; i<=numGenerators; i++) {
         let a = `a${i}`;
         let m = `m${i}`;
+        let s = `s${i}`;
 
         if (!(
+            params[s] &&
             params[a] && params[a] > 0 &&
             params[m] && params[m] > 0
             )) {
