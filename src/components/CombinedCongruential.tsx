@@ -91,7 +91,7 @@ const CombinedCongruential : React.FC<Props> = ({
                     const s = params[`s${index}`];
                     const m = params[`m${index}`];
                     const a = params[`a${index}`];
-                    return <SingleCongruentialInputs index={index} a={a || ''} m={m ||''} s={s||''} updateHandler={updateHandler}/>
+                    return <SingleCongruentialInputs key={index} index={index} a={a || ''} m={m ||''} s={s||''} updateHandler={updateHandler}/>
                 })}
             </Grid>
         </>

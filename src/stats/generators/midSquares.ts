@@ -17,6 +17,7 @@ const randomMidSquares : RandomGeneratorFunc = (seed: number, params: MidSquares
             x2 = x2%10000
             val = x2/10000
             if (values.has(val)) {
+                console.log("repeated val", val);
                 return results
             }
             values.add(val);

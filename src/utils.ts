@@ -13,10 +13,9 @@ export const paramsToIntegers = (params: any): any => {
     return result;
 }
 
-export const validateNumeric = (val: string): boolean => !Number.isNaN(Number.parseFloat(val.trim()));
+export const validateNumeric = (val: string): boolean => !Number.isNaN(Number(val.trim()));
 
 export const completeParams = (paramsObj: any, method: string): boolean => {
-    console.log("params", paramsObj);
     const result = METHOD_PARAMS_VALIDATORS[method](paramsObj)
     if (result) console.log("Params complete")
     else console.log("Params incomplete!", paramsObj);

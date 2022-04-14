@@ -12,6 +12,7 @@ export const HullDobell = (params: CongruentialParams): any => {
 }
 
 export const midSquaresParamValidation = (params:Params) : boolean => {
+    // uses no Params
     return (
         true
     )
