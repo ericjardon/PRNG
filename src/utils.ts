@@ -92,7 +92,7 @@ export const TEST_SAMPLE = [
 
 export const TEST_SAMPLE_2 = [0.023, 0.186, 0.225, 0.234, 0.294, 0.333, 0.334, 0.406, 0.511, 0.517, 0.538, 0.685, 0.761, 0.774, 0.836, 0.968, 1.064, 1.064, 1.267, 1.401, 1.458, 1.507, 1.514, 1.624, 1.702, 1.725, 1.849, 2.23, 2.325, 2.33, 2.343, 2.563, 2.634, 2.782, 2.92, 2.921, 3.214, 3.246, 3.323, 3.334, 3.491, 3.81, 4.025, 4.49, 4.778, 5.088, 5.587, 6.426, 7.514, 8.223]
 
-// equivalent to test samples above but normalized within 0 and 1 and removing extremes
+// N=50
 export const SAMPLE_RANDOMS = [
     0,
     0.020134228,
@@ -146,7 +146,7 @@ export const SAMPLE_RANDOMS = [
     1,
 ]
 
-
+// N=48
 export const SAMPLE_RANDOMS_2 = [
 0.019878049,
 0.024634146,
