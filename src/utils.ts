@@ -1,7 +1,5 @@
 
-import { METHOD_PARAMS_VALIDATORS, METHODS } from './stats/methods'
-import { ParamsValidator, ParamsValidatorResponse } from './types';
-import { RNG } from './RNGs';
+import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
 
 export const paramsToIntegers = (params: any): any => {
     const result: any = {}
@@ -30,6 +28,13 @@ export const safeInteger = (integer: number): boolean => {
         return false;
     }
     return true;
+}
+
+export const GCD = (a: number,b: number): any => {
+    if(!b){
+        return a
+    }
+    return GCD(b, a % b)
 }
 
 

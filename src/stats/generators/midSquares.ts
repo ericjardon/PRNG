@@ -1,4 +1,4 @@
-import { RandomGeneratorFunc } from "../types";
+import { RandomGeneratorFunc } from "../../types";
 
 interface MidSquaresParams {
     iterations: number

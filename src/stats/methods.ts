@@ -1,8 +1,8 @@
-import { bulkRandomDummy} from "./dummy"
-import randomMidSquares from './midSquares'
-import testChiSquared from "./chiSquared"
-import randomLinearCongruential from "./linearCongruential";
-import randomCombinedCongruential from "./mclm";
+import { bulkRandomDummy} from "./generators/dummy"
+import randomMidSquares from './generators/midSquares'
+import testChiSquared from "./tests/chiSquared"
+import randomLinearCongruential from "./generators/linearCongruential";
+import randomCombinedCongruential from "./generators/mclm";
 import { Params, ParamsValidator, RandomGeneratorFunc } from '../types';
 import {
     midSquaresParamValidation,

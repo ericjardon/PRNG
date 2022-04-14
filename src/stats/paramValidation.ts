@@ -1,5 +1,15 @@
-import {ParamsValidator, Params, CongruentialParams} from '../types'
+import {ParamsValidator, Params, CongruentialParams } from '../types'
 import { MAX_COMBINED_GENERATORS } from '../constants'
+import {GCD} from '../utils'
+
+export const HullDobell = (params: CongruentialParams): any => {
+
+    if(GCD(params.c, params.m) === 1 && (params.m % 2 === 0) && ((params.a-1) % 2 === 0) &&  (params.m % 4 === 0) && ((params.a-1) % 4 === 0)){
+        return true
+    }else{
+        return false
+    }
+}
 
 export const midSquaresParamValidation = (params:Params) : boolean => {
     return (

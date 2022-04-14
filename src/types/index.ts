@@ -2,9 +2,9 @@
 export type MethodResult = { X?: number, Ri: number };
 
 export type CongruentialParams = {
-    a?: number,
-    m?: number,
-    c?: number,
+    a: number,
+    m: number,
+    c: number,
 }
 
 export type ValidatorResult = {
