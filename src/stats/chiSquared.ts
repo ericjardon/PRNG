@@ -1,22 +1,7 @@
-import {GoodnessTestParams} from '../types'
+import {GoodnessTestParams, ChiSquaredTable, ValidatorResult} from '../types'
 import {TEST_SAMPLE_2} from '../utils'
-// interface ChiSquareadParams {
-//     sample: number[],
-//     range: number,
-//     k: number,
-//     class: number,
-//     X: number,
-//     classes: {[c: string]: number},
-// }
+import {chiSquaredValues} from '../criticalValues'
 
-interface ChiSquaredTable {
-    classStart?: number[],
-    classEnd?: number[],
-    classLength?: number[],
-    observedFrequencies?: number[],
-    expectedFrequencies?: number[], // N/k multiplicado por longitud de la clase
-    differential?: number[],  // 1/E * (O-E)^2
-}
 
 /*
 A table can be an object with keys as column names pointing to
@@ -116,14 +101,20 @@ const getExpectedFrequencies = (table: ChiSquaredTable, Ei: number) : number[] =
     return table.classLength!.map(length => length*Ei);
 }
 
+const getDifferential = (table: ChiSquaredTable) => {
+    return table.observedFrequencies!.map((O, i) => (
+        Math.pow((O-table.expectedFrequencies![i]), 2) / table.expectedFrequencies![i]
+    ));
+}
 
-const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
+
+const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
     const { sample, alpha } = params;
     const N = sample.length;
 
     if (N<5) {
         console.log("insufficient N");
-        return false; // TODO: return type object
+        return {result:false, table:null}; // TODO: return type object
     }
 
     console.log("N", N);
@@ -134,7 +125,7 @@ const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
     console.log("range", range);
 
     // Sturges Empirical Law
-    const k = 1 + Math.floor(Math.log2(N));
+    let k = 1 + Math.floor(Math.log2(N));
 
     const Ei = N / k; // expected per class size
 
@@ -147,15 +138,23 @@ const chiSquaredTest = (params: GoodnessTestParams) : boolean => {
     table.observedFrequencies = getObservedFrequencies(table, sample);
 
     table = reduceClasses(table);
-    
-    console.dir(table);
+    k = table.classStart!.length;
 
     // Add Expected frequencies
     table.expectedFrequencies = getExpectedFrequencies(table, Ei);
 
     // Calculate differential
+    table.differential = getDifferential(table);
     
-    return true;
+    // la sumatoria de estas differential
+    table.X02 = table.differential.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+
+    const v = k - 1;  // estimated parameters = 0
+
+    table.Xv2 = chiSquaredValues[v][alpha];
+    console.dir(table);
+    
+    return {result: table.X02 < table.Xv2, table:table};
 }
 
 
@@ -238,6 +237,6 @@ const minClasses = (classes: any) => {
 }
 
 
-console.log(testChiSquared(.05, {sample: TEST_SAMPLE_2, range: 0, k: 0, class: 0, X: 0, classes: {}}))
+// console.log(testChiSquared(.05, {sample: TEST_SAMPLE_2, range: 0, k: 0, class: 0, X: 0, classes: {}}))
 
 export default chiSquaredTest

@@ -15,7 +15,9 @@ export default function TestView({ }: Props) {
             alpha: 0.05
         }
 
-        if (chiSquaredTest(params)) {
+        const {result, table} = chiSquaredTest(params)
+
+        if (result) {
             console.log("CHI SQUARED: TRUE");
         } else {
             console.log("CHI SQUARED: FALSE");
