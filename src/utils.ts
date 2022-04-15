@@ -1,6 +1,8 @@
 
 import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
 
+export const isInteger = (x: any) => Number.isInteger(Number(x));
+
 export const paramsToIntegers = (params: any): any => {
     const result: any = {}
     for (const key in params) {

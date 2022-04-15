@@ -1,21 +1,10 @@
 import React, { ChangeEventHandler, useState, useEffect } from 'react'
-import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
+import { Button, TextField, Stack, Select, MenuItem } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
 import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
-import { validateNumeric, paramsToIntegers, completeParams } from '../utils'
+import { validateNumeric, paramsToIntegers, completeParams, isInteger } from '../utils'
 import { RNG } from '../RNGs'
-import { Validation } from '../Validation'
-import CalculateIcon from '@mui/icons-material/Calculate';
-import FunctionsIcon from '@mui/icons-material/Functions';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
 
 interface Props {
 	updateRandoms: (randoms: number[]) => void,
@@ -24,24 +13,6 @@ interface Props {
 	updateGlobalState: (name: string, value: any) => void,
 }
 
-function createData(
-	K: number,
-	start: number,
-	end: number,
-	frecuency: number,
-	f0: number,
-	fe: number,
-	final: number,
-  ) {
-	return { K, start, end, frecuency, f0, fe, final };
-  }
-  const rows = [
-	createData(0, 0, 0.0, 2, 0, 0,0),
-	createData(1, 0, 0.0, 2, 0, 0,0),
-	createData(2, 0, 0.0, 2, 0, 0,0),
-	createData(3, 0, 0.0, 2, 0, 0,0),
-	createData(4, 0, 0.0, 0, 0, 0,0)
-  ];
 
 const Form: React.FC<Props> = ({
 	updateRandoms,
@@ -102,17 +73,15 @@ const Form: React.FC<Props> = ({
 		clearRandoms();
 		setSeed("1");
 
-		updateGlobalState('alpha', alpha);
-		setAlpha(event.target.value);
-		console.log("Alpha seleccionado:", event.target.value);
-		updateGlobalState('alpha', alpha);
 	}
+
 
 	const getSeedAsNum = (): number | null => {
 		let seedNum: number = Number.parseFloat(seed);
 
-		if (Number.isNaN(seedNum)) {
-			setError("Introduce una semilla válida");
+		if (Number.isNaN(seedNum) || !isInteger(seedNum)) {
+			setError("Semilla debe de ser un entero");
+			console.log("Invalid seed");
 			return null;
 		};
 
@@ -125,26 +94,38 @@ const Form: React.FC<Props> = ({
 	}
 
 	const getRandom = (): void => {
-		const n = Number.parseInt(numberRandoms);
+
+		const n = Number(numberRandoms);
+		if (!isInteger(n) || n<=0) {
+			setError('Número de Aleatorios inválido')
+			console.log("numRandoms not an int")
+			return;
+		}
+
 		console.log("How many nums?", n);
 		console.log("Form Params", params);
 
-		if (!method || !seed) return;
+		if (!method || !seed) {
+			console.log("Method or seed are empty");
+			return;
+		};
 
 		let seedNum;
-		if (method===RNG.CombinedCongruential) {
+		if (method === RNG.CombinedCongruential) {
 			seedNum = 1; // dummy value
 		}
 		else {
 			seedNum = getSeedAsNum();
-			if (!seedNum) return;
+			if (!seedNum) {
+				console.log("No valid seed num");
+				return;
+			};
 		}
 
 		console.log("Method selected:", method);
 
 		// Prepare Params
 		const { seedVal, cleanParams } = prepareParams(method, seedNum, params, n);
-
 		if (cleanParams === null) {
 			setError('Parámetros incorrectos');
 			return;
@@ -161,10 +142,6 @@ const Form: React.FC<Props> = ({
 			const randoms: number[] = METHODS[method](seedVal, cleanParams, n);
 			updateRandoms(randoms);
 		}
-	}
-
-	const runValidation = (name: Validation): void => {
-		console.log("Validating with:", name);
 	}
 
 	return (
@@ -196,64 +173,6 @@ const Form: React.FC<Props> = ({
 			<div className="buttonContainer">
 				<Button disabled={!completeForm} variant="contained" size="large" onClick={getRandom}>Generar {numberRandoms} Randoms</Button>
 			</div>
-			 <div className='Validacion'>
-				<h4>Validación de función con números random</h4>
-				<InputLabel id="select-label">Seleccione un valor de Alpha</InputLabel>
-				<Select
-					labelId="method-selector-label"
-					id="chi-square"
-					value={alpha}
-					label="Valor de Alpha"
-					onChange={handleMethodChange}
-				>
-					<MenuItem value="">
-						<em>Valor de alpha</em>
-					</MenuItem>
-					<MenuItem value={0.001}>0.001</MenuItem>
-					<MenuItem value={0.0025}>0.0025</MenuItem>
-					<MenuItem value={0.005}>0.005</MenuItem>
-					<MenuItem value={0.01}>0.01</MenuItem>
-					<MenuItem value={0.025}>0.025</MenuItem>
-					<MenuItem value={0.05}>0.05</MenuItem>
-				</Select>
-			</div>
-			<div className="validation-buttons">
-				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square {numberRandoms}</Button>
-				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov {numberRandoms}</Button>
-			</div> 
-			<TableContainer component={Paper} className='validationTable'>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table" className='table'>
-        <TableHead>
-          <TableRow>
-            <TableCell>K</TableCell>
-            <TableCell align="right">Start</TableCell>
-            <TableCell align="right">End</TableCell>
-            <TableCell align="right">F(x)</TableCell>
-            <TableCell align="right">F0</TableCell>
-			<TableCell align="right">FE</TableCell>
-			<TableCell align="right">(O-E)^2/FE</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.K}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.K}
-              </TableCell>
-              <TableCell align="right">{row.start}</TableCell>
-              <TableCell align="right">{row.end}</TableCell>
-              <TableCell align="right">{row.frecuency}</TableCell>
-              <TableCell align="right">{row.f0}</TableCell>
-			  <TableCell align="right">{row.fe}</TableCell>
-			  <TableCell align="right">{row.final}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
 		</div>
 	)
 }
