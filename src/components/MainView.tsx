@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Form from './Form'
 import Result from './output/Result'
+import ValidationForm from './ValidationForm'
 import { Alert } from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { Routes, Route, Link } from 'react-router-dom'
@@ -29,9 +30,10 @@ export default function MainView() {
     setRandoms([]);
   }
 
+  const hasSample = ():boolean => randoms.length > 0;
+
   const updateRandoms = (randoms: number[]) => {
     setAlert(null);
-    console.log("randoms at updateRandoms", randoms);
     setRandoms(randoms);
   }
 
@@ -49,6 +51,11 @@ export default function MainView() {
           <Result random={random} alert={alert} randoms={randoms} method={globalState.method}/>
         </div>
       </div>
+      {randoms.length>0 && (
+      <div className="validationForm">
+        <ValidationForm></ValidationForm>
+      </div>
+      )}
     </div >
 	
   )

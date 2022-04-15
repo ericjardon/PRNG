@@ -170,6 +170,11 @@
   width: 100%;
 }
 
+.validationForm {
+  display:block;
+  text-align: center;
+}
+
 
 @media (max-width: 426px) {
   .row {
