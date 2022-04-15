@@ -35,17 +35,22 @@
 	
 }
 .validationTable{
-	margin-left: 3vw;	
+	margin-left: 2vw;	
+	background-color: #282c34;
+	width: 56vw !important;
+	margin-left: 20%;
+	
 }
 .table{
 	background-color: #282c34;
+	
 }
 .validation-buttons{
-	width: 100%;
+	width: 60%;
 	margin-top: 15px;
 	display: flex;
 	gap: 10%;
-	margin-left: 3vw;
+	margin-left: 20vw;
 	margin-bottom: 15px;
 }
 #validationButton{

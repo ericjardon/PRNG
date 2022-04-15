@@ -38,7 +38,7 @@ export default function TestTable({ data }: Props) {
 
     return (
         <TableContainer component={Paper} className='validationTable'>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table" className='table'>
+            <Table sx={{ minWidth: 300 }} aria-label="simple table" className='table'>
                 <TableHead>
                     <TableRow>
                         <TableCell>K</TableCell>
