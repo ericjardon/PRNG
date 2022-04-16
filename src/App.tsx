@@ -23,9 +23,10 @@ function App() {
         </nav>
         <Routes>
           <Route path="/" element={<MainView/>} />
-          <Route path="/data-table" element={<DataTable data={{result:false, table:EXAMPLE_CHI_TABLE}}/>} />
-          <Route path="/table" element={<TestTable data={{result:false, table:EXAMPLE_CHI_TABLE}}/>} />
-          <Route path="/chi" element={<TestView/>} />
+          <Route path="/PRNG" element={<MainView/>} />
+          <Route path="/PRNG/data-table" element={<DataTable data={{result:false, table:EXAMPLE_CHI_TABLE}}/>} />
+          <Route path="/PRNG/table" element={<TestTable data={{result:false, table:EXAMPLE_CHI_TABLE}}/>} />
+          <Route path="/PRNG/chi" element={<TestView/>} />
         </Routes>
       </ThemeProvider>
     </Router>
