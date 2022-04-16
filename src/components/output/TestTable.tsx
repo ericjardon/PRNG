@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import { Alert } from '@mui/material'
 import { ValidatorResult } from '../../types'
 import { CSVLink } from 'react-csv';
 import { formatNum, tableToCSVData } from '../../utils';
@@ -79,7 +80,9 @@ const TestTable: React.FC<Props> = ({ data }) => {
         console.log(dataArray);
     }, [table])
 
-    if (table === null) return <></>;
+    if (table === null || result === null) return (
+        <Alert severity='error'>Tabla no disponible: muestra insuficiente</Alert>
+    )
 
     const testName: string = 'classStart' in table ? 'chi' : 'kol';
 

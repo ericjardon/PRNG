@@ -138,6 +138,12 @@ const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
 
     table = reduceClasses(table);
     k = table.classStart!.length;
+
+    if (k<2) {
+        console.log("insufficient classes after reduction");
+        return {result:false, table:null}; // TODO: return type object
+    }
+
     table.k = k;
 
     // Add Expected frequencies
@@ -148,8 +154,8 @@ const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
     
     // la sumatoria de estas differential
     table.X02 = table.differential.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
-
     const v = k - 1;  // estimated parameters = 0
+    console.log("Degrees v:", v)
 
     table.Xv2 = chiSquaredValues[v][alpha];
     table.N = N;
