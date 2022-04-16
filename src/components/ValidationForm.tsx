@@ -95,7 +95,7 @@ const ValidationForm : React.FC<Props> = ({sample}) => {
 				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square </Button>
 				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />} onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov</Button>
 			</div>
-			<TableSwitch data={EXAMPLE_CHI_TABLE} type={1}/>
+			<TableSwitch data={{result: false, table: EXAMPLE_CHI_TABLE}} type={1}/>
       </>
   )
 }

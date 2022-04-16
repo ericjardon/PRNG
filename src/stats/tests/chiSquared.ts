@@ -138,6 +138,7 @@ const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
 
     table = reduceClasses(table);
     k = table.classStart!.length;
+    table.k = k;
 
     // Add Expected frequencies
     table.expectedFrequencies = getExpectedFrequencies(table, Ei);
@@ -151,6 +152,7 @@ const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
     const v = k - 1;  // estimated parameters = 0
 
     table.Xv2 = chiSquaredValues[v][alpha];
+    table.N = N;
     console.dir(table);
     
     return {result: table.X02 < table.Xv2, table:table};

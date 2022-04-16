@@ -75,7 +75,8 @@ const testKolSmi = (params: GoodnessTestParams) : ValidatorResult => {
       Dsample: max_d,
       Dalpha: d_alpha
     }
-    
+
+    table.N = sample.length;
     console.dir(table);
     
     return {result: max_d < d_alpha, table: table}

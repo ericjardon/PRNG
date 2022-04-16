@@ -43,6 +43,8 @@ export interface ChiSquaredTable {
     differential?: number[],  // 1/E * (O-E)^2, la sumatoria da Xo^2
     X02?: number,
     Xv2?: number,
+    k?: number,
+    N?:number,
 }
 
 export interface KolSmiTable {
@@ -54,4 +56,5 @@ export interface KolSmiTable {
     DminusMax?:number,
     Dsample?: number, // empirical
     Dalpha?: number,  // true
+    N?:number,
 }

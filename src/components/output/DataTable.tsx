@@ -9,10 +9,10 @@ import {
     Button,
     TextField,
   } from '@mui/material';
-import { ChiSquaredTable, KolSmiTable } from '../../types';
+import { ChiSquaredTable, KolSmiTable, ValidatorResult } from '../../types';
 import { CSVLink } from 'react-csv';
 interface DataTableProps {
-    data: ChiSquaredTable | KolSmiTable;
+    data: ValidatorResult;
 }
 
 const DataTable : React.FC<DataTableProps> = ({

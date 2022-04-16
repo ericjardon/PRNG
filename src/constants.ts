@@ -40,5 +40,7 @@ export const EXAMPLE_CHI_TABLE : ChiSquaredTable = JSON.parse(`{
         4.506666666666668
     ],
     "X02": 21.7,
-    "Xv2": 7.81
+    "Xv2": 7.81,
+    "N": 50,
+    "k": 4
 }`)
