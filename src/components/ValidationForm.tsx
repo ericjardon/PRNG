@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import TableSwitch from './TableSwitch'
 import CalculateIcon from '@mui/icons-material/Calculate';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
 import { Validation } from '../Validation'
-import {EXAMPLE_CHI_TABLE} from '../constants'
+import { EXAMPLE_CHI_TABLE } from '../constants'
 import { ChiSquaredTable, KolSmiTable, ValidatorResult } from '../types';
 import testKolSmi from '../stats/tests/kolmogrovSmirnov';
 import chiSquaredTest from '../stats/tests/chiSquared';
@@ -15,17 +15,19 @@ type Props = {
 	sample: number[]  // mandatory
 }
 
-const ValidationForm : React.FC<Props> = ({sample}) => {
+const ValidationForm: React.FC<Props> = ({ sample }) => {
 
-    const [alpha, setAlpha] = useState<string>('0.05');
-	const [results, setResults] = useState<ValidatorResult | null>();
+	const [alpha, setAlpha] = useState<string>('0.05');
+	const [results, setResults] = useState<ValidatorResult | null>(null);
 
-    const handleAlphaSelect = (event: SelectChangeEvent) => {
-        setAlpha(event.target.value);
-    }
+	const handleAlphaSelect = (event: SelectChangeEvent) => {
+		setAlpha(event.target.value);
+	}
+
+	const hasResults = () => results !== null;
 
 	const runChiSquared = () => {
-		let validationResults : ValidatorResult = chiSquaredTest({
+		let validationResults: ValidatorResult = chiSquaredTest({
 			sample: sample,
 			alpha: Number(alpha),
 		})
@@ -35,7 +37,7 @@ const ValidationForm : React.FC<Props> = ({sample}) => {
 	}
 
 	const runKolSmi = () => {
-		let validationResults : ValidatorResult = testKolSmi({
+		let validationResults: ValidatorResult = testKolSmi({
 			sample: sample,
 			alpha: Number(alpha),
 		})
@@ -43,11 +45,11 @@ const ValidationForm : React.FC<Props> = ({sample}) => {
 		setResults(validationResults);
 	}
 
-  return (
-      <>
+	return (
+		<>
 			<div className='Validacion'>
 				<h3 id="validation">Validar Aleatorios</h3>
-                <h5>Pruebas de Bondad de Ajuste a Distribución Uniforme</h5>
+				<h5>Pruebas de Bondad de Ajuste a Distribución Uniforme</h5>
 				<InputLabel id="select-label">Seleccione un valor de Alpha</InputLabel>
 				<Select
 					labelId="method-selector-label"
@@ -92,12 +94,17 @@ const ValidationForm : React.FC<Props> = ({sample}) => {
 				</Select>
 			</div>
 			<div className="validation-buttons">
-				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square </Button>
-				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />} onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov</Button>
+				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />}
+					onClick={runChiSquared}>Chi Square </Button>
+				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}
+					onClick={runKolSmi}>Kolmogorov Smirnov</Button>
 			</div>
-			<TableSwitch data={{result: false, table: EXAMPLE_CHI_TABLE}} type={1}/>
-      </>
-  )
+			{
+				hasResults() &&
+				<TableSwitch data={{ result: false, table: EXAMPLE_CHI_TABLE }} type={1} />
+			}
+		</>
+	)
 }
 
 export default ValidationForm;

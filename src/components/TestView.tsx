@@ -34,6 +34,7 @@ export default function TestView({ }: Props) {
         }
 
         const {result, table} = testKolSmi(params);
+        console.log(JSON.stringify(table))
 
         if (result) {
             console.log("KOL SMI: TRUE");

@@ -38,6 +38,11 @@ export const GCD = (a: number,b: number): any => {
     return GCD(b, a % b)
 }
 
+export const formatNum = (x:number, d:number): number => {
+    let factor = 10 ** d;
+    return Math.floor(x * factor) / factor
+}
+
 
 export const TEST_SAMPLE = [
     22.9,

@@ -178,8 +178,13 @@
 .validationForm {
   display:block;
   text-align: center;
+  min-height: 60vh;
 }
 
+
+.summaryStats {
+  padding: 0px 60px;
+}
 
 @media (max-width: 426px) {
   .row {
@@ -203,5 +208,8 @@
   }
   .flexDivX {
     flex-direction: column;
+  }
+  .summaryStats {
+    padding: 0 10;
   }
 }
