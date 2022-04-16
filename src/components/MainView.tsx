@@ -30,7 +30,7 @@ export default function MainView() {
     setRandoms([]);
   }
 
-  const hasSample = ():boolean => randoms.length > 0;
+  const hasSample = (): boolean => randoms.length > 1;
 
   const updateRandoms = (randoms: number[]) => {
     setAlert(null);
@@ -45,18 +45,28 @@ export default function MainView() {
     <div className="App-main">
       <div className="row">
         <div className="column">
-          <Form updateRandoms={updateRandoms} setError={setError} clearRandoms={clearRandoms} updateGlobalState={updateGlobalState}></Form>
+          <Form
+            updateRandoms={updateRandoms}
+            setError={setError}
+            clearRandoms={clearRandoms}
+            updateGlobalState={updateGlobalState}
+          />
         </div>
         <div className="column">
-          <Result random={random} alert={alert} randoms={randoms} method={globalState.method}/>
+          <Result
+            random={random}
+            alert={alert}
+            randoms={randoms}
+            method={globalState.method}
+          />
         </div>
       </div>
-      {randoms.length>0 && (
-      <div className="validationForm">
-        <ValidationForm></ValidationForm>
-      </div>
+      {hasSample() && (
+        <div className="validationForm">
+          <ValidationForm sample={randoms} />
+        </div>
       )}
     </div >
-	
+
   )
 }

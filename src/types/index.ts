@@ -13,7 +13,7 @@ export interface CombinedCongruentialParams {
 
 export interface ValidatorResult {
     result: boolean,
-    table: ChiSquaredTable | any,
+    table: ChiSquaredTable | KolSmiTable | null,
 }
 
 export interface GoodnessTestParams {
@@ -50,6 +50,8 @@ export interface KolSmiTable {
     Ri?: number[], // Ri for uniform, S(x) in general
     Dplus?: number[],  // i/N - Ri, or S(x)-F(x)
     Dminus?: number[], // Ri - (i-1)/N, or F(x)-S(x)
+    DplusMax?: number,
+    DminusMax?:number,
     Dsample?: number, // empirical
     Dalpha?: number,  // true
 }

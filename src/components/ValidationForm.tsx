@@ -6,39 +6,41 @@ import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/mat
 import { SelectChangeEvent } from '@mui/material/Select'
 import { Validation } from '../Validation'
 import {EXAMPLE_CHI_TABLE} from '../constants'
+import { ChiSquaredTable, KolSmiTable, ValidatorResult } from '../types';
+import testKolSmi from '../stats/tests/kolmogrovSmirnov';
+import chiSquaredTest from '../stats/tests/chiSquared';
 
-function createData(
-    K: number,
-    start: number,
-    end: number,
-    frecuency: number,
-    f0: number,
-    fe: number,
-    final: number,
-) {
-    return { K, start, end, frecuency, f0, fe, final };
+
+type Props = {
+	sample: number[]  // mandatory
 }
 
-type Props = {}
-
-const ValidationForm : React.FC<Props> = () => {
+const ValidationForm : React.FC<Props> = ({sample}) => {
 
     const [alpha, setAlpha] = useState<string>('0.05');
-
-    const rows = [
-        createData(0, 0, 0.0, 2, 0, 0, 0),
-        createData(1, 0, 0.0, 2, 0, 0, 0),
-        createData(2, 0, 0.0, 2, 0, 0, 0),
-        createData(3, 0, 0.0, 2, 0, 0, 0),
-        createData(4, 0, 0.0, 0, 0, 0, 0)
-    ];
+	const [results, setResults] = useState<ValidatorResult | null>();
 
     const handleAlphaSelect = (event: SelectChangeEvent) => {
         setAlpha(event.target.value);
     }
 
-	const runValidation = (name: Validation): void => {
-		console.log("Validating with:", name);
+	const runChiSquared = () => {
+		let validationResults : ValidatorResult = chiSquaredTest({
+			sample: sample,
+			alpha: Number(alpha),
+		})
+
+		setResults(validationResults);
+
+	}
+
+	const runKolSmi = () => {
+		let validationResults : ValidatorResult = testKolSmi({
+			sample: sample,
+			alpha: Number(alpha),
+		})
+
+		setResults(validationResults);
 	}
 
   return (
