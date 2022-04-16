@@ -70,6 +70,7 @@ const Form: React.FC<Props> = ({
 		setParams({})
 		setMethod(event.target.value);
 		console.log("Method selected:", event.target.value);
+		updateGlobalState('method', event.target.value);
 		clearRandoms();
 		setSeed("1");
 

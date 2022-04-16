@@ -4,8 +4,7 @@ import Result from './output/Result'
 import ValidationForm from './ValidationForm'
 import { Alert } from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import { Routes, Route, Link } from 'react-router-dom'
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import {RNG} from '../RNGs'
 /* Global App State is managed from this component. */
 
 export default function MainView() {
@@ -31,6 +30,13 @@ export default function MainView() {
   }
 
   const hasSample = (): boolean => randoms.length > 1;
+  const hasValidation = (): boolean => true; /* (
+      globalState.method === RNG.LinearCongruential ||
+      globalState.method === RNG.LinearCongruential ||
+      globalState.method === RNG.MixedCongruential ||
+      globalState.method === RNG.CombinedCongruential || 
+      globalState.method === RNG.MathRandom
+    ) */
 
   const updateRandoms = (randoms: number[]) => {
     setAlert(null);
@@ -61,7 +67,7 @@ export default function MainView() {
           />
         </div>
       </div>
-      {hasSample() && (
+      {hasSample() && hasValidation() && (
         <div className="validationForm">
           <ValidationForm sample={randoms} />
         </div>

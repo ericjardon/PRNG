@@ -116,7 +116,6 @@ const TestTable: React.FC<Props> = ({ data }) => {
             </div>
             {
                 testName === 'chi' &&
-                <>
                     <TableContainer component={Paper} className='validationTable'>
                         <Table sx={{ minWidth: 300 }} aria-label="simple table" className='table'>
                             <TableHead>
@@ -150,7 +149,6 @@ const TestTable: React.FC<Props> = ({ data }) => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </>
             }
             <CSVLink
                 data={csvData}
