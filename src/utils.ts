@@ -1,5 +1,7 @@
 
+import { Data } from 'react-csv/components/CommonPropTypes';
 import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
+import { ChiSquaredTable, KolSmiTable } from './types';
 
 export const isInteger = (x: any) => Number.isInteger(Number(x));
 
@@ -19,8 +21,6 @@ export const validateNumeric = (val: string): boolean => !Number.isNaN(Number(va
 
 export const completeParams = (paramsObj: any, method: string): boolean => {
     const result = METHOD_PARAMS_VALIDATORS[method](paramsObj)
-    if (result) console.log("Params complete")
-    else console.log("Params incomplete!", paramsObj);
     return result;
 }
 
@@ -36,6 +36,73 @@ export const GCD = (a: number,b: number): any => {
         return a
     }
     return GCD(b, a % b)
+}
+
+export const areRelativePrimes = (m: number, c: number) => GCD(m, c) === 1;
+
+const getPrimesOf = (x: number): number[] => {
+    let sieve = [];
+    let i;
+    let j;
+    let primes = [];
+
+    for (i = 2; i <= x; ++i) {
+        if (!sieve[i]) {
+
+            if (x % i === 0) {
+                primes.push(i);
+            }
+
+            for (j = i << 1; j <= x; j += i) {
+                sieve[j] = true;
+            }
+        }
+    }
+    return primes;
+}
+
+export const divisibleByPrimes = (a_1:number, m:number) : boolean => {
+    // a-1 is divisible by all prime factors of m
+    const primes = getPrimesOf(m);
+    for (let p of primes) {
+        if (a_1 % p !==0 ) return false;
+    }
+    return true;
+}
+
+export const divisibleByFourCheck = (a_1:number, m:number) : boolean => {
+    // if m is divisible by four, then a-1 is divisible by 4
+    if (m%4 !== 0) return true;  // not divisble by four so no problem
+    return a_1%4 === 0;
+}
+
+// console.log(getPrimesOf(166));
+
+export const formatNum = (x:number, d:number): number => {
+    let factor = 10 ** d;
+    return Math.floor(x * factor) / factor
+}
+
+export const tableToCSVData = (table: ChiSquaredTable | KolSmiTable) : Data => {
+    let data : Data = []
+    let N = table.N!;
+
+    let columns : string[] = Object.keys(table).filter(key => Array.isArray((table as any)[key]))
+    console.log("Columns:", columns);
+
+    for (let i=0; i<N; i++) {
+        let row : Record<string, number> = {}
+
+        columns.forEach(key => {
+            console.log(`${key}[${i}]`)
+            console.log((table as any)[key][i])
+            row[key] = (table as any)[key][i];
+        })
+        
+        data.push(row);
+    }
+
+    return data;
 }
 
 

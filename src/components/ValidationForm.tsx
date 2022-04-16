@@ -1,51 +1,61 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import TableSwitch from './TableSwitch'
 import CalculateIcon from '@mui/icons-material/Calculate';
 import FunctionsIcon from '@mui/icons-material/Functions';
-import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
+import { Button,  Select, MenuItem, InputLabel } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
-import { Validation } from '../Validation'
-import {EXAMPLE_CHI_TABLE} from '../constants'
+import { EXAMPLE_CHI_TABLE } from '../constants'
+import { ValidatorResult } from '../types';
+import testKolSmi from '../stats/tests/kolmogrovSmirnov';
+import chiSquaredTest from '../stats/tests/chiSquared';
+import {kolSmiValues, chiSquaredValues } from '../criticalValues';
 
-function createData(
-    K: number,
-    start: number,
-    end: number,
-    frecuency: number,
-    f0: number,
-    fe: number,
-    final: number,
-) {
-    return { K, start, end, frecuency, f0, fe, final };
+type Props = {
+	sample: number[]  // mandatory
 }
 
-type Props = {}
+const ValidationForm: React.FC<Props> = ({ sample }) => {
 
-const ValidationForm : React.FC<Props> = () => {
+	const [alpha, setAlpha] = useState<string>('0.05');
+	const [results, setResults] = useState<ValidatorResult | null>(null);
+	const [chiEnabled, setChiEnabled] = useState<boolean>(true);
+	const [kolEnabled, setKolEnabled] = useState<boolean>(true);
 
-    const [alpha, setAlpha] = useState<string>('0.05');
-
-    const rows = [
-        createData(0, 0, 0.0, 2, 0, 0, 0),
-        createData(1, 0, 0.0, 2, 0, 0, 0),
-        createData(2, 0, 0.0, 2, 0, 0, 0),
-        createData(3, 0, 0.0, 2, 0, 0, 0),
-        createData(4, 0, 0.0, 0, 0, 0, 0)
-    ];
-
-    const handleAlphaSelect = (event: SelectChangeEvent) => {
-        setAlpha(event.target.value);
-    }
-
-	const runValidation = (name: Validation): void => {
-		console.log("Validating with:", name);
+	const handleAlphaSelect = (event: SelectChangeEvent) => {
+		let a = event.target.value;
+		setAlpha(a);
+		setChiEnabled(a in chiSquaredValues[1]);  // requires alpha level and v
+		setKolEnabled(a in kolSmiValues);  // requires alpha level and N
 	}
 
-  return (
-      <>
+	const hasResults = () => results !== null;
+
+	const runChiSquared = () => {
+		let validationResults: ValidatorResult = chiSquaredTest({
+			sample: sample,
+			alpha: Number(alpha),
+		})
+
+		setResults(validationResults);
+
+	}
+
+	const runKolSmi = () => {
+		let validationResults: ValidatorResult = testKolSmi({
+			sample: sample,
+			alpha: Number(alpha),
+		})
+
+		setResults(validationResults);
+	}
+
+	// let exampleData = { result: false, table: EXAMPLE_CHI_TABLE }
+
+	return (
+		<>
 			<div className='Validacion'>
 				<h3 id="validation">Validar Aleatorios</h3>
-                <h5>Pruebas de Bondad de Ajuste a Distribución Uniforme</h5>
+				<h5>Pruebas de Bondad de Ajuste a Distribución Uniforme</h5>
 				<InputLabel id="select-label">Seleccione un valor de Alpha</InputLabel>
 				<Select
 					labelId="method-selector-label"
@@ -57,45 +67,41 @@ const ValidationForm : React.FC<Props> = () => {
 					<MenuItem value="">
 						<em>Valor de alpha</em>
 					</MenuItem>
+					
 					<MenuItem value={'0.001'}>0.001</MenuItem>
-					<MenuItem value={'0.0025'}>0.0025</MenuItem>
+					<MenuItem value={'0.002'}>0.002</MenuItem>
 					<MenuItem value={'0.005'}>0.005</MenuItem>
 					<MenuItem value={'0.01'}>0.01</MenuItem>
+					<MenuItem value={'0.02'}>0.02</MenuItem>
 					<MenuItem value={'0.025'}>0.025</MenuItem>
 					<MenuItem value={'0.05'}>0.05</MenuItem>
-					<MenuItem value={'0.1'}>0.1</MenuItem>
-					<MenuItem value={'0.15'}>0.15</MenuItem>
-					<MenuItem value={'0.2'}>0.2</MenuItem>
-					<MenuItem value={'0.25'}>0.25</MenuItem>
-					<MenuItem value={'0.3'}>0.3</MenuItem>
-					<MenuItem value={'0.35'}>0.35</MenuItem>
-					<MenuItem value={'0.4'}>0.4</MenuItem>
-					<MenuItem value={'0.45'}>0.45</MenuItem>
-					<MenuItem value={'0.5'}>0.5</MenuItem>
-					<MenuItem value={'0.55'}>0.55</MenuItem>
-					<MenuItem value={'0.6'}>0.6</MenuItem>
-					<MenuItem value={'0.65'}>0.65</MenuItem>
-					<MenuItem value={'0.7'}>0.7</MenuItem>
-					<MenuItem value={'0.75'}>0.75</MenuItem>
-					<MenuItem value={'0.8'}>0.8</MenuItem>
-					<MenuItem value={'0.85'}>0.85</MenuItem>
-					<MenuItem value={'0.9'}>0.9</MenuItem>
+					<MenuItem value={'0.1'}>0.10</MenuItem>
+					<MenuItem value={'0.2'}>0.20</MenuItem>
+					<MenuItem value={'0.5'}>0.50</MenuItem>
+					<MenuItem value={'0.9'}>0.90</MenuItem>
 					<MenuItem value={'0.95'}>0.95</MenuItem>
 					<MenuItem value={'0.975'}>0.975</MenuItem>
 					<MenuItem value={'0.99'}>0.99</MenuItem>
 					<MenuItem value={'0.995'}>0.995</MenuItem>
-					<MenuItem value={'0.9975'}>0.9975</MenuItem>
-					<MenuItem value={'0.999'}>0.0999</MenuItem>
 
 				</Select>
 			</div>
 			<div className="validation-buttons">
-				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square </Button>
-				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />} onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov</Button>
+				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />}
+					onClick={runChiSquared}
+					disabled={!chiEnabled}
+					>Chi Square </Button>
+				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}
+					onClick={runKolSmi}
+					disabled={!kolEnabled}
+					>Kolmogorov Smirnov</Button>
 			</div>
-			<TableSwitch data={EXAMPLE_CHI_TABLE} type={1}/>
-      </>
-  )
+			{
+				hasResults() &&
+				<TableSwitch data={results!} type={1} />
+			}
+		</>
+	)
 }
 
 export default ValidationForm;

@@ -4,8 +4,7 @@ import Result from './output/Result'
 import ValidationForm from './ValidationForm'
 import { Alert } from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import { Routes, Route, Link } from 'react-router-dom'
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import {RNG} from '../RNGs'
 /* Global App State is managed from this component. */
 
 export default function MainView() {
@@ -30,7 +29,13 @@ export default function MainView() {
     setRandoms([]);
   }
 
-  const hasSample = ():boolean => randoms.length > 0;
+  const hasSample = (): boolean => randoms.length > 1;
+  const hasValidation = (): boolean => (
+      globalState.method === RNG.LinearCongruential ||
+      globalState.method === RNG.MixedCongruential ||
+      globalState.method === RNG.MultiplicativeCongruential || 
+      globalState.method === RNG.MathRandom
+    )
 
   const updateRandoms = (randoms: number[]) => {
     setAlert(null);
@@ -45,18 +50,28 @@ export default function MainView() {
     <div className="App-main">
       <div className="row">
         <div className="column">
-          <Form updateRandoms={updateRandoms} setError={setError} clearRandoms={clearRandoms} updateGlobalState={updateGlobalState}></Form>
+          <Form
+            updateRandoms={updateRandoms}
+            setError={setError}
+            clearRandoms={clearRandoms}
+            updateGlobalState={updateGlobalState}
+          />
         </div>
         <div className="column">
-          <Result random={random} alert={alert} randoms={randoms} method={globalState.method}/>
+          <Result
+            random={random}
+            alert={alert}
+            randoms={randoms}
+            method={globalState.method}
+          />
         </div>
       </div>
-      {randoms.length>0 && (
-      <div className="validationForm">
-        <ValidationForm></ValidationForm>
-      </div>
+      {hasSample() && hasValidation() && (
+        <div className="validationForm">
+          <ValidationForm sample={randoms} />
+        </div>
       )}
     </div >
-	
+
   )
 }

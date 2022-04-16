@@ -21,7 +21,7 @@ const Form: React.FC<Props> = ({
 	updateGlobalState,
 }) => {
 
-	const [method, setMethod] = useState<string>(RNG.LinearCongruential);
+	const [method, setMethod] = useState<string>(RNG.MidSquares);
 	const [seed, setSeed] = useState<string>("");
 	const [numberRandoms, setNumberRandoms] = useState<string>("");
 	const [params, setParams] = useState<any>({});
@@ -70,9 +70,9 @@ const Form: React.FC<Props> = ({
 		setParams({})
 		setMethod(event.target.value);
 		console.log("Method selected:", event.target.value);
+		updateGlobalState('method', event.target.value);
 		clearRandoms();
 		setSeed("1");
-
 	}
 
 
@@ -136,11 +136,18 @@ const Form: React.FC<Props> = ({
 			return;
 		}
 		else {
-			console.log("Calling method", method, 'with how many?', n);
-			console.log("Sending Params:", params);
+			//console.log("Calling method", method, 'with how many?', n);
+			//console.log("Sending Params:", params);
 
-			const randoms: number[] = METHODS[method](seedVal, cleanParams, n);
-			updateRandoms(randoms);
+			const returnedRandoms: number[] = METHODS[method](seedVal, cleanParams, n);
+			console.log("returned randoms", returnedRandoms);
+
+			if (method === RNG.MixedCongruential && returnedRandoms.length == 0) {
+				setError('Parámetros no cumplen con Hull Dobell');
+				return;
+			}
+			console.log("updating randoms")
+			updateRandoms(returnedRandoms);
 		}
 	}
 

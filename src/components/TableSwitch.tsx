@@ -1,11 +1,11 @@
 import React from 'react'
 import TestTable from './output/TestTable'
 import DataTable from './output/DataTable'
-import { ChiSquaredTable, KolSmiTable } from '../types'
+import { ChiSquaredTable, KolSmiTable, ValidatorResult } from '../types'
 
 
 type Props = {
-    data: ChiSquaredTable | KolSmiTable,
+    data: ValidatorResult,
     type: number,
 }
 
@@ -15,7 +15,7 @@ const TableSwitch : React.FC<Props> = ({
 }) => {
 
     // Don't show anything if there is no table data
-    if (!data || data === {}) {
+    if (!data) {
         return <></>
     }
 

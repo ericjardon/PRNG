@@ -3,6 +3,9 @@ import {CongruentialParams, RandomGeneratorFunc} from '../../types'
 
 const randomMixedCongruential : RandomGeneratorFunc = (seed: number, params: CongruentialParams, n:number) => {
     // recibir n ciclos y regresar un arreglo con los n resultados de Ri Basarse en dummy.
+    console.log("Mixed Congruential N=", n);
+    console.log(params);
+
     let results: number[] = []
     let setR = new Set<number>()
     let iterations = n;
@@ -21,6 +24,7 @@ const randomMixedCongruential : RandomGeneratorFunc = (seed: number, params: Con
             console.log("The seed", seed)
         }
     }else{
+        console.log("Invalid hull dobell");
         return results
     }
     return results

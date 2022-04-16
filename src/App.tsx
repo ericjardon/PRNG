@@ -6,6 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import TestView from './components/TestView'
 import { EXAMPLE_CHI_TABLE } from './constants';
+import TestTable from './components/output/TestTable';
 
 const theme = createTheme({
   palette: {
@@ -22,8 +23,8 @@ function App() {
         </nav>
         <Routes>
           <Route path="/" element={<MainView/>} />
-          <Route path="/validation" element={<ValidationView />} />
-          <Route path="/test" element={<DataTable data={EXAMPLE_CHI_TABLE}/>} />
+          <Route path="/data-table" element={<DataTable data={{result:false, table:EXAMPLE_CHI_TABLE}}/>} />
+          <Route path="/table" element={<TestTable data={{result:false, table:EXAMPLE_CHI_TABLE}}/>} />
           <Route path="/chi" element={<TestView/>} />
         </Routes>
       </ThemeProvider>

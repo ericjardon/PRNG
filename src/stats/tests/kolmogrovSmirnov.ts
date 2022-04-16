@@ -1,7 +1,7 @@
-import {GoodnessTestParams, KolSmiTable} from '../../types'
+import {GoodnessTestParams, KolSmiTable, ValidatorResult} from '../../types'
 import {kolSmiValues} from '../../criticalValues'
 
-const testKolSmi = (params: GoodnessTestParams) => {
+const testKolSmi = (params: GoodnessTestParams) : ValidatorResult => {
     const {sample, alpha} = params;
 
     sample.sort()
@@ -27,7 +27,9 @@ const testKolSmi = (params: GoodnessTestParams) => {
         d_minus.push(minus);
     }
 
-    const max_d = Math.max(...d_plus, ...d_minus);
+    const max_d_plus = Math.max(...d_plus);
+    const max_d_minus = Math.max(...d_minus);
+    const max_d = Math.max(max_d_plus, max_d_minus);
 
     if (sample.length > 50) {
         switch (alpha) {
@@ -62,17 +64,19 @@ const testKolSmi = (params: GoodnessTestParams) => {
 
     console.log("Maximum D", max_d);
     console.log("Test D:", d_alpha);
-    
 
     const table : KolSmiTable = {
       Fx: Fx, 
       Ri: sample,
       Dplus: d_plus,
       Dminus: d_minus,
+      DplusMax: max_d_plus,
+      DminusMax: max_d_minus,
       Dsample: max_d,
       Dalpha: d_alpha
     }
-    
+
+    table.N = sample.length;
     console.dir(table);
     
     return {result: max_d < d_alpha, table: table}
