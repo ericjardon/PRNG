@@ -21,7 +21,7 @@ const Form: React.FC<Props> = ({
 	updateGlobalState,
 }) => {
 
-	const [method, setMethod] = useState<string>(RNG.LinearCongruential);
+	const [method, setMethod] = useState<string>(RNG.MidSquares);
 	const [seed, setSeed] = useState<string>("");
 	const [numberRandoms, setNumberRandoms] = useState<string>("");
 	const [params, setParams] = useState<any>({});

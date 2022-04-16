@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import TableSwitch from './TableSwitch'
 import CalculateIcon from '@mui/icons-material/Calculate';
 import FunctionsIcon from '@mui/icons-material/Functions';
-import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
+import { Button,  Select, MenuItem, InputLabel } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
-import { Validation } from '../Validation'
 import { EXAMPLE_CHI_TABLE } from '../constants'
-import { ChiSquaredTable, KolSmiTable, ValidatorResult } from '../types';
+import { ValidatorResult } from '../types';
 import testKolSmi from '../stats/tests/kolmogrovSmirnov';
 import chiSquaredTest from '../stats/tests/chiSquared';
 

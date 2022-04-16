@@ -1,5 +1,7 @@
 
+import { Data } from 'react-csv/components/CommonPropTypes';
 import { METHOD_PARAMS_VALIDATORS } from './stats/methods'
+import { ChiSquaredTable, KolSmiTable } from './types';
 
 export const isInteger = (x: any) => Number.isInteger(Number(x));
 
@@ -41,6 +43,28 @@ export const GCD = (a: number,b: number): any => {
 export const formatNum = (x:number, d:number): number => {
     let factor = 10 ** d;
     return Math.floor(x * factor) / factor
+}
+
+export const tableToCSVData = (table: ChiSquaredTable | KolSmiTable) : Data => {
+    let data : Data = []
+    let N = table.N!;
+
+    let columns : string[] = Object.keys(table).filter(key => Array.isArray((table as any)[key]))
+    console.log("Columns:", columns);
+
+    for (let i=0; i<N; i++) {
+        let row : Record<string, number> = {}
+
+        columns.forEach(key => {
+            console.log(`${key}[${i}]`)
+            console.log((table as any)[key][i])
+            row[key] = (table as any)[key][i];
+        })
+        
+        data.push(row);
+    }
+
+    return data;
 }
 
 
