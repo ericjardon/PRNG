@@ -30,13 +30,12 @@ export default function MainView() {
   }
 
   const hasSample = (): boolean => randoms.length > 1;
-  const hasValidation = (): boolean => true; /* (
-      globalState.method === RNG.LinearCongruential ||
+  const hasValidation = (): boolean => (
       globalState.method === RNG.LinearCongruential ||
       globalState.method === RNG.MixedCongruential ||
-      globalState.method === RNG.CombinedCongruential || 
+      globalState.method === RNG.MultiplicativeCongruential || 
       globalState.method === RNG.MathRandom
-    ) */
+    )
 
   const updateRandoms = (randoms: number[]) => {
     setAlert(null);
