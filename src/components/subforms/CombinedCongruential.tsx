@@ -2,8 +2,8 @@
 import React, { ChangeEventHandler, useState } from 'react';
 import { TextField, Grid, Alert } from '@mui/material'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import {Handler, CongruentialParams} from '../types'
-import {MAX_COMBINED_GENERATORS} from '../constants'
+import {Handler, CongruentialParams} from '../../types'
+import {MAX_COMBINED_GENERATORS} from '../../constants'
 
 interface Props {
     params:any,

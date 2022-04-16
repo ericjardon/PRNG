@@ -1,7 +1,7 @@
 import React from 'react'
-import MidSquares from './MidSquares';
-import SimpleCongruential from './SimpleCongruential';
-import CombinedCongruential from './CombinedCongruential';
+import MidSquares from './subforms/MidSquares';
+import SimpleCongruential from './subforms/SimpleCongruential';
+import CombinedCongruential from './subforms/CombinedCongruential';
 import {RNG} from '../RNGs'
 // importar todos los inputs específicos a métodos
 

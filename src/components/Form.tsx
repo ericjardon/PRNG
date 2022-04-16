@@ -1,19 +1,18 @@
 import React, { ChangeEventHandler, useState, useEffect } from 'react'
-import { Button, TextField, Stack, Select, MenuItem, InputLabel } from '@mui/material'
+import { Button, TextField, Stack, Select, MenuItem } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
 import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
-import { validateNumeric, paramsToIntegers, completeParams } from '../utils'
+import { validateNumeric, paramsToIntegers, completeParams, isInteger } from '../utils'
 import { RNG } from '../RNGs'
-import { Validation } from '../Validation'
-import CalculateIcon from '@mui/icons-material/Calculate';
-import FunctionsIcon from '@mui/icons-material/Functions';
+
 interface Props {
 	updateRandoms: (randoms: number[]) => void,
 	setError: (error: string) => void,
 	clearRandoms: () => void,
 	updateGlobalState: (name: string, value: any) => void,
 }
+
 
 const Form: React.FC<Props> = ({
 	updateRandoms,
@@ -74,17 +73,15 @@ const Form: React.FC<Props> = ({
 		clearRandoms();
 		setSeed("1");
 
-		updateGlobalState('alpha', alpha);
-		setAlpha(event.target.value);
-		console.log("Alpha seleccionado:", event.target.value);
-		updateGlobalState('alpha', alpha);
 	}
+
 
 	const getSeedAsNum = (): number | null => {
 		let seedNum: number = Number.parseFloat(seed);
 
-		if (Number.isNaN(seedNum)) {
-			setError("Introduce una semilla válida");
+		if (Number.isNaN(seedNum) || !isInteger(seedNum)) {
+			setError("Semilla debe de ser un entero");
+			console.log("Invalid seed");
 			return null;
 		};
 
@@ -97,26 +94,38 @@ const Form: React.FC<Props> = ({
 	}
 
 	const getRandom = (): void => {
-		const n = Number.parseInt(numberRandoms);
+
+		const n = Number(numberRandoms);
+		if (!isInteger(n) || n<=0) {
+			setError('Número de Aleatorios inválido')
+			console.log("numRandoms not an int")
+			return;
+		}
+
 		console.log("How many nums?", n);
 		console.log("Form Params", params);
 
-		if (!method || !seed) return;
+		if (!method || !seed) {
+			console.log("Method or seed are empty");
+			return;
+		};
 
 		let seedNum;
-		if (method===RNG.CombinedCongruential) {
+		if (method === RNG.CombinedCongruential) {
 			seedNum = 1; // dummy value
 		}
 		else {
 			seedNum = getSeedAsNum();
-			if (!seedNum) return;
+			if (!seedNum) {
+				console.log("No valid seed num");
+				return;
+			};
 		}
 
 		console.log("Method selected:", method);
 
 		// Prepare Params
 		const { seedVal, cleanParams } = prepareParams(method, seedNum, params, n);
-
 		if (cleanParams === null) {
 			setError('Parámetros incorrectos');
 			return;
@@ -133,10 +142,6 @@ const Form: React.FC<Props> = ({
 			const randoms: number[] = METHODS[method](seedVal, cleanParams, n);
 			updateRandoms(randoms);
 		}
-	}
-
-	const runValidation = (name: Validation): void => {
-		console.log("Validating with:", name);
 	}
 
 	return (
@@ -168,31 +173,6 @@ const Form: React.FC<Props> = ({
 			<div className="buttonContainer">
 				<Button disabled={!completeForm} variant="contained" size="large" onClick={getRandom}>Generar {numberRandoms} Randoms</Button>
 			</div>
-			{/* <div className='Validacion'>
-				<h4>Validación de función con números random</h4>
-				<InputLabel id="select-label">Seleccione un valor de Alpha</InputLabel>
-				<Select
-					labelId="method-selector-label"
-					id="chi-square"
-					value={alpha}
-					label="Valor de Alpha"
-					onChange={handleMethodChange}
-				>
-					<MenuItem value="">
-						<em>Valor de alpha</em>
-					</MenuItem>
-					<MenuItem value={0.001}>0.001</MenuItem>
-					<MenuItem value={0.0025}>0.0025</MenuItem>
-					<MenuItem value={0.005}>0.005</MenuItem>
-					<MenuItem value={0.01}>0.01</MenuItem>
-					<MenuItem value={0.025}>0.025</MenuItem>
-					<MenuItem value={0.05}>0.05</MenuItem>
-				</Select>
-			</div>
-			<div className="validation-buttons">
-				<Button variant="contained" id='validationButton' startIcon={<FunctionsIcon />} onClick={() => console.log(Validation.ChiSquared)}>Chi Square {numberRandoms}</Button>
-				<Button variant="contained" id='validationButton' startIcon={<CalculateIcon />}  onClick={() => console.log(Validation.KolmogorovSmirnov)}>Kolmogorov Smirnov {numberRandoms}</Button>
-			</div> */}
 		</div>
 	)
 }
