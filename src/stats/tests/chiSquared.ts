@@ -70,7 +70,6 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
             currentStart = table.classEnd![i];
             currentCount = 0;
             currentClassLength = 1;
-
         } else {
             currentClassLength += 1;
         }
@@ -79,7 +78,9 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
     // if currentCount <5, aglutinar hacia atrás
     // [5,1]
 
-    if (currentCount < 5) {
+    // if last element in array newEnd !== 1 change last element and sum current count
+
+    if (newEnd[newEnd.length-1] !== 1) {
         console.log("Count", currentCount)
         newEnd[newEnd.length-1] = table.classEnd![k-1];
         newFrequencies[newEnd.length-1] += currentCount;
@@ -129,6 +130,8 @@ const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
     const Ei = N / k; // expected per class size
 
     console.log("classes:", k);
+
+    // classSize = 1/k
     const classSize = 1/k;  // class
     console.log("class size:", classSize);
 
