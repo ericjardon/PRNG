@@ -27,7 +27,6 @@ const getObservedFrequencies = (table: ChiSquaredTable, sample: number[]) : numb
     let observedFrequencies : number[] = Array(numClasses).fill(0);
     let ri;
     let currentClass = 0;
-
     for (let i=0; i<sample.length; i++) {
         ri = sample[i];
 
@@ -39,7 +38,7 @@ const getObservedFrequencies = (table: ChiSquaredTable, sample: number[]) : numb
             observedFrequencies[currentClass] += 1;
         }
     }
-
+    console.log("Frequencies",observedFrequencies)
     return observedFrequencies
 }
 
@@ -54,7 +53,7 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
     let newEnd : number[] = [];
     let newFrequencies : number[] = [];
     let newClassLength : number[] = [];
-    let k = table.observedFrequencies!.length;
+    let k = table.classStart!.length;
     let startIndex = 0;
     let currentStart = table.classStart![0];
 
@@ -81,7 +80,8 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
     // [5,1]
 
     if (currentCount < 5) {
-        newEnd[newEnd.length-1] = table.observedFrequencies![k-1];
+        console.log("Count", currentCount)
+        newEnd[newEnd.length-1] = table.classEnd![k-1];
         newFrequencies[newEnd.length-1] += currentCount;
         newClassLength[newEnd.length - 1] += 1;
     }
@@ -129,15 +129,17 @@ const chiSquaredTest = (params: GoodnessTestParams) : ValidatorResult => {
     const Ei = N / k; // expected per class size
 
     console.log("classes:", k);
-    const classSize = range/k;  // class
+    const classSize = 1/k;  // class
     console.log("class size:", classSize);
 
 
     let table : ChiSquaredTable = getClassesColumns(k, classSize); 
     table.observedFrequencies = getObservedFrequencies(table, sample);
 
+    console.log("Table with all classes", table)
     table = reduceClasses(table);
     k = table.classStart!.length;
+    console.log("Reduced table", table)
 
     if (k<2) {
         console.log("insufficient classes after reduction");
