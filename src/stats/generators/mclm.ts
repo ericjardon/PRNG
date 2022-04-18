@@ -28,18 +28,24 @@ const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: nu
     console.log("Run for", iterations, 'iterations');
 
     let result : number[] = [];
-    let generators = Array(iterations).fill(Array(a.length).fill(0));
+    let generators: number[][]=[] ;
+    let tempGen : number[]=[]
     let temseed, r : number;
     function get_gm(a_single: number, m_single: number, xi_single: number) {
         return (a_single*xi_single) % m_single;
     }
-    
+    console.log("generadores")
     for(let j = 0; j < a.length; j++ ){
+        tempGen = []
         for(let i = 0; i<iterations; i++){
             xi[j] = get_gm(a[j], m[j], xi[j])
-            generators[j][i] = xi[j]
+
+            tempGen.push(xi[j])
+ 
         }
+        generators.push(tempGen)
     }
+
     //generate xi and ri
     for(let i = 0; i< iterations; i++){
         r = 0
@@ -47,6 +53,7 @@ const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: nu
         for(let j = 0; j < a.length ; j++ ){
             r +=   ((-1)** j ) * generators[j][i]
         }
+
         r = r % (m[0]-1)
         //get ri
         if(r>0){
