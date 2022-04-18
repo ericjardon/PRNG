@@ -5,6 +5,7 @@ import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
 import { validateNumeric, paramsToIntegers, completeParams, isInteger } from '../utils'
 import { RNG } from '../RNGs'
+import { CongruentialParams } from '../types'
 
 interface Props {
 	updateRandoms: (randoms: number[]) => void,
@@ -132,13 +133,36 @@ const Form: React.FC<Props> = ({
 			return;
 		}
 
+		// If congruentials, check 
+		if (method !== RNG.MathRandom && method !== RNG.MidSquares) {
+			let ok = true;
+
+			if (method === RNG.CombinedCongruential) {
+				for (let i=0; i<cleanParams.m.length; i++) {
+					if (!(cleanParams.m[i] > cleanParams.a[i] && cleanParams.m[i] > cleanParams.xi[i])) {
+						ok = false;
+						break;
+					} else {
+						console.log(`${cleanParams.m[i]} > ${cleanParams.a[i]} && ${cleanParams.m[i]} > ${cleanParams.xi[i]}`)
+					}
+				}
+			}
+			else {
+				ok = checkSingleCongruentialParams(seedVal, cleanParams);
+			}
+
+			if (!ok) {
+				setError('El módulo debe de ser mayor a la semilla y al multiplicador.');
+				return;
+			}
+		}
+
 		if (!(method in METHODS)) {
 			setError("Método no implementado.");
 			return;
 		}
 		else {
-			//console.log("Calling method", method, 'with how many?', n);
-			//console.log("Sending Params:", params);
+			console.log("Form params:", cleanParams);
 
 			const returnedRandoms: number[] = METHODS[method](seedVal, cleanParams, n);
 			console.log("returned randoms", returnedRandoms);
@@ -185,6 +209,7 @@ const Form: React.FC<Props> = ({
 	)
 }
 
+
 // used for preprocessing of certain methods
 export const prepareParams = (method: string, seedVal: number, params: any, n: number) => {
 	if (method === RNG.CombinedCongruential) {
@@ -216,5 +241,12 @@ export const prepareParams = (method: string, seedVal: number, params: any, n: n
 
 	return { seedVal, cleanParams: params };
 }
+
+// for checking congruential generators: a < m && seed < m
+const checkSingleCongruentialParams = (seedVal:number, cleanParams: CongruentialParams) : boolean => {
+	const {m, a} = cleanParams;
+	return (m > a && m > seedVal);
+}
+
 
 export default Form;

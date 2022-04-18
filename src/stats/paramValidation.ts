@@ -1,14 +1,13 @@
-import { ParamsValidator, Params, CongruentialParams } from '../types'
+import { ParamsValidator, Params, CongruentialParams, MixedCongruentialParams } from '../types'
 import { MAX_COMBINED_GENERATORS } from '../constants'
 import { GCD, areRelativePrimes, divisibleByFourCheck, divisibleByPrimes } from '../utils'
 
-export const HullDobell = (params: CongruentialParams): boolean => {
+export const HullDobell = (params: MixedCongruentialParams): boolean => {
     const {a,m,c} = params;
 
     return areRelativePrimes(m, c) && divisibleByPrimes(a-1, m) && divisibleByFourCheck(a-1, m);
 }
 
-// console.log("Hull Dobell test", HullDobell({a:5, c:7, m:16}));
 
 export const midSquaresParamValidation = (params: Params): boolean => {
     // uses no Params

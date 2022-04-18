@@ -2,6 +2,11 @@
 export interface CongruentialParams {
     a: number,
     m: number,
+    c?: number,
+}
+export interface MixedCongruentialParams {
+    a: number,
+    m: number,
     c: number,
 }
 

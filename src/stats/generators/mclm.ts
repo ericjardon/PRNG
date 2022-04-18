@@ -13,7 +13,7 @@ const computeMaxPeriod = (m:number[]) => {
         p *= (mi - 1);
     })
 
-    return p / Math.pow(2, k-1);
+    return Math.floor(p / Math.pow(2, k-1));
 }
 
 

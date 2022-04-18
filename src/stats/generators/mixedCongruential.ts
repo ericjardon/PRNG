@@ -1,7 +1,7 @@
 import {HullDobell} from '../paramValidation'
-import {CongruentialParams, RandomGeneratorFunc} from '../../types'
+import {MixedCongruentialParams, RandomGeneratorFunc} from '../../types'
 
-const randomMixedCongruential : RandomGeneratorFunc = (seed: number, params: CongruentialParams, n:number) => {
+const randomMixedCongruential : RandomGeneratorFunc = (seed: number, params: MixedCongruentialParams, n:number) => {
     // recibir n ciclos y regresar un arreglo con los n resultados de Ri Basarse en dummy.
     console.log("Mixed Congruential N=", n);
     console.log(params);
