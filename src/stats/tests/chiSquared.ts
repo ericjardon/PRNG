@@ -60,7 +60,6 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
     for (let i=0; i<k; i++) {
         currentCount += table.observedFrequencies![i];
         if (currentCount >= 5) {
-            // newStart.push(table.classStart![startIndex]);
             newStart.push(currentStart);
             newEnd.push(table.classEnd![i]);
             newFrequencies.push(currentCount);
@@ -75,13 +74,10 @@ const reduceClasses = (table: ChiSquaredTable) : ChiSquaredTable => {
         }
     }
 
-    // if currentCount <5, aglutinar hacia atrás
-    // [5,1]
-
-    // if last element in array newEnd !== 1 change last element and sum current count
+    // if last element in array newEnd !== 1 it means that last class does not have 5 or more elements.
+    // extend last class and sum current count
 
     if (newEnd[newEnd.length-1] !== 1) {
-        console.log("Count", currentCount)
         newEnd[newEnd.length-1] = table.classEnd![k-1];
         newFrequencies[newEnd.length-1] += currentCount;
         newClassLength[newEnd.length - 1] += 1;
