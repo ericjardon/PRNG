@@ -10,7 +10,7 @@ const randomMixedCongruential : RandomGeneratorFunc = (seed: number, params: Mix
     let setR = new Set<number>()
     let iterations = n;
     if(HullDobell(params)){
-        for(let i=0; i<=iterations; i++){
+        for(let i=0; i<iterations; i++){
             let x = (((params.a * seed) + params.c) % params.m)
             let Ri = x/params.m
             if(setR.has(Ri)){
