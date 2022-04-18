@@ -28,8 +28,8 @@ export const METHOD_PARAMS_VALIDATORS : Record<string, ParamsValidator> = {
     [RNG.MidSquares]: midSquaresParamValidation,
     [RNG.LinearCongruential]: linearCongurentialParamValidation,
     [RNG.MixedCongruential]: mixedCongurentialParamValidation,
-    [RNG.MultiplicativeCongruential]: multiplicativeParamValidation,  // TODO: Generador Multiplicativo
-    [RNG.CombinedCongruential]: combinedCongruentialParamValidation, // TODO: Método Congruencial Lineal Combinado  
+    [RNG.MultiplicativeCongruential]: multiplicativeParamValidation,  
+    [RNG.CombinedCongruential]: combinedCongruentialParamValidation, 
 }
 
 

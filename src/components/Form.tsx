@@ -106,6 +106,7 @@ const Form: React.FC<Props> = ({
 		console.log("Form Params", params);
 
 		if (!method || !seed) {
+			setError("Llena todos los campos");
 			console.log("Method or seed are empty");
 			return;
 		};

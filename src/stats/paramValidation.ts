@@ -63,7 +63,6 @@ export const multiplicativeParamValidation = (params: CongruentialParams): boole
     return Boolean(
         params.a && params.a > 0 &&
         params.m && params.m > 0 &&
-        params.m > params.a &&
         !params.c
     )
 }

@@ -18,7 +18,6 @@ export default function MainView() {
   })
 
   const updateGlobalState = (name: string, value: any) => {
-    console.log('global state', name, value)
     setGlobalState({
       ...globalState,
       [name]: value,

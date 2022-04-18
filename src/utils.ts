@@ -21,6 +21,7 @@ export const validateNumeric = (val: string): boolean => !Number.isNaN(Number(va
 
 export const completeParams = (paramsObj: any, method: string): boolean => {
     const result = METHOD_PARAMS_VALIDATORS[method](paramsObj)
+    console.log("Complete form?", result);
     return result;
 }
 

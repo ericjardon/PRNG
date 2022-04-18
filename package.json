@@ -2,7 +2,7 @@
   "name": "pseudorandom",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ericjardon.github.io/PRNG",
+  "homepage": "https://ericjardon.github.io/PRNG/",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
