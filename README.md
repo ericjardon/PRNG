@@ -12,7 +12,7 @@ We wanted to be able to compare between some of the earlier computational method
 5. Generador Multiplicativo : _Multplicative Congruential_
 
 As a general rule, it is suggested to pick a Modulo (M) to be a power of two, and multiplier (A) to be an even power of two plus one, e.g. 5. The increment (C) is recommended to be a prime number. 
-Both A and C should be values less than M.
+Both A and C should be integer values less than M.
 
 ### Validation:
 For teaching purposes we implement a number of statistical tests to verify that the generated sample follows (or not) a Uniform Distribution.
