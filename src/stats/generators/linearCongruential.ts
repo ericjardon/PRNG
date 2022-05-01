@@ -9,6 +9,7 @@ interface LinearCongruentialParams{
 const randomLinearCongruential : RandomGeneratorFunc = (seed: number, params: LinearCongruentialParams, n: number) => {
     let results: number[] = [] 
     let setR = new Set<number>()
+    
     for(let i=0; i < n; i++){
         let x = (((params.a * seed) + params.c) % params.m)
         let Ri = x/params.m
