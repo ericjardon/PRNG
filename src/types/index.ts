@@ -39,6 +39,20 @@ export type RandomGeneratorFunc = (seed: number, params: any, n: number) => numb
 
 export type Handler = (event: React.ChangeEvent<any>) => void;
 
+export type QueueingFunc = (params: any) => any;
+
+export interface QueueingTable {
+    lambda?: number,
+    nu?: number,
+    p?:number,
+    po?:number,
+    Lq?:number,
+    L?:number,
+    Wq?:number,
+    W?:number,
+    s?: number
+}
+
 export interface ChiSquaredTable {
     classStart?: number[],
     classEnd?: number[],
