@@ -51,6 +51,11 @@ export interface QueueingTable {
     Wq?:number,
     W?:number,
     s?: number
+    k?: number,
+    lambdaE?: number,
+    Pk?: number,
+    ro?: number,
+    tasaUtil?: number
 }
 
 export interface ChiSquaredTable {
