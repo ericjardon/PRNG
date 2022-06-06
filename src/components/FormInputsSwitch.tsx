@@ -2,6 +2,7 @@ import React from 'react'
 import MidSquares from './subforms/MidSquares';
 import SimpleCongruential from './subforms/SimpleCongruential';
 import CombinedCongruential from './subforms/CombinedCongruential';
+import InputSample from './subforms/InputSample';
 import {RNG} from '../RNGs'
 // importar todos los inputs específicos a métodos
 
@@ -33,6 +34,12 @@ const FormInputsSwitch : React.FC<IFormInputsSwitchProps> = ({
   if (method===RNG.CombinedCongruential) {
     return (
       <CombinedCongruential updateHandler={updateHandler} params={params}/> /* Key is params.combinedParams */
+    )
+  }
+
+  if (method==='import') {
+    return (
+      <InputSample updateHandler={updateHandler} params={params}/>
     )
   }
 

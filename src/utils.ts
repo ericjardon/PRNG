@@ -20,6 +20,7 @@ export const paramsToIntegers = (params: any): any => {
 export const validateNumeric = (val: string): boolean => !Number.isNaN(Number(val.trim()));
 
 export const completeParams = (paramsObj: any, method: string): boolean => {
+    if (method==='import') return true;
     const result = METHOD_PARAMS_VALIDATORS[method](paramsObj)
     console.log("Complete form?", result);
     return result;

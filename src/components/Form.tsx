@@ -76,6 +76,17 @@ const Form: React.FC<Props> = ({
 		setSeed("1");
 	}
 
+	const processInputsample = (sample: string) : number[] => {
+		let rand_sample =  sample.trim().split('\n');
+		console.log('N=', rand_sample.length);
+		let rand_sample_nums = rand_sample.map(num_string => {
+			const x = Number(num_string);
+			if (x == 0) return x;
+			return x || -1;
+		});
+		return rand_sample_nums.filter(x => x >= 0);
+	}
+
 
 	const getSeedAsNum = (): number | null => {
 		let seedNum: number = Number.parseFloat(seed);
@@ -95,6 +106,19 @@ const Form: React.FC<Props> = ({
 	}
 
 	const getRandom = (): void => {
+
+
+		if (method==='import') {
+			const {sample} = params; 	
+			if (!sample) {
+				setError('No se procesó muestra');
+				return;
+			}
+			console.log("updating randoms")
+			const number_sample = processInputsample(sample)
+			updateRandoms(number_sample);
+			return;
+		}
 
 		const n = Number(numberRandoms);
 		if (!isInteger(n) || n<=0) {
@@ -195,6 +219,7 @@ const Form: React.FC<Props> = ({
 					<MenuItem value={RNG.MixedCongruential}>Mixed Congruential</MenuItem>
 					<MenuItem value={RNG.CombinedCongruential}>Combined Congruential</MenuItem>
 					<MenuItem value={RNG.MathRandom}>Math.Random</MenuItem>
+					<MenuItem value={'import'}>Input Sample</MenuItem>
 				</Select>
 				<TextField label="Número de Aleatorios" variant="filled" value={numberRandoms} onChange={handleNumberRandomsChange}></TextField>
 				{method !== RNG.CombinedCongruential &&

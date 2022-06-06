@@ -34,7 +34,8 @@ export default function MainView() {
       globalState.method === RNG.LinearCongruential ||
       globalState.method === RNG.MixedCongruential ||
       globalState.method === RNG.MultiplicativeCongruential || 
-      globalState.method === RNG.MathRandom
+      globalState.method === RNG.MathRandom ||
+      globalState.method === 'import'
     )
 
   const updateRandoms = (randoms: number[]) => {
