@@ -1,4 +1,4 @@
-import { RandomGeneratorFunc } from "../../types";
+import { RandomGeneratorFuncNew, RandomGeneratorResults } from "../../types";
 
 interface MCLMParams {
     a: number[],
@@ -17,7 +17,7 @@ const computeMaxPeriod = (m:number[]) => {
 }
 
 
-const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: number) : number[] => {
+const randomMCLM : RandomGeneratorFuncNew = (seed:number, params: MCLMParams, n: number) => {
     console.log("mclm params")
     console.dir(params);
     
@@ -64,7 +64,11 @@ const randomMCLM : RandomGeneratorFunc = (seed:number, params: MCLMParams, n: nu
         result.push(r)
     }
     console.log(result)
-    return  result ;
+    return  {
+        results:result,
+        seeds:[],
+        output:[],
+    } ;
 
 }
 

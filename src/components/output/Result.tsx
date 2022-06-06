@@ -7,11 +7,15 @@ type Props = {
     random: number | null,
     alert: any,
     randoms: number[],
+    seeds?: number[],
+    output?:number[],
     method: string,
 }
 
 const Result: React.FC<Props> = ({
     random,
+    output,
+    seeds,
     alert,
     randoms,
     method
@@ -29,7 +33,7 @@ const Result: React.FC<Props> = ({
                 {randoms.length > 0 ?
                     <>
                         <h3>{randoms.length} Aleatorios Generados</h3>
-                        <NumberList numsList={randoms} method={method}/>
+                        <NumberList numsList={randoms} seedsList={seeds} outputList={output} method={method}/>
                     </>
                     : <></>
                 }

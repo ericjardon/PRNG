@@ -10,6 +10,8 @@ import {
 
 interface NumberListProps {
   numsList: number[];
+  seedsList?:number[];
+  outputList?:number[];
   method: string
 }
 

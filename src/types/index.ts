@@ -35,7 +35,15 @@ export interface ParamsValidatorResponse {
 
 export type ParamsValidator = (params: any) => boolean;
 
+export interface RandomGeneratorResults {
+    seeds: number[],
+    output: number[],
+    results: number[]
+}
+
 export type RandomGeneratorFunc = (seed: number, params: any, n: number) => number[];
+
+export type RandomGeneratorFuncNew = (seed: number, params: any, n: number) => RandomGeneratorResults | number[];
 
 export type Handler = (event: React.ChangeEvent<any>) => void;
 

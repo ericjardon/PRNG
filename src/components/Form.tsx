@@ -5,7 +5,7 @@ import FormInputsSwitch from './FormInputsSwitch'
 import { METHODS } from '../stats/methods'
 import { validateNumeric, paramsToIntegers, completeParams, isInteger } from '../utils'
 import { RNG } from '../RNGs'
-import { CongruentialParams } from '../types'
+import { CongruentialParams, RandomGeneratorResults } from '../types'
 
 interface Props {
 	updateRandoms: (randoms: number[]) => void,
@@ -164,7 +164,8 @@ const Form: React.FC<Props> = ({
 		else {
 			console.log("Form params:", cleanParams);
 
-			const returnedRandoms: number[] = METHODS[method](seedVal, cleanParams, n);
+			const RGFTable = METHODS[method](seedVal, cleanParams, n) as RandomGeneratorResults;
+			const returnedRandoms: number[] = RGFTable.results;
 			console.log("returned randoms", returnedRandoms);
 
 			if (method === RNG.MixedCongruential && returnedRandoms.length == 0) {

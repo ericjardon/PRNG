@@ -4,7 +4,7 @@ import randomGM from './generators/gm'
 import randomMixedCongruential from './generators/mixedCongruential'
 import randomLinearCongruential from "./generators/linearCongruential";
 import randomCombinedCongruential from "./generators/mclm";
-import { Params, ParamsValidator, RandomGeneratorFunc } from '../types';
+import { Params, ParamsValidator, RandomGeneratorFuncNew } from '../types';
 import {
     midSquaresParamValidation,
     linearCongurentialParamValidation,
@@ -14,7 +14,7 @@ import {
 } from './paramValidation';
 import { RNG } from "../RNGs";
 
-export const METHODS : Record<string, RandomGeneratorFunc> = {
+export const METHODS : Record<string, RandomGeneratorFuncNew> = {
     [RNG.MathRandom]: bulkRandomDummy,
     [RNG.MidSquares]: randomMidSquares,
     [RNG.LinearCongruential]: randomLinearCongruential, 

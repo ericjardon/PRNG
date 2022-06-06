@@ -1,4 +1,4 @@
-import { RandomGeneratorFunc } from "../../types";
+import { RandomGeneratorFuncNew } from "../../types";
 
 interface DummyParams {
     alpha?: number,
@@ -9,7 +9,7 @@ interface DummyParams {
 
 /* Uses Math Random */
 
-export const bulkRandomDummy : RandomGeneratorFunc = (seed:number, params:DummyParams, n:number) : number[]=> {
+export const bulkRandomDummy : RandomGeneratorFuncNew = (seed:number, params:DummyParams, n:number) : number[]=> {
     // Calcular el periodo o mantener registro de valores generados.
     // Nos detenemos cuando valores se repiten o cuando se acaba el periodo.
 
